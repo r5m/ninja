@@ -14,7 +14,9 @@
 <body>
 
 <div id="p_for_ids"></div>
+
 <script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
+
 <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
 
 <script language="javascript">
@@ -53,20 +55,17 @@ VK.Api.call('groups.getMembers', {group_id: 'game_of_thrones.club'}, function(r)
 }); 
 
 */
-//https://api.vk.com/method/wall.get?domain=baraholkaua?count=10
+
+
 /*
 var p_for_ids = document.getElementById('p_for_ids');
 //p_for_ids.innerHTML = p_for_ids.innerHTML + ' 22';
 
 */
 
-//console.log('!', VK.Api)
 
-//https://api.vk.com/method/wall.get?domain=baraholkaua?count=10&owner_id=-444351
-//https://api.vk.com/method/groups.getById?group_id=baraholkaua
-window.ffff = function(){VK.Api.call('groups.getById', {group_id: 'game_of_thrones.club', fields: 'members_count' }, function(r) {
-console.log(r)
- if(r.response) {
+VK.Api.call('groups.getById', {group_id: 'game_of_thrones.club', fields: 'members_count' }, function(r) {
+  if(r.response) {
  // ms_count=r.response[0].members_count;
  
 var index = 1;
@@ -119,7 +118,7 @@ var timeoutId = 1;
  
 
   }
-}); }
+}); 
 
 
 
