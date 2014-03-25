@@ -3,8 +3,42 @@
 <head>
 	<meta charset="utf-8" />
 	<title>R5M sale</title>
+    
 </head>
 <body>
 	Code here
+	<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.3/dojo/dojo.js"></script> 
+	<script>
+	    require(['dojo/request/script', 'dojo/domReady!'], function(script){
+            console.log(script.get.toString())
+            /*
+            *   Dispatch data returned from crossDomain XHR
+            *   check for errors and then do anything we need
+            *
+            *   @response - data returned
+            *   
+            */
+            
+            var requestDispatcher = function(response){
+                if(response.error || !response.response){
+                    //error
+                    console.log('fuck');
+                }else{
+                    var r = response.response;
+                    console.log(r)
+                    //document.write(r.toString());
+                }
+            }
+            
+            //test request dispatcher
+            var requestParams = { count: 10, owner_id: -444351 }
+            var url = '//api.vk.com/method/wall.get';
+            
+            script.get(url, {
+                query: requestParams,
+                jsonp: 'callback'
+            }).then(requestDispatcher)    
+        })
+    </script>
 </body>
 </html>
