@@ -119,19 +119,29 @@ define([
         },
         
         logPosts: function(data){
+            var self = this
             for(var i = 1; i < data.length; i++){
+                var nodeId = data[i].to_id+'_'+data[i].id
                 var li = domConstruct.create('li',{
-                   innerHTML : data[i].text
-                }, 'posts','last')
+                   innerHTML : '<p><a id= "'+nodeId+'" href="http://vk.com/'+self.currentPublic+'?w=wall'+data[i].to_id+'_'+data[i].id+'">original</a></p>' + data[i].text
+                }, 'posts','last');
+                (function(id){
+                    on(dom.byId(id), 'click', function(e){
+                        openNewWindow.call(dom.byId(id), e)
+                    })
+                })(nodeId)
+                var div = domConstruct.create('div',{
+                }, li, 'last')
                 if(data[i].attachments)
                 for(var j=0; j<data[i].attachments.length; j++){
                     var a = data[i].attachments[j]
                     if(a.type == "photo")
                         var img = domConstruct.create('img',{
-                            src: a.photo.src
-                        },li,'last')
+                            src: a.photo.src,
+                            'class': 'post-photo'
+                        },div,'last')
                 }
-                //console.log(data[i].text);
+                console.log(data[i]);
             }
         },
         
@@ -242,7 +252,7 @@ define([
             
             var searchLinks = query('.search');
             for(var i = 0; i<searchLinks.length; i++){
-                var link = searchLinks[i]
+                var link = searchLinks[i];
                 (function(a){
                     on(a, 'click', function(e){
                         self.clear()
@@ -256,6 +266,7 @@ define([
                     })  
                 })(link)
             }
+            
         }    
 	})
 })

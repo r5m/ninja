@@ -6,6 +6,18 @@
     <style>
         nav a{margin:10px;}
         
+        #posts {
+            list-style-type: none;
+        }
+        #posts li{
+            padding: 20px 0;
+            border-top: dashed 1px #ccc;
+            font-size: 14px;
+        }
+        img.post-photo{
+            margin: 0 10px 0 0;
+            border: solid 1px #ccc;
+        }
     </style>
 </head>
 <body id="body">
@@ -19,6 +31,17 @@
 	<script src="js/app/config/dojo-conf.js"></script> 
 	<script src="js/dojo/dojo.js"></script> 
 	<script>
+	    
+            openNewWindow = function(e){
+                if (e.preventDefault) {  // если метод существует
+                    e.preventDefault();
+                } else { // вариант IE<9:
+                    e.returnValue = false;
+                }
+                console.log(this)
+                window.open(this.href, "_blank")
+            }
+	
 	    require(['dojo/request/script', 'app', 'dojo/domReady!'], function(script, Application){
             
             var app = new Application();
