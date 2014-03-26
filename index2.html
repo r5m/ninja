@@ -5,61 +5,17 @@
 	<title>R5M sale</title>
     
 </head>
-<body>
-	Code here
-	<script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.3/dojo/dojo.js"></script> 
+<body id="body">
+	<h2>Posts</h2>
+	<ul id="posts"></ul>
+	
+	<script src="js/app/config/dojo-conf.js"></script> 
+	<script src="js/dojo/dojo.js"></script> 
 	<script>
-	    require(['dojo/request/script', 'dojo/domReady!'], function(script){
-            /*
-            *   Dispatch data returned from crossDomain XHR
-            *   check for errors and then do anything we need
-            *
-            *   @response - data returned
-            *   @onSuccess(response) - what should we do if everything is ok
-            *   @onError(response) - ...and if wrong data returned
-            *
-            */
-            var _requestDispatcher = function(response, onSuccess, onError){
-                if(response.error || !response.response){
-                    //error
-                    onError(response);
-                }else{
-                    //wow :-)
-                    onSuccess(response);
-                }
-            }
+	    require(['dojo/request/script', 'app', 'dojo/domReady!'], function(script, Application){
             
+            var app = new Application();
             
-            //TESTING
-            //ok callback
-            var vkWallSuccessRequestDispatcher = function(response){
-                var r = response.response;
-                //0-й эл-т - какое-то число
-                for(var i = 1; i < r.length; i++){
-                    console.log(r[i].text)
-                }
-            }
-            
-            //error callback
-            var vkWallErrorRequestDispatcher = function(response){
-                console.log('fuck')
-                console.log(response)
-            }
-            
-            //test wrapper
-            var vkWallRequestDispatcher = function(response){
-                _requestDispatcher(response, vkWallSuccessRequestDispatcher, vkWallErrorRequestDispatcher)
-            }
-            
-            //do test
-            //just send GET-request to VK.COM
-            var requestParams = { count: 10, owner_id: -444351 }
-            var url = '//api.vk.com/method/wall.get';
-            
-            script.get(url, {
-                query: requestParams,
-                jsonp: 'callback'
-            }).then(vkWallRequestDispatcher)    
         })
     </script>
 </body>
