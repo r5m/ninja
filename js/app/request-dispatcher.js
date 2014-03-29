@@ -166,13 +166,13 @@ define([
                 (function(uid, node){
                     if(uid > 0)
                         self.getUserInfo(uid).then(function(data){
-                            var originAuthorLink = '<a id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].first_name +' '+ data[0].last_name+'</a> :: '
+                            var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].first_name +' '+ data[0].last_name+'</a> :: '
                             domAttr.set(node, 'innerHTML', originAuthorLink)
                         })
                     else
                         self.getWallUserInfo(uid).then(function(data){
                             //console.log('WALL: ',data)
-                            var originAuthorLink = '<a id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].name+'</a> :: '
+                            var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].name+'</a> :: '
                             domAttr.set(node, 'innerHTML', originAuthorLink)
                         })
                 })(userId, uinfoId);
