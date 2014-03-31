@@ -4,24 +4,21 @@
 	<meta charset="utf-8" />
 	<meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="width = device-width, initial-scale = 1, user-scalable = no" name="viewport">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+  
 	<title>R5M sale</title>
-    <style>
+	<style>
         #posts {
-            list-style-type: none;
+           
         }
         #posts li{
-            padding: 20px 0;
-            border-top: dashed 1px #ccc;
-            font-size: 14px;
+            
         }
         img.post-photo{
-            margin: 0 10px 0 0;
-            border: solid 1px #ccc;
+           
         }
         body{
-            background-color: #eee;
-            font-size: 100%;
-            font-family: Arial;
+          
             
         }
         
@@ -34,9 +31,8 @@
         }
         
         .left-column{
-            float:left;
-            width:200px;
-            background: yellow;
+           float: left;
+           width: 200px;
         }
         .center-column{
             margin-left:200px;
@@ -46,46 +42,29 @@
             
         }
         nav ul{
-            list-style-type: none;
-            padding:0;
-            display:table;
+          
             
         }
         nav ul li{
-            height: 40px;
-            display:table-row;
+           
         }
         nav ul li > div{
-            display:table-cell;
-            vertical-align: middle;
-            border-bottom: dashed 1px #666;
-            cursor: pointer;
-            padding: 10px 0;
+          
         }
         nav ul li > div > div{
-            width:100%;
-            font-weight: normal;
+          
         }
         
         nav ul li.selected > div > div{
-            font-weight: bold;
+           
         }
         
         nav ul li > div > div > span{
-            width: 100%;
-            text-overflow: ellipsis;
-            overflow: hidden;
-           
-            display:block;
+          
         }
         
         nav ul li a{
-            text-align:right;
-            clear: both;
-            font-size:0.7rem;
-            text-decoration: none;
-        /*    text-transform:uppercase;*/
-            float: right;
+           
         }
         
         a#pagetop{
@@ -147,19 +126,17 @@
     </script>
 </head>
 <body id="body">
-	<header class="header">
-    	<h1>Все объявления Томска</h1>
-    	<button id="menu-hider">Menu</button>
+	<div class="page-header">
+		<h1>Все объявления Томска <small>и даже больше...</small></h1>
+		<button id="menu-hider">Menu</button>
     	<button id="new-mode">New mode <sup>TM</sup></button>
-	</header>
-	
-	<div class="left-column">
-	    <nav>
-	        <ul></ul>
-	    </nav>
-	    <!--<br/>
-	    <a href="#" data-href="#r5m_планшет" class="search">Только планшеты</a>-->
 	</div>
+	
+
+	        <ul class="list-group list-publics left-column"></ul>
+	  
+	
+
 	<div class="center-column">
 	    <!--<h2>Posts</h2>-->
 	    <ul id="posts"></ul>

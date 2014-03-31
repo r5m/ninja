@@ -13,7 +13,7 @@ define([
             'posmotri.tomsk': {title: 'Фотодоска Томска'},
             'desk70' : {title: 'Еще одна группа'},
             '70baraholka': {title: '70baraholka'},
-            'swetselltll': {title: 'Томск|Объявления|Авто|Работа|'},
+            'swetselltll': {title: 'Томск|Объявления| Авто|Работа|'},
             'club49470911': {title: '417 человек'},
             'tomsk_photodoska': {title: 'ФОтодоСкА'},
             'sellithere': {title: 'Супер Барахолка', default: true}
@@ -303,7 +303,7 @@ define([
         clear: function(){
             domConstruct.empty('posts')
             this.currentOffset = 0;
-            var links = query('nav li')
+            var links = query('.list-publics')
             for(var i=0; i< links.length; i++){
                 domClass.remove(links[i],'selected')
             }
@@ -350,13 +350,14 @@ define([
             //just send GET-request to VK.COM
             var self = this
             
-            var nav = query('.left-column nav ul')[0]
+            var nav = query('.list-publics')[0]
+            
             for(var i in this.publics){
                 var link = 'http://vk.com/'+i
                 
                 domConstruct.create('li',{
                     "data-href": i,
-                    'class' :'nav '+(this.publics[i].default ? "selected" :""),
+                    'class' :'nav list-group-item '+(this.publics[i].default ? "selected" :""),
                     innerHTML : '<div><div><span>'+this.publics[i].title+'</span>'+
                         '<span><a onclick="openNewWindow(event)" href="'+link+'">'+i+'</a></span></div></div>'
                 }, nav, 'last')
@@ -368,11 +369,13 @@ define([
             this.registerLoadOnScroll();
             
             var navLinks = query('li.nav');
+            
             for(var i = 0; i<navLinks.length; i++){
                 var link = navLinks[i];
                 (function(a){
                     on(a, 'click', function(e){
                         self.clear()
+                        
                         if (e.preventDefault) {  // если метод существует
                             e.preventDefault();
                         } else { // вариант IE<9:
@@ -409,3 +412,21 @@ define([
         }    
 	})
 })
+
+
+/*
+ * В общем такая поломатость. Вместо selected я хочу просто сделать 
+ * данную li друшим классом. Вместо list-group-item поставить 
+ * list-group-item-success, чтобы выделенный паблик показывался другим цветом
+ * Я также изменил в HTML разметку для этих li и в данном файле пару функций
+ * (коммит). Но вот такая проблемка встала, selected при выборе паблика 
+ * добавляется, но старый не удаляется. 371-я строчка так и осталась для меня загадкой)))
+ * 
+ * В общем вместо "selected" надо подписывать "list-group-item-success"
+ * и тогда при выборе паблика строчка будет зелененькой)))
+ * 
+ * 
+ * 
+ * 
+ * 
+ * */
