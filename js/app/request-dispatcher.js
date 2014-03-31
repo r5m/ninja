@@ -1,23 +1,27 @@
 define([
     "dojo/_base/declare",
-    'dojo/Deferred',
+    'dojo/Deferred','dojo/DeferredList',
     'dojo/request/script','dojo/dom-class',
     'dojo/dom-geometry','dojo/dom', 'dojo/query', 'dojo/on', 'dojo/dom-attr',
-    'dojo/dom-construct'], function(declare, Deferred, script, domClass , domGeometry, dom, query, on,domAttr, domConstruct){
+    'dojo/dom-construct'], function(declare, Deferred, DeferredList, script, domClass , domGeometry, dom, query, on,domAttr, domConstruct){
 	return declare(null, {
         
         currentOffset: 0, //offset value for vk requests
-        postsPerRequest: 10, //count value for vk requests
+        postsPerRequest: 5, //count value for vk requests
         publics: {
             'tomsktip': {title: 'Томск: Бесплатные объявления'},
             'posmotri.tomsk': {title: 'Фотодоска Томска'},
-            'desk70' : {title: 'Еще одна группа', default: true},
+            'desk70' : {title: 'Еще одна группа'},
             '70baraholka': {title: '70baraholka'},
             'swetselltll': {title: 'Томск|Объявления|Авто|Работа|'},
             'club49470911': {title: '417 человек'},
-            'tomsk_photodoska': {title: 'ФОтодоСкА'}
+            'tomsk_photodoska': {title: 'ФОтодоСкА'},
+            'sellithere': {title: 'Супер Барахолка', default: true}
         },
         currentPublic: 'tomsktip',
+        
+        // All posts from all publics
+        posts: [],
         /*
         *   Dispatch data returned from crossDomain XHR
         *   check for errors and then do anything we need
@@ -93,6 +97,60 @@ define([
             return deferredResult
         },
         
+        
+        getNpostsFromAllWalls: function(){
+            var defArray = []
+            for (var i in this.publics){
+                var publicPosts = new Deferred()
+                defArray.push(publicPosts)
+                
+                //var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, owner_id: -wallId };
+                var requestParams = { count: this.postsPerRequest, offset: 0, owner_id: - ( this.publics[i].wallId) };
+                var url = '//api.vk.com/method/wall.get';
+                var dispatcher = this.vkTestRequestDispatcher;
+                
+                this._getData(url, requestParams, dispatcher).then(function(data){
+                    publicPosts.resolve(data);
+                });
+            }
+            
+            var deferredResult = new DeferredList(defArray);
+            
+            return deferredResult;
+            
+        },
+        
+        showNPostsFromAllWalls: function(){
+            this.clear()
+            var defArray = []
+            var self = this
+            for (var i in this.publics){
+                var deferredWall = new Deferred();
+                (function(def, i){
+                    self.getGroupInfo(i).then( function(groupInfo){
+                        var grPostGetter = self.getWallPosts( groupInfo[0].gid )
+                        grPostGetter.then(function(posts){
+                            for(var j = 1; j<posts.length; j++){
+                                self.posts.push(posts[j])
+                            }
+                            console.log(self.posts)
+                            def.resolve('ok')
+                        })
+                    })
+                    defArray.push(def)
+                })(deferredWall, i)
+            }
+            console.log(defArray)
+            var deferredResult = new DeferredList(defArray)
+            deferredResult.then(function(){
+                self.posts.sort(function(a, b){
+                    return a.date < b.date
+                })
+                self.logPosts(self.posts)
+                console.log("DONE", self.posts)
+            })
+        },
+        
         /*
         *   get array of posts from wall with id wallId and Executes callback on them
         */
@@ -160,13 +218,13 @@ define([
                 var userId = data[i].from_id 
                 var uinfoId = 'ulink-'+Math.random()
                 var li = domConstruct.create('li',{
-                   innerHTML : '<p><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text
+                   innerHTML : '<p><span>'+ data[i].date + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text
                 }, 'posts','last');
                 
                 (function(uid, node){
                     if(uid > 0)
                         self.getUserInfo(uid).then(function(data){
-                            var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].first_name +' '+ data[0].last_name+'</a> :: '
+                            var originAuthorLink =  '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].first_name +' '+ data[0].last_name+'</a> :: '
                             domAttr.set(node, 'innerHTML', originAuthorLink)
                         })
                     else
@@ -344,6 +402,10 @@ define([
                 })(link)
             }
             
+            console.log(dom.byId('new-mode'))
+            on(dom.byId('new-mode'),'click',function(){
+                self.showNPostsFromAllWalls()
+            })
         }    
 	})
 })
