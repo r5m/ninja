@@ -19,7 +19,7 @@ define([
             'sellithere': {title: 'Супер Барахолка', default: true}
         },
         currentPublic: 'tomsktip',
-        
+        selectedCssClass: 'list-group-item-success',
         // All posts from all publics
         posts: [],
         /*
@@ -303,9 +303,9 @@ define([
         clear: function(){
             domConstruct.empty('posts')
             this.currentOffset = 0;
-            var links = query('.list-publics')
+            var links = query('.list-publics li')
             for(var i=0; i< links.length; i++){
-                domClass.remove(links[i],'selected')
+                domClass.remove(links[i],this.selectedCssClass)
             }
         },
         registerLoadOnScroll: function(){
@@ -357,7 +357,7 @@ define([
                 
                 domConstruct.create('li',{
                     "data-href": i,
-                    'class' :'nav list-group-item '+(this.publics[i].default ? "selected" :""),
+                    'class' :'nav list-group-item '+(this.publics[i].default ? self.selectedCssClass :""),
                     innerHTML : '<div><div><span>'+this.publics[i].title+'</span>'+
                         '<span><a onclick="openNewWindow(event)" href="'+link+'">'+i+'</a></span></div></div>'
                 }, nav, 'last')
@@ -383,7 +383,7 @@ define([
                         }
                         self.currentPublic = domAttr.get(a,'data-href')
                         self.testWallRequest()
-                        domClass.add(this,'selected')
+                        domClass.add(this,self.selectedCssClass)
                     }) 
                 })(link)
             }
@@ -425,8 +425,8 @@ define([
  * В общем вместо "selected" надо подписывать "list-group-item-success"
  * и тогда при выборе паблика строчка будет зелененькой)))
  * 
+ * selectedCssClass (22стр) - то, что мы хотим вместо "selected"
  * 
- * 
- * 
+ * 371 стр - выбираем все <li>, у которых есть класс .nav  (т.е весь список пабликов) :-)
  * 
  * */
