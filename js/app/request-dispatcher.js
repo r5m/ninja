@@ -1,13 +1,13 @@
 define([
     "dojo/_base/declare",
     'dojo/Deferred','dojo/DeferredList',
-    'dojo/request/script','dojo/dom-class','dojo/_base/lang',
+    'dojo/request/script','dojo/dom-class','dojo/_base/lang', 'dojo/date/locale',
     'dojo/dom-geometry','dojo/dom', 'dojo/query', 'dojo/on', 'dojo/dom-attr',
-    'dojo/dom-construct'], function(declare, Deferred, DeferredList, script, domClass , lang, domGeometry, dom, query, on,domAttr, domConstruct){
+    'dojo/dom-construct'], function(declare, Deferred, DeferredList, script, domClass , lang, locale, domGeometry, dom, query, on,domAttr, domConstruct){
 	return declare(null, {
         
         currentOffset   : 0, //offset value for vk requests
-        postsPerRequest : 5, //count value for vk requests
+        postsPerRequest : 8, //count value for vk requests
         postsToShow     : 5, //how many new posts will be rendered on scroll 
         publics: {
             'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
@@ -287,8 +287,11 @@ define([
                     var originLink = '<a id= "'+nodeId+'" href="http://vk.com/'+self.currentPublic+'?w=wall'+data[i].to_id+'_'+data[i].id+'">original</a>';
                     var userId = data[i].from_id 
                     var uinfoId = 'ulink-'+Math.random()
+                    var date = new Date(data[i].date * 1000)
+                    var dateString = locale.format(date, {datePattern: 'dd MMM yyyy', timePattern : 'HH:mm:ss'})
+                    
                     var li = domConstruct.create('li',{
-                       innerHTML : '<p><span>'+ data[i].date + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text
+                       innerHTML : '<p><span>'+ dateString + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text
                     }, 'posts','last');
                     
                     (function(uid, node){
