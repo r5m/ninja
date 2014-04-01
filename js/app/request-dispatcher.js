@@ -1,27 +1,32 @@
 define([
     "dojo/_base/declare",
     'dojo/Deferred','dojo/DeferredList',
-    'dojo/request/script','dojo/dom-class',
+    'dojo/request/script','dojo/dom-class','dojo/_base/lang',
     'dojo/dom-geometry','dojo/dom', 'dojo/query', 'dojo/on', 'dojo/dom-attr',
-    'dojo/dom-construct'], function(declare, Deferred, DeferredList, script, domClass , domGeometry, dom, query, on,domAttr, domConstruct){
+    'dojo/dom-construct'], function(declare, Deferred, DeferredList, script, domClass , lang, domGeometry, dom, query, on,domAttr, domConstruct){
 	return declare(null, {
         
-        currentOffset: 0, //offset value for vk requests
-        postsPerRequest: 5, //count value for vk requests
+        currentOffset   : 0, //offset value for vk requests
+        postsPerRequest : 5, //count value for vk requests
+        postsToShow     : 5, //how many new posts will be rendered on scroll 
         publics: {
-            'tomsktip': {title: 'Томск: Бесплатные объявления'},
-            'posmotri.tomsk': {title: 'Фотодоска Томска'},
-            'desk70' : {title: 'Еще одна группа'},
-            '70baraholka': {title: '70baraholka'},
-            'swetselltll': {title: 'Томск|Объявления| Авто|Работа|'},
-            'club49470911': {title: '417 человек'},
-            'tomsk_photodoska': {title: 'ФОтодоСкА'},
-            'sellithere': {title: 'Супер Барахолка', default: true}
+            'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
+            'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
+            'desk70'        : {title: 'Еще одна группа', has: 0, used: 0},
+            '70baraholka'   : {title: '70baraholka', has: 0, used: 0},
+            'swetselltll'   : {title: 'Томск|Объявления| Авто|Работа|', has: 0, used: 0},
+            'club49470911'  : {title: '417 человек', has: 0, used: 0},
+            'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
+            'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
         },
         currentPublic: 'tomsktip',
         selectedCssClass: 'list-group-item-success',
         // All posts from all publics
         posts: [],
+        postsHash: [],
+        filterSpam: true,
+        // Wall, Search or New
+        currentMode: 'Wall',
         /*
         *   Dispatch data returned from crossDomain XHR
         *   check for errors and then do anything we need
@@ -122,15 +127,19 @@ define([
         
         showNPostsFromAllWalls: function(){
             this.clear()
+            this.currentMode = 'New'
             var defArray = []
             var self = this
             for (var i in this.publics){
                 var deferredWall = new Deferred();
                 (function(def, i){
                     self.getGroupInfo(i).then( function(groupInfo){
+                        
                         var grPostGetter = self.getWallPosts( groupInfo[0].gid )
                         grPostGetter.then(function(posts){
                             for(var j = 1; j<posts.length; j++){
+                                posts[j].GROUP_NAME = i
+                                self.publics[i].has ++
                                 self.posts.push(posts[j])
                             }
                             console.log(self.posts)
@@ -140,7 +149,7 @@ define([
                     defArray.push(def)
                 })(deferredWall, i)
             }
-            console.log(defArray)
+            //console.log(defArray)
             var deferredResult = new DeferredList(defArray)
             deferredResult.then(function(){
                 self.posts.sort(function(a, b){
@@ -151,6 +160,47 @@ define([
             })
         },
         
+        showNextNPosts: function(){
+            var publics = lang.clone(this.publics)
+            var defArray = []
+            var self = this
+            var def = new Deferred();
+            
+            for (var i in this.publics){
+                if(publics[i].has <= publics[i].used){
+                    var deferredWall = new Deferred();
+                    (function(def, i){
+                        self.getGroupInfo(i).then( function(groupInfo){
+                            self.currentOffset = self.publics[i].used
+                            var grPostGetter = self.getWallPosts( groupInfo[0].gid )
+                            grPostGetter.then(function(posts){
+                                for(var j = 1; j<posts.length; j++){
+                                    posts[j].GROUP_NAME = i
+                                    self.publics[i].has ++
+                                    self.posts.push(posts[j])
+                                }
+                                console.log(self.posts)
+                                def.resolve('ok')
+                            })
+                        })
+                        defArray.push(def)
+                    })(deferredWall, i)
+                }
+            }
+            
+            var deferredResult = new DeferredList(defArray)
+            deferredResult.then(function(){
+                self.posts.sort(function(a, b){
+                    return a.date < b.date
+                })
+                self.logPosts(self.posts)
+                console.log("DONE", self.posts)
+                self.isWaitingForData = false
+                def.resolve()
+            })
+            
+            return def
+        },
         /*
         *   get array of posts from wall with id wallId and Executes callback on them
         */
@@ -212,47 +262,71 @@ define([
         
         logPosts: function(data){
             var self = this
-            for(var i = 1; i < data.length; i++){
-                var nodeId = data[i].to_id+'_'+data[i].id
-                var originLink = '<a id= "'+nodeId+'" href="http://vk.com/'+self.currentPublic+'?w=wall'+data[i].to_id+'_'+data[i].id+'">original</a>';
-                var userId = data[i].from_id 
-                var uinfoId = 'ulink-'+Math.random()
-                var li = domConstruct.create('li',{
-                   innerHTML : '<p><span>'+ data[i].date + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text
-                }, 'posts','last');
-                
-                (function(uid, node){
-                    if(uid > 0)
-                        self.getUserInfo(uid).then(function(data){
-                            var originAuthorLink =  '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].first_name +' '+ data[0].last_name+'</a> :: '
-                            domAttr.set(node, 'innerHTML', originAuthorLink)
-                        })
-                    else
-                        self.getWallUserInfo(uid).then(function(data){
-                            //console.log('WALL: ',data)
-                            var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].name+'</a> :: '
-                            domAttr.set(node, 'innerHTML', originAuthorLink)
-                        })
-                })(userId, uinfoId);
-                
-                (function(id){
-                    on(dom.byId(id), 'click', function(e){
-                        openNewWindow.call(dom.byId(id), e)
-                    })
-                })(nodeId)
-                var div = domConstruct.create('div',{
-                }, li, 'last')
-                if(data[i].attachments)
-                for(var j=0; j<data[i].attachments.length; j++){
-                    var a = data[i].attachments[j]
-                    if(a.type == "photo")
-                        var img = domConstruct.create('img',{
-                            src: a.photo.src,
-                            'class': 'post-photo'
-                        },div,'last')
+            for(var i = 1, k=0; ( k < ( ( this.currentMode == 'New' ) ? this.postsToShow : data.length ) ) && ( i < data.length ); i++, k++){
+                console.log(i, k, data[i])
+                var thePost = data[i], isNewPost = true 
+                if(this.filterSpam){
+                    var postMd5 = md5(thePost.text)
+                    for(var z = 0; z< this.postsHash.length; z++){
+                        console.log(this.postsHash[z], postMd5, this.postsHash[z] == postMd5)
+                        if(this.postsHash[z] == postMd5){
+                            isNewPost = false; break
+                        }
+                    }
+                    if(!isNewPost)
+                        k--;
                 }
-                //console.log(data[i]);
+                    
+                    
+                if(thePost.GROUP_NAME)
+                    self.publics[thePost.GROUP_NAME].used ++
+                
+                if(isNewPost){    
+                    this.postsHash.push(postMd5)
+                    var nodeId = data[i].to_id+'_'+data[i].id
+                    var originLink = '<a id= "'+nodeId+'" href="http://vk.com/'+self.currentPublic+'?w=wall'+data[i].to_id+'_'+data[i].id+'">original</a>';
+                    var userId = data[i].from_id 
+                    var uinfoId = 'ulink-'+Math.random()
+                    var li = domConstruct.create('li',{
+                       innerHTML : '<p><span>'+ data[i].date + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text
+                    }, 'posts','last');
+                    
+                    (function(uid, node){
+                        if(uid > 0)
+                            self.getUserInfo(uid).then(function(data){
+                                var originAuthorLink =  '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].first_name +' '+ data[0].last_name+'</a> :: '
+                                domAttr.set(node, 'innerHTML', originAuthorLink)
+                            })
+                        else
+                            self.getWallUserInfo(uid).then(function(data){
+                                //console.log('WALL: ',data)
+                                var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].name+'</a> :: '
+                                domAttr.set(node, 'innerHTML', originAuthorLink)
+                            })
+                    })(userId, uinfoId);
+                
+                    (function(id){
+                        on(dom.byId(id), 'click', function(e){
+                            openNewWindow.call(dom.byId(id), e)
+                        })
+                    })(nodeId)
+                    var div = domConstruct.create('div',{
+                    }, li, 'last')
+                    if(data[i].attachments)
+                        for(var j=0; j<data[i].attachments.length; j++){
+                            var a = data[i].attachments[j]
+                            if(a.type == "photo")
+                            var img = domConstruct.create('img',{
+                                src: a.photo.src,
+                                'class': 'post-photo'
+                            },div,'last')
+                        }
+                }
+                if(this.currentMode == "New") { 
+                    data.splice(0, 1); i-- ;
+                }
             }
+            console.log(self.publics, self.posts)
         },
         
         testWallRequest: function(){
@@ -303,7 +377,13 @@ define([
         clear: function(){
             domConstruct.empty('posts')
             this.currentOffset = 0;
+            this.postsHash = []
             var links = query('.list-publics li')
+            for(var i in this.publics){
+                this.publics[i].has = 0;
+                this.publics[i].used = 0;
+            }
+            this.posts = []
             for(var i=0; i< links.length; i++){
                 domClass.remove(links[i],this.selectedCssClass)
             }
@@ -327,15 +407,26 @@ define([
                 var flag = bodyRealSizes.h - scrollPosition.y - bodyHeight
                 if(flag <= 0){
                     if(!self.isWaitingForData){
-                        self.currentOffset += self.postsPerRequest + 1;
-                       // console.log('LOAD NEW DATA', self.isWaitingForData, flag);
-                        self.isWaitingForData = true;
-                        self['test'+self.currentMode+'Request']( self.currentMode == 'Search' ? self.currentSearchString : '').then(
-                            function(){ 
-                                console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
-                                //window.scrollTo(scrollPosition.x, scrollPosition.y) 
-                            }
-                        )
+                        if(self.currentMode != "New"){
+                            self.currentOffset += self.postsPerRequest + 1;
+                            // console.log('LOAD NEW DATA', self.isWaitingForData, flag);
+                            self.isWaitingForData = true;
+                            self['test'+self.currentMode+'Request']( self.currentMode == 'Search' ? self.currentSearchString : '').then(
+                                function(){ 
+                                    console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
+                                    //window.scrollTo(scrollPosition.x, scrollPosition.y) 
+                                }
+                            )
+                        }else{
+                            console.log('NEW MODE!')
+                            self.isWaitingForData = true;
+                            self.showNextNPosts().then(
+                                function(){ 
+                                    console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
+                                    //window.scrollTo(scrollPosition.x, scrollPosition.y) 
+                                }
+                            )
+                        }
                     }
                 }
             }
