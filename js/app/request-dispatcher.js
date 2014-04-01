@@ -20,7 +20,7 @@ define([
             'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
         },
         currentPublic: 'tomsktip',
-        selectedCssClass: 'list-group-item-success',
+        selectedCssClass: 'active',
         // All posts from all publics
         posts: [],
         postsHash: [],
@@ -378,7 +378,7 @@ define([
             domConstruct.empty('posts')
             this.currentOffset = 0;
             this.postsHash = []
-            var links = query('.list-publics li')
+            var links = query('.list-publics a')
             for(var i in this.publics){
                 this.publics[i].has = 0;
                 this.publics[i].used = 0;
@@ -446,7 +446,7 @@ define([
             for(var i in this.publics){
                 var link = 'http://vk.com/'+i
                 
-                domConstruct.create('li',{
+                domConstruct.create('a',{
                     "data-href": i,
                     'class' :'nav list-group-item '+(this.publics[i].default ? self.selectedCssClass :""),
                     innerHTML : '<div><div><span>'+this.publics[i].title+'</span>'+
@@ -459,7 +459,7 @@ define([
             this.testWallRequest();
             this.registerLoadOnScroll();
             
-            var navLinks = query('li.nav');
+            var navLinks = query('a.nav');
             
             for(var i = 0; i<navLinks.length; i++){
                 var link = navLinks[i];
