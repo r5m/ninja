@@ -1,9 +1,9 @@
 define([
-    "dojo/_base/declare",
+    "dojo/_base/declare",'dojo/hash','dojo/router','dojo/topic',
     'dojo/Deferred','dojo/DeferredList',
     'dojo/request/script','dojo/dom-class','dojo/_base/lang', 'dojo/date/locale',
     'dojo/dom-geometry','dojo/dom', 'dojo/query', 'dojo/on', 'dojo/dom-attr',
-    'dojo/dom-construct'], function(declare, Deferred, DeferredList, script, domClass , lang, locale, domGeometry, dom, query, on,domAttr, domConstruct){
+    'dojo/dom-construct'], function(declare, hash, router, topic, Deferred, DeferredList, script, domClass , lang, locale, domGeometry, dom, query, on,domAttr, domConstruct){
 	return declare(null, {
         
         currentOffset   : 0, //offset value for vk requests
@@ -27,6 +27,22 @@ define([
         filterSpam: true,
         // Wall, Search or New
         currentMode: 'Wall',
+       
+       
+        loadPublic: function(publicName){
+            this.clear()
+            this.currentPublic = publicName
+            domClass.add( dom.byId('menu-'+this.currentPublic), this.selectedCssClass )
+            console.log(dom.byId('menu-'+this.currentPublic))
+            
+            this.testWallRequest()
+            
+        },
+        
+        loadNewModePage: function(){
+            this.showNPostsFromAllWalls()
+        },
+        
         /*
         *   Dispatch data returned from crossDomain XHR
         *   check for errors and then do anything we need
@@ -450,7 +466,9 @@ define([
                 var link = 'http://vk.com/'+i
                 
                 domConstruct.create('a',{
-                    "data-href": i,
+                    href: '#wall/'+i,
+                    //"data-href": i,
+                    id: 'menu-' + i,
                     'class' :'nav list-group-item '+(this.publics[i].default ? self.selectedCssClass :""),
                     innerHTML : '<div><div><span>'+this.publics[i].title+'</span>'+
                         '<span><a onclick="openNewWindow(event)" href="'+link+'">'+i+'</a></span></div></div>'
@@ -459,28 +477,9 @@ define([
                     this.currentPublic = i
             }
             
-            this.testWallRequest();
             this.registerLoadOnScroll();
             
             var navLinks = query('a.nav');
-            
-            for(var i = 0; i<navLinks.length; i++){
-                var link = navLinks[i];
-                (function(a){
-                    on(a, 'click', function(e){
-                        self.clear()
-                        
-                        if (e.preventDefault) {  // если метод существует
-                            e.preventDefault();
-                        } else { // вариант IE<9:
-                            e.returnValue = false;
-                        }
-                        self.currentPublic = domAttr.get(a,'data-href')
-                        self.testWallRequest()
-                        domClass.add(this,self.selectedCssClass)
-                    }) 
-                })(link)
-            }
             
             var searchLinks = query('.search');
             for(var i = 0; i<searchLinks.length; i++){
@@ -499,10 +498,30 @@ define([
                 })(link)
             }
             
-            console.log(dom.byId('new-mode'))
-            on(dom.byId('new-mode'),'click',function(){
-                self.showNPostsFromAllWalls()
-            })
+            var checkHash = function(h){
+                if ( (h.substr(0,5) != 'wall/') && (h != 'all') )
+                    hash('notfound')
+            }
+            topic.subscribe("/dojo/hashchange", checkHash);
+            
+            router.register("wall/:id", function (event) {
+                console.log("Hash change", event.params.id);
+                var publicName = event.params.id
+                self.loadPublic(publicName)
+            });
+            
+            router.register("all", function (event) {
+                self.loadNewModePage()
+            });
+            
+            router.register("notfound", function (event) {
+                alert(':-(')
+            });
+            
+            router.startup()
+            if(!hash()) router.go('all')
+            
+            window.r = router
         }    
 	})
 })

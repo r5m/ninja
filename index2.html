@@ -116,12 +116,13 @@
         
     </style>
     <script>
-        function scrollToTope(){
+        function scrollToTop(e){
             if (e.preventDefault) {  // если метод существует
                 e.preventDefault();
             } else { // вариант IE<9:
                 e.returnValue = false;
             }
+            window.scrollTo(0,0)
         }
         function stopEventPropagation(e){
             console.log(e)
@@ -133,7 +134,7 @@
 	<div class="page-header">
 		<h1>Все объявления Томска <small>и даже больше...</small></h1>
 		<button id="menu-hider">Menu</button>
-    	<button id="new-mode">New mode with antispam <sup>TM</sup></button>
+    	<a href="#all">New mode with antispam <sup>TM</sup></a>
 	</div>
 	
 	<div class="list-group list-publics left-column"></div>
@@ -144,7 +145,7 @@
 	    <ul id="posts"></ul>
 	</div>
 	
-	<a id="pagetop" href="#" onclick="scrollToTop();">наверх</a>
+	<a id="pagetop" href="#" onclick="scrollToTop(event);">наверх</a>
 	<script src="js/app/config/dojo-conf.js"></script> 
 	<script src="js/dojo/dojo.js"></script>
 	<script src="js/app/md5.js"></script>
