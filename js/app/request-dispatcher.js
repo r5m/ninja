@@ -150,17 +150,18 @@ define([
                 var deferredWall = new Deferred();
                 (function(def, i){
                     self.getGroupInfo(i).then( function(groupInfo){
-                        
-                        var grPostGetter = self.getWallPosts( groupInfo[0].gid )
-                        grPostGetter.then(function(posts){
-                            for(var j = 1; j<posts.length; j++){
-                                posts[j].GROUP_NAME = i
-                                self.publics[i].has ++
-                                self.posts.push(posts[j])
-                            }
-                            console.log(self.posts)
-                            def.resolve('ok')
-                        })
+                        if(!groupInfo.error){
+							var grPostGetter = self.getWallPosts( groupInfo[0].gid )
+							grPostGetter.then(function(posts){
+								for(var j = 1; j<posts.length; j++){
+									posts[j].GROUP_NAME = i
+									self.publics[i].has ++
+									self.posts.push(posts[j])
+								}
+								console.log(self.posts)
+								def.resolve('ok')
+							})
+						}else def.resolve('error')
                     })
                     defArray.push(def)
                 })(deferredWall, i)
@@ -187,17 +188,19 @@ define([
                     var deferredWall = new Deferred();
                     (function(def, i){
                         self.getGroupInfo(i).then( function(groupInfo){
-                            self.currentOffset = self.publics[i].used
-                            var grPostGetter = self.getWallPosts( groupInfo[0].gid )
-                            grPostGetter.then(function(posts){
-                                for(var j = 1; j<posts.length; j++){
-                                    posts[j].GROUP_NAME = i
-                                    self.publics[i].has ++
-                                    self.posts.push(posts[j])
-                                }
-                                console.log(self.posts)
-                                def.resolve('ok')
-                            })
+                            if(!groupInfo.error){
+								self.currentOffset = self.publics[i].used
+								var grPostGetter = self.getWallPosts( groupInfo[0].gid )
+								grPostGetter.then(function(posts){
+									for(var j = 1; j<posts.length; j++){
+										posts[j].GROUP_NAME = i
+										self.publics[i].has ++
+										self.posts.push(posts[j])
+									}
+									console.log(self.posts)
+									def.resolve('ok')
+								})
+							}else def.resolve('error')
                         })
                         defArray.push(def)
                     })(deferredWall, i)
@@ -354,14 +357,20 @@ define([
             var group = this.currentPublic, self = this
             console.log(group)
             //this.testTopicsRequest()
-            
+            var emptyDeferred;
             this.getGroupInfo(group).then( function(groupInfo){
-                return self.getWallPosts( groupInfo[0].gid )
+                if(!groupInfo.error)
+					return self.getWallPosts( groupInfo[0].gid )
+				else {
+					emptyDeferred = new Deferred()
+					return emptyDeferred;
+				}
             }).then(function(posts){
                 self.logPosts(posts)
                 self.isWaitingForData = false
                 deferredResult.resolve()
             })
+            //emptyDeferred.resolve({})
             return deferredResult
         },
         

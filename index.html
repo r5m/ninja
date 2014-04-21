@@ -21,13 +21,13 @@
 
 <script language="javascript">
 VK.init({
-  apiId: 4072941
+  apiId: 4300621
 });
 function authInfo(response) {
   if (response.session) {
- //   alert('user: '+response.session.mid);
+    alert('user: '+response.session.mid);
   } else {
- //   alert('not auth');
+    alert('not auth');
   }
 }
 VK.Auth.getLoginStatus(authInfo);
@@ -74,7 +74,7 @@ var ms_offset = 0;
 var ms_step = 999;
 
 var timeoutId = 1;
- while (ms_offset<r.response[0].members_count) {
+/* while (ms_offset<r.response[0].members_count) {
 	console.log(ms_offset + '=' + ms_step + '=' + r.response[0].members_count);
 	
 		//setTimeout(function(){
@@ -112,7 +112,7 @@ var timeoutId = 1;
  
   ms_offset = ms_offset + ms_step;
   
- }
+ }*/
  
  
  
@@ -148,6 +148,8 @@ VK.Api.call('groups.getMembers', {group_id: 'game_of_thrones.club', offset: 8000
 
 */
 
+			
+        
 </script>
 
 
