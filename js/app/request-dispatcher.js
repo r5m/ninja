@@ -303,7 +303,8 @@ define([
                 if(isNewPost){    
                     this.postsHash.push(postMd5)
                     var nodeId = data[i].to_id+'_'+data[i].id
-                    var originLink = '<a id= "'+nodeId+'" href="http://vk.com/'+self.currentPublic+'?w=wall'+data[i].to_id+'_'+data[i].id+'">original</a>';
+                    console.log(data[i])
+                    var originLink = '<a id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'">original</a>';
                     var userId = data[i].from_id 
                     var uinfoId = 'ulink-'+Math.random()
                     var date = new Date(data[i].date * 1000)
