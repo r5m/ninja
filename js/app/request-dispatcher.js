@@ -91,7 +91,8 @@ define([
                     var dateString = locale.format(date, {datePattern: 'dd MMM yyyy', timePattern : 'HH:mm:ss'})
                     
                     var li = domConstruct.create('li',{
-                       innerHTML : '<p><span>'+ dateString + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text
+                       innerHTML : '<p><span>'+ dateString + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text,
+                       'class' : 'ui piled segment'
                     }, 'posts','last');
                     
                     (function(uid, node){
