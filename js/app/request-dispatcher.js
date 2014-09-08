@@ -3,7 +3,7 @@ define([
     'dojo/Deferred','dojo/DeferredList',
     'dojo/request/script','dojo/dom-class','dojo/_base/lang', 'dojo/date/locale',
     'dojo/dom-geometry','dojo/dom', 'dojo/query', 'dojo/on', 'dojo/dom-attr',
-    'dojo/dom-construct'], function(declare, hash, router, topic, Deferred, DeferredList, script, domClass , lang, locale, domGeometry, dom, query, on,domAttr, domConstruct){
+    'dojo/dom-construct','dojo/dom-style'], function(declare, hash, router, topic, Deferred, DeferredList, script, domClass , lang, locale, domGeometry, dom, query, on,domAttr, domConstruct, domStyle){
 	return declare(null, {
         
         currentOffset   : 0, //offset value for vk requests
@@ -13,13 +13,13 @@ define([
         // has - how many posts were loaded
         // used - how many of them
         publics: {
-            'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
+           // 'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
             'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
             'desk70'        : {title: 'Еще одна группа', has: 0, used: 0},
             '70baraholka'   : {title: '70baraholka', has: 0, used: 0},
             'swetselltll'   : {title: 'Томск|Объявления| Авто|Работа|', has: 0, used: 0},
             'club49470911'  : {title: '417 человек', has: 0, used: 0},
-            'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
+           // 'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
             'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
         },
         currentPublic: 'swetselltll',
@@ -44,6 +44,7 @@ define([
             this.testWallRequest()            
         },
         
+
         updateNewModePage: function( doClear ){
 			var self = this;
 			var deferredRes = new Deferred;
@@ -60,6 +61,8 @@ define([
          */ 
         logPosts: function(data){
             var self = this
+            domStyle.set('loader','display','none')
+            
             for(var i = 1, k=0; ( k < ( ( this.currentMode == 'New' ) ? this.postsToShow : data.length ) ) && ( i < data.length ); i++, k++){
                 var thePost = data[i], isNewPost = true 
                 if(this.filterSpam){
@@ -335,7 +338,7 @@ define([
             return deferredResult;
         },
         
-        
+
         
         testWallRequest: function(){
             var deferredResult = new Deferred();
@@ -502,10 +505,12 @@ define([
             router.register("wall/:id", function (event) {
                 console.log("Hash change", event.params.id);
                 var publicName = event.params.id
+                domStyle.set(dom.byId("loader"), "display", "");
                 self.loadPublic(publicName)
             });
             
             router.register("all", function (event) {
+   				domStyle.set(dom.byId("loader"), "display", "");
                 self.updateNewModePage( true )
             });
             

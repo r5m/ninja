@@ -5,20 +5,27 @@
 	<meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="width = device-width, initial-scale = 1, user-scalable = no" name="viewport">
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/semantic.css" rel="stylesheet">
   
 	<title>R5M sale</title>
 	<style>
         #posts {
-           
+           margin-right: 5%;
+           list-style-type: none;
         }
         #posts li{
             
         }
+        
+        #loader {
+			margin-left: 30px;
+				
+		}	
         img.post-photo{
            
         }
         body{
-          
+          background-color: #EEEEEE;
             
         }
         
@@ -133,7 +140,7 @@
 <body id="body">
 	<div class="page-header">
 		<h1>Все объявления Томска <small>и даже больше...</small></h1>
-		<button id="menu-hider">Menu</button>
+		<!--<button id="menu-hider">Menu</button> -->
     	<a href="#all">New mode with antispam <sup>TM</sup></a>
 	</div>
 	
@@ -142,6 +149,9 @@
 
 	<div class="center-column">
 	    <!--<h2>Posts</h2>-->
+	    <div class="ui active inline loader" id="loader"></div>
+		
+	    
 	    <ul id="posts"></ul>
 	</div>
 	
