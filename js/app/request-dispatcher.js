@@ -9,6 +9,9 @@ define([
         currentOffset   : 0, //offset value for vk requests
         postsPerRequest : 8, //count value for vk requests
         postsToShow     : 5, //how many new posts will be rendered on scroll 
+        
+        // has - how many posts were loaded
+        // used - how many of them
         publics: {
             'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
             'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
@@ -19,270 +22,45 @@ define([
             'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
             'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
         },
-        currentPublic: 'tomsktip',
+        currentPublic: 'swetselltll',
         selectedCssClass: 'active',
+        filterSpam: true,
+        
         // All posts from all publics
         posts: [],
         postsHash: [],
-        filterSpam: true,
         // Wall, Search or New
         currentMode: 'Wall',
        
-       
+		/////////////////  PUBLIC METHOD  //////////////////////////
+		///////// CAN BE CALLED DIRECTLY FROM UI ///////////////////
+		
         loadPublic: function(publicName){
             this.clear()
             this.currentPublic = publicName
             domClass.add( dom.byId('menu-'+this.currentPublic), this.selectedCssClass )
             console.log(dom.byId('menu-'+this.currentPublic))
             
-            this.testWallRequest()
-            
+            this.testWallRequest()            
         },
         
-        loadNewModePage: function(){
-            this.showNPostsFromAllWalls()
+        updateNewModePage: function( doClear ){
+			var self = this;
+			var deferredRes = new Deferred;
+            this._getNextPostsFromAllWalls( doClear ).then( function(){
+				self.logPosts(self.posts);
+				deferredRes.resolve('ok');
+			})
+			return deferredRes;
         },
         
         /*
-        *   Dispatch data returned from crossDomain XHR
-        *   check for errors and then do anything we need
-        *
-        *   @response - data returned
-        *   @onSuccess(response) - what should we do if everything is ok
-        *   @onError(response) - ...and if wrong data returned
-        *
-        */
-        _requestDispatcher : function(response, onSuccess, onError){
-            if(response.error || !response.response){
-                //error
-                return onError(response);
-            }else{
-                //wow :-)
-                return onSuccess(response);
-            }
-        },
-        
-        //ok callback
-        _vkSuccessRequestDispatcher : function(response){
-            return response.response
-        },
-        
-        //error callback
-        _vkErrorRequestDispatcher : function(response){
-            //console.log(response)
-            return response
-        },
-        
-        
-        /*
-        *  Test wrapper for VK api
-        *  returns received data
-        */
-        vkTestRequestDispatcher : function(response){
-           return this._requestDispatcher(response, this._vkSuccessRequestDispatcher, this._vkErrorRequestDispatcher)
-        },
-        
-        
-        /*
-        *   universal crossdomain data getter
-        *   send get request & execute dispatcher on received data
-        *   
-        *   @url - where is data? :-)
-        *   @requestParams - object, will be transformed into get request params
-        *   @dispatcher - function that will be executed on request result
-        *
-        *   return Deferred object
-        */
-        _getData: function(url, requestParams, dispatcher){
-            var self = this, deferredResult = new Deferred()
-            
-            script.get(url, {
-                query: requestParams,
-                jsonp: 'callback'
-            }).then( function(data) { 
-                deferredResult.resolve( dispatcher.call(self, data) )
-            })
-            
-            return deferredResult
-        },
-        
-        //example implementation of _getData
-        getGroupInfo: function(groupId){
-            var deferredResult = new Deferred()
-            var requestParams = {group_id: groupId};
-            var url = 'http://api.vk.com/method/groups.getById';
-            var dispatcher = this.vkTestRequestDispatcher;
-            this._getData(url, requestParams, dispatcher).then(function(data){
-                deferredResult.resolve(data)
-            });
-            return deferredResult
-        },
-        
-        
-        getNpostsFromAllWalls: function(){
-            var defArray = []
-            for (var i in this.publics){
-                var publicPosts = new Deferred()
-                defArray.push(publicPosts)
-                
-                //var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, owner_id: -wallId };
-                var requestParams = { count: this.postsPerRequest, offset: 0, owner_id: - ( this.publics[i].wallId) };
-                var url = '//api.vk.com/method/wall.get';
-                var dispatcher = this.vkTestRequestDispatcher;
-                
-                this._getData(url, requestParams, dispatcher).then(function(data){
-                    publicPosts.resolve(data);
-                });
-            }
-            
-            var deferredResult = new DeferredList(defArray);
-            
-            return deferredResult;
-            
-        },
-        
-        showNPostsFromAllWalls: function(){
-            this.clear()
-            this.currentMode = 'New'
-            var defArray = []
-            var self = this
-            for (var i in this.publics){
-                var deferredWall = new Deferred();
-                (function(def, i){
-                    self.getGroupInfo(i).then( function(groupInfo){
-                        if(!groupInfo.error){
-							var grPostGetter = self.getWallPosts( groupInfo[0].gid )
-							grPostGetter.then(function(posts){
-								for(var j = 1; j<posts.length; j++){
-									posts[j].GROUP_NAME = i
-									self.publics[i].has ++
-									self.posts.push(posts[j])
-								}
-								console.log(self.posts)
-								def.resolve('ok')
-							})
-						}else def.resolve('error')
-                    })
-                    defArray.push(def)
-                })(deferredWall, i)
-            }
-            //console.log(defArray)
-            var deferredResult = new DeferredList(defArray)
-            deferredResult.then(function(){
-                self.posts.sort(function(a, b){
-                    return a.date < b.date
-                })
-                self.logPosts(self.posts)
-                console.log("DONE", self.posts)
-            })
-        },
-        
-        showNextNPosts: function(){
-            var publics = lang.clone(this.publics)
-            var defArray = []
-            var self = this
-            var def = new Deferred();
-            
-            for (var i in this.publics){
-                if(publics[i].has <= publics[i].used){
-                    var deferredWall = new Deferred();
-                    (function(def, i){
-                        self.getGroupInfo(i).then( function(groupInfo){
-                            if(!groupInfo.error){
-								self.currentOffset = self.publics[i].used
-								var grPostGetter = self.getWallPosts( groupInfo[0].gid )
-								grPostGetter.then(function(posts){
-									for(var j = 1; j<posts.length; j++){
-										posts[j].GROUP_NAME = i
-										self.publics[i].has ++
-										self.posts.push(posts[j])
-									}
-									console.log(self.posts)
-									def.resolve('ok')
-								})
-							}else def.resolve('error')
-                        })
-                        defArray.push(def)
-                    })(deferredWall, i)
-                }
-            }
-            
-            var deferredResult = new DeferredList(defArray)
-            deferredResult.then(function(){
-                self.posts.sort(function(a, b){
-                    return a.date < b.date
-                })
-                self.logPosts(self.posts)
-                console.log("DONE", self.posts)
-                self.isWaitingForData = false
-                def.resolve()
-            })
-            
-            return def
-        },
-        /*
-        *   get array of posts from wall with id wallId and Executes callback on them
-        */
-        getWallPosts: function(wallId){
-            var deferredResult = new Deferred();
-            var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, owner_id: -wallId };
-            var url = '//api.vk.com/method/wall.get';
-            var dispatcher = this.vkTestRequestDispatcher;
-            this._getData(url, requestParams, dispatcher).then(function(data){
-                deferredResult.resolve(data);
-            });
-            return deferredResult;
-        },
-        
-        getUserInfo: function(userId){
-            var deferredResult = new Deferred();
-            var requestParams = { user_ids:  userId};
-            var url = '//api.vk.com/method/users.get';
-            var dispatcher = this.vkTestRequestDispatcher;
-            this._getData(url, requestParams, dispatcher).then(function(data){
-                deferredResult.resolve(data);
-            });
-            return deferredResult;
-        },
-        
-        getWallUserInfo: function(userId){
-            var deferredResult = new Deferred();
-            //console.log(userId)
-            var requestParams = { group_id:  Math.abs(userId)};
-            var url = '//api.vk.com/method/groups.getById';
-            var dispatcher = this.vkTestRequestDispatcher;
-            this._getData(url, requestParams, dispatcher).then(function(data){
-                deferredResult.resolve(data);
-            });
-            return deferredResult;
-        },
-        
-        getSearchResult: function(query){
-            var deferredResult = new Deferred();
-            var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, q:query };
-            var url = '//api.vk.com/method/newsfeed.search';
-            var dispatcher = this.vkTestRequestDispatcher;
-            this._getData(url, requestParams, dispatcher).then(function(data){
-                deferredResult.resolve(data);
-            });
-            return deferredResult;
-        },
-        
-        getTopicsByGroup: function(groupId){
-            var deferredResult = new Deferred();
-            var requestParams = { count: 50, offset: 0, group_is:groupId };
-            var url = '//api.vk.com/method/board.getTopics';
-            var dispatcher = this.vkTestRequestDispatcher;
-            this._getData(url, requestParams, dispatcher).then(function(data){
-                deferredResult.resolve(data);
-            });
-            return deferredResult;
-        },
-        
+         * Show next <this.postsToShow> posts in TM mode
+         * or all available data in stanrard mode
+         */ 
         logPosts: function(data){
             var self = this
             for(var i = 1, k=0; ( k < ( ( this.currentMode == 'New' ) ? this.postsToShow : data.length ) ) && ( i < data.length ); i++, k++){
-                console.log(i, k, data[i])
                 var thePost = data[i], isNewPost = true 
                 if(this.filterSpam){
                     var postMd5 = md5(thePost.text)
@@ -303,7 +81,6 @@ define([
                 if(isNewPost){    
                     this.postsHash.push(postMd5)
                     var nodeId = data[i].to_id+'_'+data[i].id
-                    console.log(data[i])
                     var originLink = '<a id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'">original</a>';
                     var userId = data[i].from_id 
                     var uinfoId = 'ulink-'+Math.random()
@@ -352,6 +129,214 @@ define([
             console.log(self.publics, self.posts)
         },
         
+        /////////////////  PRIVATE METHODS ////////////////////////
+        //////////  NEVER CALLED DIRECTLY FROM UI /////////////////
+        
+        /*
+        *   Dispatch data returned from crossDomain XHR
+        *   check for errors and then do anything we need
+        *
+        *   @response - data returned
+        *   @onSuccess(response) - what should we do if everything is ok
+        *   @onError(response) - ...and if wrong data returned
+        *
+        */
+        _requestDispatcher : function(response, onSuccess, onError){
+            if(response.error || !response.response){
+                //error
+                return onError(response);
+            }else{
+                //wow :-)
+                return onSuccess(response);
+            }
+        },
+        
+        //ok callback
+        _vkSuccessRequestDispatcher : function(response){
+            return response.response
+        },
+        
+        //error callback
+        _vkErrorRequestDispatcher : function(response){
+            //console.log(response)
+            return response
+        },
+        
+        
+        /*
+        *  Request dispatcher wrapper for VK api
+        *  returns received data / error info
+        */
+        _vkBasicRequestDispatcher : function(response){
+           return this._requestDispatcher(response, this._vkSuccessRequestDispatcher, this._vkErrorRequestDispatcher)
+        },
+        
+        
+        /*
+        *   universal crossdomain data getter
+        *   send get request & execute dispatcher on received data
+        *   
+        *   @url - where is data? :-)
+        *   @requestParams - object, will be transformed into get request params
+        *   @dispatcher - function that will be executed on request result
+        *
+        *   return Deferred object
+        */
+        _getData: function(url, requestParams, dispatcher){
+            var self = this, deferredResult = new Deferred()
+            
+            script.get(url, {
+                query: requestParams,
+                jsonp: 'callback'
+            }).then( function(data) {				
+				deferredResult.resolve( dispatcher.call(self, data) )
+            })
+            
+            return deferredResult
+        },
+        
+        /*
+         * 	The same as previous method, but
+         * 		with vkBasicRequestDispatcher as dispatcher
+         * 
+         * SHOULD BE USED instead of _getData
+         */ 
+        _getDataFromVk: function(url, requestParams){
+			return this._getData( url, requestParams, this._vkBasicRequestDispatcher )
+		},
+        
+        /*
+         * returns basic info about group with id == groupId
+         */ 
+        _getGroupInfo: function(groupId){
+            var deferredResult = new Deferred()
+            var requestParams = { group_id: groupId };
+            var url = 'http://api.vk.com/method/groups.getById';
+            this._getDataFromVk(url, requestParams).then(function(data){
+                deferredResult.resolve(data)
+            });
+            return deferredResult
+        },
+        
+        
+        
+        /*
+         * get next <this.postsPerRequest> from all publics
+         * sort them by date
+         * 
+         * save them into this.posts
+         */ 
+        _getNextPostsFromAllWalls: function( doClear ){
+            var doClear = doClear || false;
+            var publics = lang.clone(this.publics)
+           
+            if(doClear)
+				this.clear()
+				
+            this.currentMode = 'New'
+            var defArray = [], result = new Deferred;
+            var self = this
+			for (var i in this.publics){
+                if(publics[i].has <= publics[i].used){
+                    var deferredWall = new Deferred();
+                    (function(def, i){
+                        self._getGroupInfo(i).then( function(groupInfo){
+                            if(!groupInfo.error){
+								self.currentOffset = self.publics[i].used
+								var grPostGetter = self.getWallPosts( groupInfo[0].gid )
+								grPostGetter.then(function(posts){
+									for(var j = 1; j<posts.length; j++){
+										posts[j].GROUP_NAME = i
+										self.publics[i].has ++
+										self.posts.push(posts[j])
+									}
+									def.resolve('ok')
+								})
+							}else def.resolve('error')
+                        })
+                        defArray.push(def)
+                    })(deferredWall, i)
+                }
+            }
+            //console.log(defArray)
+            var deferredResult = new DeferredList(defArray)
+            deferredResult.then(function(){
+                self.posts.sort(function(a, b){
+                    return a.date < b.date
+                })
+                self.isWaitingForData = false
+                result.resolve ('ok');
+                
+            })
+            return result
+        },
+        
+        
+        
+        
+        
+        ////////////////// UNSORTED METHODS ////////////////////
+        ///// THEY WILL BE PLACED IN PUBLIC or PRIVATE GROUP ///
+        
+        
+        /*
+        *   get array of posts from wall with id wallId and Executes callback on them
+        */
+        getWallPosts: function(wallId){
+            var deferredResult = new Deferred();
+            var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, owner_id: -wallId };
+            var url = '//api.vk.com/method/wall.get';
+            this._getDataFromVk(url, requestParams).then(function(data){
+                deferredResult.resolve(data);
+            });
+            return deferredResult;
+        },
+        
+        getUserInfo: function(userId){
+            var deferredResult = new Deferred();
+            var requestParams = { user_ids:  userId};
+            var url = '//api.vk.com/method/users.get';
+            var dispatcher = this.vkBasicRequestDispatcher;
+            this._getDataFromVk(url, requestParams).then(function(data){
+                deferredResult.resolve(data);
+            });
+            return deferredResult;
+        },
+        
+        getWallUserInfo: function(userId){
+            var deferredResult = new Deferred();
+            //console.log(userId)
+            var requestParams = { group_id:  Math.abs(userId)};
+            var url = '//api.vk.com/method/groups.getById';
+            var dispatcher = this.vkBasicRequestDispatcher;
+            this._getDataFromVk(url, requestParams).then(function(data){
+                deferredResult.resolve(data);
+            });
+            return deferredResult;
+        },
+        
+        getSearchResult: function(query){
+            var deferredResult = new Deferred();
+            var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, q:query };
+            var url = '//api.vk.com/method/newsfeed.search';
+            this._getDataFromVk(url, requestParams).then(function(data){
+                deferredResult.resolve(data);
+            });
+            return deferredResult;
+        },
+        
+        getTopicsByGroup: function(groupId){
+            var deferredResult = new Deferred();
+            var requestParams = { count: 50, offset: 0, group_is:groupId };
+            var url = '//api.vk.com/method/board.getTopics';
+            this._getDataFromVk(url, requestParams).then(function(data){
+                deferredResult.resolve(data);
+            });
+            return deferredResult;
+        },
+        
+        
+        
         testWallRequest: function(){
             var deferredResult = new Deferred();
             this.currentMode = 'Wall'
@@ -359,7 +344,7 @@ define([
             console.log(group)
             //this.testTopicsRequest()
             var emptyDeferred;
-            this.getGroupInfo(group).then( function(groupInfo){
+            this._getGroupInfo(group).then( function(groupInfo){
                 if(!groupInfo.error)
 					return self.getWallPosts( groupInfo[0].gid )
 				else {
@@ -434,8 +419,9 @@ define([
                     bodyHeight = document.body.clientHeight;
                 }
                 var flag = bodyRealSizes.h - scrollPosition.y - bodyHeight
+                
                 if(flag <= 0){
-                    if(!self.isWaitingForData){
+				    if(!self.isWaitingForData){
                         if(self.currentMode != "New"){
                             self.currentOffset += self.postsPerRequest + 1;
                             // console.log('LOAD NEW DATA', self.isWaitingForData, flag);
@@ -449,7 +435,7 @@ define([
                         }else{
                             console.log('NEW MODE!')
                             self.isWaitingForData = true;
-                            self.showNextNPosts().then(
+                            self.updateNewModePage().then(
                                 function(){ 
                                     console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
                                     //window.scrollTo(scrollPosition.x, scrollPosition.y) 
@@ -460,8 +446,7 @@ define([
                 }
             }
             
-            window.onscroll =  onScroll
-            
+            window.onscroll =  onScroll            
             
         },
         
@@ -521,7 +506,7 @@ define([
             });
             
             router.register("all", function (event) {
-                self.loadNewModePage()
+                self.updateNewModePage( true )
             });
             
             router.register("notfound", function (event) {
