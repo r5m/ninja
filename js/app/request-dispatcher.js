@@ -60,7 +60,6 @@ define([
             
 			this.currentOffset += this.postsPerRequest + 1;
             return this['_getPostsFromWall']( this.currentMode == 'Search' ? this.currentSearchString : '').then( function( posts ){
-				console.log( '!!',posts )
 				self.logPosts( posts );
 				deferredRes.resolve('ok');
 			})
@@ -88,6 +87,86 @@ define([
 			})
 			return deferredRes;
         },
+        
+      
+        constructor: function(){
+            var self = this
+            
+            var nav = query('.list-publics')[0]
+            
+           /* domAttr.set(dom.byId('search-button'),'onclick', function(){
+				//self.searchPostsOnWall('Телевизор');
+				//self.testTopicsRequest('Телевизор');
+			})*/
+            
+            for(var i in this.publics){
+                var link = 'http://vk.com/'+i
+                
+                domConstruct.create('a',{
+                    href: '#wall/'+i,
+                    //"data-href": i,
+                    id: 'menu-' + i,
+                    'class' :'nav list-group-item '+(this.publics[i].default ? self.selectedCssClass :""),
+                    innerHTML : '<div><div><span>'+this.publics[i].title+'</span>'+
+                        '<span><a onclick="openNewWindow(event)" href="'+link+'">'+i+'</a></span></div></div>'
+                }, nav, 'last')
+                if(this.publics[i].default)
+                    this.currentPublic = i
+            }
+            
+            this._registerLoadOnScroll();
+            
+            var navLinks = query('a.nav');
+            
+            var searchLinks = query('.search');
+            for(var i = 0; i<searchLinks.length; i++){
+                var link = searchLinks[i];
+                (function(a){
+                    on(a, 'click', function(e){
+                        self._clear()
+                        if (e.preventDefault) {  // если метод существует
+                            e.preventDefault();
+                        } else { // вариант IE<9:
+                            e.returnValue = false;
+                        }
+                       // console.log(domAttr.get(a,'data-href'))
+                        self.testSearchRequest(domAttr.get(a,'data-href'))
+                    })  
+                })(link)
+            }
+            
+            var checkHash = function(h){
+                if ( (h.substr(0,5) != 'wall/') && (h != 'all') )
+                    hash('notfound')
+            }
+            topic.subscribe("/dojo/hashchange", checkHash);
+            
+            router.register("wall/:id", function (event) {
+               // console.log("Hash change", event.params.id);
+                var publicName = event.params.id
+                domStyle.set(dom.byId("loader"), "display", "");
+                self.loadPublic(publicName)
+            });
+            
+            router.register("all", function (event) {
+   				domStyle.set(dom.byId("loader"), "display", "");
+                self.updateNewModePage( true )
+            });
+            
+            router.register("notfound", function (event) {
+                alert(':-(')
+            });
+            
+            router.startup()
+            if(!hash()) router.go('all')
+            
+            window.r = router
+        },
+        
+        
+        
+        /////////////////  PRIVATE METHODS ////////////////////////
+        //////////  NEVER CALLED DIRECTLY FROM UI /////////////////
         
         /*
          * Show next <this.postsToShow> posts in TM mode
@@ -143,14 +222,16 @@ define([
                                 domAttr.set(node, 'innerHTML', originAuthorLink)
                             })
                     })(userId, uinfoId);
-                
-                   
+    
                     
-                    var div = domConstruct.create('div',{'class' : 'extra images'
+
+                    var div = domConstruct.create('div', {
+						'class' : 'ui small rounded images'
                     }, li, 'last')
                     if(data[i].attachments)
-                        for(var j=0; j<data[i].attachments.length; j++){
+                        for(var j=0; j < data[i].attachments.length; j++){
                             var a = data[i].attachments[j]
+
                             if(a.type == "photo")
                             var img = domConstruct.create('img',{
                                 src: a.photo.src
@@ -170,9 +251,6 @@ define([
             }
           //  console.log(self.publics, self.posts)
         },
-        
-        /////////////////  PRIVATE METHODS ////////////////////////
-        //////////  NEVER CALLED DIRECTLY FROM UI /////////////////
         
         /*
          * 	Reset counts and posts
@@ -270,8 +348,7 @@ define([
          * returns basic info about group with id == groupId
          */ 
         _getGroupInfo: function(groupId){
-			console.log(groupId)
-            var deferredResult = new Deferred()
+			var deferredResult = new Deferred()
             var requestParams = { group_id: groupId };
             var url = 'http://api.vk.com/method/groups.getById';
             this._getDataFromVk(url, requestParams).then(function(data){
@@ -291,7 +368,7 @@ define([
 				
             this.currentMode = 'Wall'
             
-            console.log(group)
+            
             //this.testTopicsRequest()           
             this._getGroupInfo(group).then( function(groupInfo){
                 if(!groupInfo.error) {
@@ -425,8 +502,7 @@ define([
         *   request array of posts from wall with id wallId
         */
         _requestPostsByWallId: function( wallId ){
-			console.log('!@',wallId, this.currentOffset)
-            var deferredResult = new Deferred();
+			var deferredResult = new Deferred();
             var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, owner_id: -wallId };
             var url = '//api.vk.com/method/wall.get';
             this._getDataFromVk(url, requestParams).then(function(data){
@@ -450,35 +526,18 @@ define([
         },
         
         
-        ////////////////// UNSORTED METHODS ////////////////////
-        ///// THEY WILL BE PLACED IN PUBLIC or PRIVATE GROUP ///
+        ///////////////////////// TRASH//// ////////////////////
+        ///// NOT USED NOW ///
         
-        
-        getSearchResult: function(query){
-            var deferredResult = new Deferred();
-            var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, q:query };
-            var url = '//api.vk.com/method/newsfeed.search';
-            this._getDataFromVk(url, requestParams).then(function(data){
-                deferredResult.resolve(data);
-            });
-            return deferredResult;
-        },
-        
-        getTopicsByGroup: function(groupId){
-            var deferredResult = new Deferred();
-            var requestParams = { count: 50, offset: 0, group_is:groupId };
-            var url = '//api.vk.com/method/board.getTopics';
-            this._getDataFromVk(url, requestParams).then(function(data){
-                deferredResult.resolve(data);
-            });
-            return deferredResult;
-        },
-                
-       
-        
-        searchPostsOnWall: function(queryString){
+         /*
+         * Shows posts that have <queryString> from vk
+         * Not used.
+         */ 
+        searchPostsInNewsfeed: function(queryString){
             var deferredResult = new Deferred();
             var self = this
+            self._clear();
+            
             this.currentMode = 'Search'
             this.currentSearchString = queryString
             this.getSearchResult( this.currentSearchString ).then(function(posts){
@@ -489,7 +548,29 @@ define([
             })
             return deferredResult
         },
+        getSearchResult: function(query){
+            var deferredResult = new Deferred();
+            var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, q:query };
+            var url = '//api.vk.com/method/newsfeed.search';
+            this._getDataFromVk(url, requestParams).then(function(data){
+                deferredResult.resolve(data);
+            });
+            return deferredResult;
+        },
         
+        
+       
+        getTopicsByGroup: function(groupId){
+            var deferredResult = new Deferred();
+            var requestParams = { count: 50, offset: 0, group_is:groupId };
+            var url = '//api.vk.com/method/board.getTopics';
+            this._getDataFromVk(url, requestParams).then(function(data){
+                deferredResult.resolve(data);
+            });
+            return deferredResult;
+        },
+                
+               
         testTopicsRequest: function(){
             var deferredResult = new Deferred();
             var self = this
@@ -502,78 +583,11 @@ define([
                 }
             )
             return deferredResult
-        },
+        }
         
 
         
-        constructor: function(){
-            var self = this
-            
-            var nav = query('.list-publics')[0]
-            
-            for(var i in this.publics){
-                var link = 'http://vk.com/'+i
-                
-                domConstruct.create('a',{
-                    href: '#wall/'+i,
-                    //"data-href": i,
-                    id: 'menu-' + i,
-                    'class' :'nav list-group-item '+(this.publics[i].default ? self.selectedCssClass :""),
-                    innerHTML : '<div><div><span>'+this.publics[i].title+'</span>'+
-                        '<span><a onclick="openNewWindow(event)" href="'+link+'">'+i+'</a></span></div></div>'
-                }, nav, 'last')
-                if(this.publics[i].default)
-                    this.currentPublic = i
-            }
-            
-            this._registerLoadOnScroll();
-            
-            var navLinks = query('a.nav');
-            
-            var searchLinks = query('.search');
-            for(var i = 0; i<searchLinks.length; i++){
-                var link = searchLinks[i];
-                (function(a){
-                    on(a, 'click', function(e){
-                        self._clear()
-                        if (e.preventDefault) {  // если метод существует
-                            e.preventDefault();
-                        } else { // вариант IE<9:
-                            e.returnValue = false;
-                        }
-                       // console.log(domAttr.get(a,'data-href'))
-                        self.testSearchRequest(domAttr.get(a,'data-href'))
-                    })  
-                })(link)
-            }
-            
-            var checkHash = function(h){
-                if ( (h.substr(0,5) != 'wall/') && (h != 'all') )
-                    hash('notfound')
-            }
-            topic.subscribe("/dojo/hashchange", checkHash);
-            
-            router.register("wall/:id", function (event) {
-               // console.log("Hash change", event.params.id);
-                var publicName = event.params.id
-                domStyle.set(dom.byId("loader"), "display", "");
-                self.loadPublic(publicName)
-            });
-            
-            router.register("all", function (event) {
-   				domStyle.set(dom.byId("loader"), "display", "");
-                self.updateNewModePage( true )
-            });
-            
-            router.register("notfound", function (event) {
-                alert(':-(')
-            });
-            
-            router.startup()
-            if(!hash()) router.go('all')
-            
-            window.r = router
-        }
+        
 	})
 })
 
