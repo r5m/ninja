@@ -234,22 +234,35 @@ define([
                     var div = domConstruct.create('div', {
 						'class' : 'ui small rounded images'
                     }, li, 'last')
-                    if(data[i].attachments)
+                    if(data[i].attachments){
+                        var groupId = 'gr-' + Math.random();
+                        
                         for(var j=0; j < data[i].attachments.length; j++){
                             var a = data[i].attachments[j]
+                            console.log(groupId)
 
-                            if(a.type == "photo")
-                            var img = domConstruct.create('img',{
-                                src: a.photo.src
-                            },div,'last')
+                            if(a.type == "photo"){
+								console.log(a.photo)
+								var colorboxLink = domConstruct.create('a',{
+									href: a.photo.src_big,
+									rel: groupId,
+									'class': 'gallery'
+								}, div, 'last')
+								var img = domConstruct.create('img',{
+									src: a.photo.src
+								},colorboxLink,'last')
+								
+								jQuery(colorboxLink).colorbox({ rel: groupId });
+							}
                         }
+					}
                     li.innerHTML=li.innerHTML+'</br>'+originLink;
                     
                      (function(id){
                         on(dom.byId(id), 'click', function(e){
                             openNewWindow.call(dom.byId(id), e)
                         })
-                    })(nodeId);   
+                    })(nodeId); 
                 }
                 if(this.currentMode == "New") { 
                     data.splice(0, 1); i-- ;
