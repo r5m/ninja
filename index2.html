@@ -11,6 +11,7 @@
 	<style>
         #posts {
            margin-right: 5%;
+           margin-left: 5%;
            list-style-type: none;
         }
         #posts li{
@@ -28,6 +29,9 @@
           background-image: url("images/backgrounds/bedge-Grunge.png");
             
         }
+        .menu-item {
+				height: 50px;
+		}
         
         header{
             width:100%;
@@ -42,11 +46,10 @@
 		}
 		
         .left-column{
-           float: left;
-           width: 200px;
+           
         }
         .center-column{
-            margin-left:200px;
+           margin-top: 70px;
         }
         
         nav {
@@ -79,8 +82,8 @@
         }
         
         a#pagetop{
-            position: fixed; bottom:0; right:0;
-            background: yellow;
+            position: fixed; bottom:10px; right:10px;
+           
         }
         
         @media screen and (max-width: 640px) {
@@ -105,11 +108,10 @@
         
         @media screen and (min-width: 641px) {
             .left-column {
-                float: left;
-                width: 200px;
+               
             }
             .center-column{
-               margin-left:200px;
+             
             }
             
             nav ul{
@@ -138,24 +140,57 @@
     </script>
 </head>
 <body id="body">
+	
+	<div class="ui inverted icon labeled menu" style="display: block; position: fixed; top: 0; width: 100%; z-index: 100;">
+		
+		<div id="sidebar-left-button" class="massive teal ui labeled icon button left " style="float: left; margin: 3px 3px 3px 0px">
+			<i class="icon list layout"></i>
+			menu
+		</div>
+		
+		
+		
+		<a class="item" style="float: left; ">
+			<i class="mail icon"></i> About Us
+		</a>
+	</div>
+	
+	<!--
 	<div class="page-header">
 		<h1>Все объявления Томска <small>и даже больше...</small></h1>
-		<!--<button id="menu-hider">Menu</button> -->
+		<button id="menu-hider">Menu</button>
     	<a href="#all">New mode with antispam <sup>TM</sup></a>
     	
-	</div>
-
+	</div>-->
+	
+ <!--
 	<div id="sidebar-left-button" class="massive teal ui labeled icon button right attached" style="position: fixed">
 			<i class="icon list layout"></i>
 			menu
-	</div>
+	</div>-->
 	
 	<div id="menus" class="ui styled left sidebar">
+		<a href="#all">Все записи</a>
 		<div class="list-group list-publics left-column"></div>
 		
 	</div>
 
 
+	
+	
+
+	<div class="center-column">
+	    <!--<h2>Posts</h2>-->
+	    <div id="loader"><i class="huge loading icon"></i></div>
+	    
+		<ul id="posts"></ul>
+	</div>
+	
+	
+	
+	
+	<a id="pagetop" href="#" onclick="scrollToTop(event);" class="ui teal massive icon button"><i class="up arrow icon"></i></a>
+	
 	
 	<script>
 		var div = document.getElementById("sidebar-left-button");
@@ -166,16 +201,8 @@
 			//console.log($('.demo.sidebar').sidebar('is open'));
 		}
 	</script>
-
-	<div class="center-column">
-	    <!--<h2>Posts</h2>-->
-	    <div class="ui active inline loader" id="loader"></div>
-		
-	    
-	    <ul id="posts"></ul>
-	</div>
 	
-	<a id="pagetop" href="#" onclick="scrollToTop(event);">наверх</a>
+	
 	<script src="js/app/config/dojo-conf.js"></script> 
 	<script src="js/dojo/dojo.js"></script>
 	<script src="js/app/md5.js"></script>
