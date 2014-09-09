@@ -35,20 +35,54 @@ define([
 		/////////////////  PUBLIC METHOD  //////////////////////////
 		///////// CAN BE CALLED DIRECTLY FROM UI ///////////////////
 		
+		
+		/*
+		 * Reload page with given public
+		 */ 
         loadPublic: function(publicName){
-            this.clear()
-            this.currentPublic = publicName
-            domClass.add( dom.byId('menu-'+this.currentPublic), this.selectedCssClass )
-            console.log(dom.byId('menu-'+this.currentPublic))
-            
-            this.testWallRequest()            
+            var self = this           
+            this.updateSinglePublicPage( publicName, true )
         },
         
-
+		/*
+		 * Add content from publicName || this.currentPublic to page
+		 */ 
+        updateSinglePublicPage: function( publicName, doClear ){
+			var doClear = doClear || false;
+			var deferredRes = new Deferred, self = this;
+            
+			if(doClear) {
+				this._clear();
+				domClass.add( dom.byId('menu-'+publicName), this.selectedCssClass )
+				this.currentPublic = publicName;
+			}
+			
+            
+			this.currentOffset += this.postsPerRequest + 1;
+            return this['_getPostsFromWall']( this.currentMode == 'Search' ? this.currentSearchString : '').then( function( posts ){
+				console.log( '!!',posts )
+				self.logPosts( posts );
+				deferredRes.resolve('ok');
+			})
+			
+			return deferredRes
+		},
+		
+		/*
+		 * Add content from all publics to page
+		 */
         updateNewModePage: function( doClear ){
-			var self = this;
+			var self = this,
+				doClear = doClear || false;
+			
+			 
+            if(doClear) {
+				this._clear();
+				this.currentMode = 'New';           
+			}
+			
 			var deferredRes = new Deferred;
-            this._getNextPostsFromAllWalls( doClear ).then( function(){
+            this._getNextPostsFromAllWalls( ).then( function(){
 				self.logPosts(self.posts);
 				deferredRes.resolve('ok');
 			})
@@ -62,7 +96,7 @@ define([
         logPosts: function(data){
             var self = this
             domStyle.set('loader','display','none')
-            
+            console.log('SHOWPOSTS', data)
             for(var i = 1, k=0; ( k < ( ( this.currentMode == 'New' ) ? this.postsToShow : data.length ) ) && ( i < data.length ); i++, k++){
                 var thePost = data[i], isNewPost = true 
                 if(this.filterSpam){
@@ -97,12 +131,12 @@ define([
                     
                     (function(uid, node){
                         if(uid > 0)
-                            self.getUserInfo(uid).then(function(data){
+                            self._requestUserByUserId( uid ).then(function(data){
                                 var originAuthorLink =  '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].first_name +' '+ data[0].last_name+'</a> :: '
                                 domAttr.set(node, 'innerHTML', originAuthorLink)
                             })
                         else
-                            self.getWallUserInfo(uid).then(function(data){
+                            self._getGroupInfo( Math.abs(uid) ).then(function(data){
                                 //console.log('WALL: ',data)
                                 var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].name+'</a> :: '
                                 domAttr.set(node, 'innerHTML', originAuthorLink)
@@ -135,6 +169,25 @@ define([
         
         /////////////////  PRIVATE METHODS ////////////////////////
         //////////  NEVER CALLED DIRECTLY FROM UI /////////////////
+        
+        /*
+         * 	Reset counts and posts
+         */ 
+        _clear: function(){
+            domConstruct.empty('posts')
+            this.currentOffset = 0;
+            this.postsHash = []
+            var links = query('.list-publics a')
+            for(var i in this.publics){
+                this.publics[i].has = 0;
+                this.publics[i].used = 0;
+            }
+            this.posts = []
+            for(var i=0; i< links.length; i++){
+                domClass.remove(links[i],this.selectedCssClass)
+            }
+        },
+        
         
         /*
         *   Dispatch data returned from crossDomain XHR
@@ -213,6 +266,7 @@ define([
          * returns basic info about group with id == groupId
          */ 
         _getGroupInfo: function(groupId){
+			console.log(groupId)
             var deferredResult = new Deferred()
             var requestParams = { group_id: groupId };
             var url = 'http://api.vk.com/method/groups.getById';
@@ -222,22 +276,46 @@ define([
             return deferredResult
         },
         
-        
-        
+        /*
+         * Show posts from currentPublic
+         * 
+         */ 
+        _getPostsFromWall: function(){
+            var deferredResult = new Deferred(),
+				group = this.currentPublic, 
+				self = this, emptyDeferred;
+				
+            this.currentMode = 'Wall'
+            
+            console.log(group)
+            //this.testTopicsRequest()           
+            this._getGroupInfo(group).then( function(groupInfo){
+                if(!groupInfo.error) {
+					self.isWaitingForData = true;            
+					return self._requestPostsByWallId( groupInfo[0].gid )
+				}
+				else {
+					emptyDeferred = new Deferred()
+					return emptyDeferred;
+				}
+            }).then(function(posts){
+                self.isWaitingForData = false
+                deferredResult.resolve( posts )
+            })
+            window.t = self
+            //emptyDeferred.resolve({})
+            return deferredResult
+        },
+         
         /*
          * get next <this.postsPerRequest> from all publics
          * sort them by date
          * 
          * save them into this.posts
          */ 
-        _getNextPostsFromAllWalls: function( doClear ){
-            var doClear = doClear || false;
+        _getNextPostsFromAllWalls: function(  ){
             var publics = lang.clone(this.publics)
-           
-            if(doClear)
-				this.clear()
-				
-            this.currentMode = 'New'
+           	
             var defArray = [], result = new Deferred;
             var self = this
 			for (var i in this.publics){
@@ -247,7 +325,7 @@ define([
                         self._getGroupInfo(i).then( function(groupInfo){
                             if(!groupInfo.error){
 								self.currentOffset = self.publics[i].used
-								var grPostGetter = self.getWallPosts( groupInfo[0].gid )
+								var grPostGetter = self._requestPostsByWallId( groupInfo[0].gid )
 								grPostGetter.then(function(posts){
 									for(var j = 1; j<posts.length; j++){
 										posts[j].GROUP_NAME = i
@@ -276,17 +354,74 @@ define([
         },
         
         
-        
-        
-        
-        ////////////////// UNSORTED METHODS ////////////////////
-        ///// THEY WILL BE PLACED IN PUBLIC or PRIVATE GROUP ///
+        /*
+         * Returns <body> height
+         */ 
+        _getBodyHeight: function() {
+			var bodyHeight = 0
+            if( typeof( window.innerWidth ) == 'number' ) {
+                //Non-IE
+                bodyHeight = window.innerHeight;
+            } else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+                //IE 6+ in 'standards compliant mode'
+                bodyHeight = document.documentElement.clientHeight;
+            } else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+                 //IE 4 compatible
+                bodyHeight = document.body.clientHeight;
+            }
+            
+            return bodyHeight;
+		},
+        /*
+         * Update page when user scrolls to bottom
+         * 
+         */ 
+        _registerLoadOnScroll: function(){
+            var self = this
+            var onScroll = function(){
+                var scrollPosition = domGeometry.docScroll();
+                var bodyRealSizes = domGeometry.getMarginBox("body");
+                var bodyHeight = self._getBodyHeight();
+                
+                var flag = bodyRealSizes.h - scrollPosition.y - bodyHeight;
+                if(flag <= 0){
+					console.log(self.isWaitingForData)
+                
+				    if(!self.isWaitingForData){
+                        if(self.currentMode != "New"){
+                            self.currentOffset += self.postsPerRequest + 1;
+                            // console.log('LOAD NEW DATA', self.isWaitingForData, flag);
+                            //self.isWaitingForData = true;
+                            self['updateSinglePublicPage']( self.currentMode == 'Search' ? self.currentSearchString : '').then(
+                                function(){ 
+                                    //console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
+                                    //window.scrollTo(scrollPosition.x, scrollPosition.y) 
+                                }
+                            )
+                        }else{
+                            console.log('NEW MODE!')
+                            self.isWaitingForData = true;
+                            self.updateNewModePage().then(
+                                function(){ 
+                                    //console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
+                                    //window.scrollTo(scrollPosition.x, scrollPosition.y) 
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            
+            window.onscroll =  onScroll            
+            
+        },
         
         
         /*
-        *   get array of posts from wall with id wallId and Executes callback on them
+        *   request array of posts from wall with id wallId
         */
-        getWallPosts: function(wallId){
+        _requestPostsByWallId: function( wallId ){
+			console.log('!@',wallId, this.currentOffset)
             var deferredResult = new Deferred();
             var requestParams = { count: this.postsPerRequest, offset: this.currentOffset, owner_id: -wallId };
             var url = '//api.vk.com/method/wall.get';
@@ -296,7 +431,10 @@ define([
             return deferredResult;
         },
         
-        getUserInfo: function(userId){
+        /*
+         * Request user summary by user id
+         */ 
+        _requestUserByUserId: function( userId ){
             var deferredResult = new Deferred();
             var requestParams = { user_ids:  userId};
             var url = '//api.vk.com/method/users.get';
@@ -307,17 +445,10 @@ define([
             return deferredResult;
         },
         
-        getWallUserInfo: function(userId){
-            var deferredResult = new Deferred();
-            //console.log(userId)
-            var requestParams = { group_id:  Math.abs(userId)};
-            var url = '//api.vk.com/method/groups.getById';
-            var dispatcher = this.vkBasicRequestDispatcher;
-            this._getDataFromVk(url, requestParams).then(function(data){
-                deferredResult.resolve(data);
-            });
-            return deferredResult;
-        },
+        
+        ////////////////// UNSORTED METHODS ////////////////////
+        ///// THEY WILL BE PLACED IN PUBLIC or PRIVATE GROUP ///
+        
         
         getSearchResult: function(query){
             var deferredResult = new Deferred();
@@ -338,33 +469,10 @@ define([
             });
             return deferredResult;
         },
+                
+       
         
-
-        
-        testWallRequest: function(){
-            var deferredResult = new Deferred();
-            this.currentMode = 'Wall'
-            var group = this.currentPublic, self = this
-            console.log(group)
-            //this.testTopicsRequest()
-            var emptyDeferred;
-            this._getGroupInfo(group).then( function(groupInfo){
-                if(!groupInfo.error)
-					return self.getWallPosts( groupInfo[0].gid )
-				else {
-					emptyDeferred = new Deferred()
-					return emptyDeferred;
-				}
-            }).then(function(posts){
-                self.logPosts(posts)
-                self.isWaitingForData = false
-                deferredResult.resolve()
-            })
-            //emptyDeferred.resolve({})
-            return deferredResult
-        },
-        
-        testSearchRequest: function(queryString){
+        searchPostsOnWall: function(queryString){
             var deferredResult = new Deferred();
             var self = this
             this.currentMode = 'Search'
@@ -392,71 +500,10 @@ define([
             return deferredResult
         },
         
-        clear: function(){
-            domConstruct.empty('posts')
-            this.currentOffset = 0;
-            this.postsHash = []
-            var links = query('.list-publics a')
-            for(var i in this.publics){
-                this.publics[i].has = 0;
-                this.publics[i].used = 0;
-            }
-            this.posts = []
-            for(var i=0; i< links.length; i++){
-                domClass.remove(links[i],this.selectedCssClass)
-            }
-        },
-        registerLoadOnScroll: function(){
-            var self = this
-            var onScroll = function(){
-                var scrollPosition = domGeometry.docScroll();
-                var bodyRealSizes = domGeometry.getMarginBox("body");
-                var bodyHeight = 0
-                if( typeof( window.innerWidth ) == 'number' ) {
-                    //Non-IE
-                    bodyHeight = window.innerHeight;
-                } else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
-                    //IE 6+ in 'standards compliant mode'
-                    bodyHeight = document.documentElement.clientHeight;
-                } else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
-                    //IE 4 compatible
-                    bodyHeight = document.body.clientHeight;
-                }
-                var flag = bodyRealSizes.h - scrollPosition.y - bodyHeight
-                
-                if(flag <= 0){
-				    if(!self.isWaitingForData){
-                        if(self.currentMode != "New"){
-                            self.currentOffset += self.postsPerRequest + 1;
-                            // console.log('LOAD NEW DATA', self.isWaitingForData, flag);
-                            self.isWaitingForData = true;
-                            self['test'+self.currentMode+'Request']( self.currentMode == 'Search' ? self.currentSearchString : '').then(
-                                function(){ 
-                                    console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
-                                    //window.scrollTo(scrollPosition.x, scrollPosition.y) 
-                                }
-                            )
-                        }else{
-                            console.log('NEW MODE!')
-                            self.isWaitingForData = true;
-                            self.updateNewModePage().then(
-                                function(){ 
-                                    console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
-                                    //window.scrollTo(scrollPosition.x, scrollPosition.y) 
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-            
-            window.onscroll =  onScroll            
-            
-        },
+        
+        
         
         constructor: function(){
-            //do test
-            //just send GET-request to VK.COM
             var self = this
             
             var nav = query('.list-publics')[0]
@@ -476,7 +523,7 @@ define([
                     this.currentPublic = i
             }
             
-            this.registerLoadOnScroll();
+            this._registerLoadOnScroll();
             
             var navLinks = query('a.nav');
             
@@ -485,7 +532,7 @@ define([
                 var link = searchLinks[i];
                 (function(a){
                     on(a, 'click', function(e){
-                        self.clear()
+                        self._clear()
                         if (e.preventDefault) {  // если метод существует
                             e.preventDefault();
                         } else { // вариант IE<9:
@@ -523,7 +570,7 @@ define([
             if(!hash()) router.go('all')
             
             window.r = router
-        }    
+        }
 	})
 })
 
