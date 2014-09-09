@@ -102,7 +102,7 @@ define([
                 if(this.filterSpam){
                     var postMd5 = md5(thePost.text)
                     for(var z = 0; z< this.postsHash.length; z++){
-                        console.log(this.postsHash[z], postMd5, this.postsHash[z] == postMd5)
+                    //    console.log(this.postsHash[z], postMd5, this.postsHash[z] == postMd5)
                         if(this.postsHash[z] == postMd5){
                             isNewPost = false; break
                         }
@@ -164,7 +164,7 @@ define([
                     data.splice(0, 1); i-- ;
                 }
             }
-            console.log(self.publics, self.posts)
+          //  console.log(self.publics, self.posts)
         },
         
         /////////////////  PRIVATE METHODS ////////////////////////
@@ -478,7 +478,7 @@ define([
             this.currentMode = 'Search'
             this.currentSearchString = queryString
             this.getSearchResult( this.currentSearchString ).then(function(posts){
-                console.log(posts)
+               // console.log(posts)
                 self.logPosts(posts)
                 self.isWaitingForData = false
                 deferredResult.resolve()
@@ -491,7 +491,7 @@ define([
             var self = this
             this.getTopicsByGroup( this.currentPublic ).then(
                 function(posts){
-                    console.log(posts)
+                  //  console.log(posts)
                     self.logPosts(posts)
                     //self.isWaitingForData = false
                     //deferredResult.resolve()
@@ -500,8 +500,7 @@ define([
             return deferredResult
         },
         
-        
-        
+
         
         constructor: function(){
             var self = this
@@ -551,7 +550,7 @@ define([
             topic.subscribe("/dojo/hashchange", checkHash);
             
             router.register("wall/:id", function (event) {
-                console.log("Hash change", event.params.id);
+               // console.log("Hash change", event.params.id);
                 var publicName = event.params.id
                 domStyle.set(dom.byId("loader"), "display", "");
                 self.loadPublic(publicName)
