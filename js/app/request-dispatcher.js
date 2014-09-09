@@ -218,7 +218,7 @@ define([
                         else
                             self._getGroupInfo( Math.abs(uid) ).then(function(data){
                                 //console.log('WALL: ',data)
-                                var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].name+'</a>'
+                                var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/public' + Math.abs(uid) + '">'+ data[0].name+'</a>'
                                 domAttr.set(node, 'innerHTML', originAuthorLink)
                             })
                     })(userId, uinfoId);
