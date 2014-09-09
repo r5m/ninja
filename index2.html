@@ -142,10 +142,30 @@
 		<h1>Все объявления Томска <small>и даже больше...</small></h1>
 		<!--<button id="menu-hider">Menu</button> -->
     	<a href="#all">New mode with antispam <sup>TM</sup></a>
+    	
 	</div>
 	
-	<div class="list-group list-publics left-column"></div>
+	<div id="id" class="massive teal ui labeled icon button">
+			<i class="icon list layout"></i>
+			Hide
+	</div>
 	
+	<div id="menus" class="ui styled demo sidebar">
+		<div class="list-group list-publics left-column"></div>
+		
+	</div>
+
+
+	
+	<script>
+		var div = document.getElementById("id");
+		div.onclick = function (e) {
+			if ($('.demo.sidebar').sidebar('is open')) {
+				$('.demo.sidebar').sidebar('hide');
+			} else $('.demo.sidebar').sidebar('show');
+			//console.log($('.demo.sidebar').sidebar('is open'));
+		}
+	</script>
 
 	<div class="center-column">
 	    <!--<h2>Posts</h2>-->
@@ -159,6 +179,7 @@
 	<script src="js/app/config/dojo-conf.js"></script> 
 	<script src="js/dojo/dojo.js"></script>
 	<script src="js/app/md5.js"></script>
+	<!--<script src="js/jQuery/jquery-2.1.1.min.js"></script>-->
 	<script>
 	    
             openNewWindow = function(e){
@@ -172,11 +193,23 @@
                 window.open(e.currentTarget.href, "_blank")
             }
 	
-	    require(['dojo/request/script', 'app', 'dojo/domReady!'], function(script, Application){
+	    require(['dojo/request/script', 'jquery', 'app', 'dojo/domReady!'], function(script, jQuery, Application){
+            window.jQuery = jQuery
             
-            var app = new Application();
+            var script = document.createElement('script');
+			script.src   = "js/semantic.js";
+			document.body.appendChild(script);
+			script.onload = function() {
+				var app = new Application();
+				$('.demo.sidebar').sidebar();
+			};
+            
+            
+			
             
         })
     </script>
+    <!--<script src="js/semantic.js"></script>-->
+	
 </body>
 </html>

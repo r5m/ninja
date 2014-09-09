@@ -39,7 +39,7 @@ define([
             this.clear()
             this.currentPublic = publicName
             domClass.add( dom.byId('menu-'+this.currentPublic), this.selectedCssClass )
-            console.log(dom.byId('menu-'+this.currentPublic))
+          //  console.log(dom.byId('menu-'+this.currentPublic))
             
             this.testWallRequest()            
         },
@@ -68,7 +68,7 @@ define([
                 if(this.filterSpam){
                     var postMd5 = md5(thePost.text)
                     for(var z = 0; z< this.postsHash.length; z++){
-                        console.log(this.postsHash[z], postMd5, this.postsHash[z] == postMd5)
+                    //    console.log(this.postsHash[z], postMd5, this.postsHash[z] == postMd5)
                         if(this.postsHash[z] == postMd5){
                             isNewPost = false; break
                         }
@@ -130,7 +130,7 @@ define([
                     data.splice(0, 1); i-- ;
                 }
             }
-            console.log(self.publics, self.posts)
+          //  console.log(self.publics, self.posts)
         },
         
         /////////////////  PRIVATE METHODS ////////////////////////
@@ -370,7 +370,7 @@ define([
             this.currentMode = 'Search'
             this.currentSearchString = queryString
             this.getSearchResult( this.currentSearchString ).then(function(posts){
-                console.log(posts)
+               // console.log(posts)
                 self.logPosts(posts)
                 self.isWaitingForData = false
                 deferredResult.resolve()
@@ -383,7 +383,7 @@ define([
             var self = this
             this.getTopicsByGroup( this.currentPublic ).then(
                 function(posts){
-                    console.log(posts)
+                  //  console.log(posts)
                     self.logPosts(posts)
                     //self.isWaitingForData = false
                     //deferredResult.resolve()
@@ -432,16 +432,16 @@ define([
                             self.isWaitingForData = true;
                             self['test'+self.currentMode+'Request']( self.currentMode == 'Search' ? self.currentSearchString : '').then(
                                 function(){ 
-                                    console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
+                                  //  console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
                                     //window.scrollTo(scrollPosition.x, scrollPosition.y) 
                                 }
                             )
                         }else{
-                            console.log('NEW MODE!')
+                          //  console.log('NEW MODE!')
                             self.isWaitingForData = true;
                             self.updateNewModePage().then(
                                 function(){ 
-                                    console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
+                                  //  console.log(scrollPosition.x, scrollPosition.y, domGeometry.docScroll().x, domGeometry.docScroll().y) 
                                     //window.scrollTo(scrollPosition.x, scrollPosition.y) 
                                 }
                             )
@@ -504,7 +504,7 @@ define([
             topic.subscribe("/dojo/hashchange", checkHash);
             
             router.register("wall/:id", function (event) {
-                console.log("Hash change", event.params.id);
+               // console.log("Hash change", event.params.id);
                 var publicName = event.params.id
                 domStyle.set(dom.byId("loader"), "display", "");
                 self.loadPublic(publicName)
