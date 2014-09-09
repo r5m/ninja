@@ -4,9 +4,9 @@
 	<meta charset="utf-8" />
 	<meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="width = device-width, initial-scale = 1, user-scalable = no" name="viewport">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
     <link href="css/semantic.css" rel="stylesheet">
-    <link href="css/semantic.min.css" rel="stylesheet">
+    <!--<link href="css/semantic.min.css" rel="stylesheet">-->
   
 	<title>R5M sale</title>
 	<style>
@@ -15,22 +15,16 @@
            margin-left: 5%;
            list-style-type: none;
         }
-        #posts li{
-            
-        }
-        
+       
         #loader {
 			margin-left: 30px;
 				
 		}
 		
 			
-        img.post-photo{
-           
-        }
+        
         body{
-          background-image: url("images/backgrounds/bedge-Grunge.png");
-            
+          background-image: url("images/backgrounds/bedge-Grunge.png");            
         }
         .menu-item {
 				height: 50px;
@@ -48,82 +42,14 @@
 			cursor: pointer
 		}
 		
-        .left-column{
-           
-        }
         .center-column{
            margin-top: 70px;
         }
         
-        nav {
-            
-        }
-        nav ul{
-          
-            
-        }
-        nav ul li{
-           
-        }
-        nav ul li > div{
-          
-        }
-        nav ul li > div > div{
-          
-        }
-        
-        nav ul li.selected > div > div{
-           
-        }
-        
-        nav ul li > div > div > span{
-          
-        }
-        
-        nav ul li a{
-           
-        }
-        
         a#pagetop{
             position: fixed; bottom:10px; right:10px;
-           
         }
         
-        @media screen and (max-width: 640px) {
-            .left-column {
-               
-            }
-            
-            .center-column{
-               
-            }
-            
-            nav ul{
-               
-            }
-            
-            nav ul li > div > div{
-               
-                
-            }
-        }
-        
-        @media screen and (min-width: 641px) {
-            .left-column {
-               
-            }
-            .center-column{
-             
-            }
-            
-            nav ul{
-                width: 200px;
-            }
-            nav ul li > div > div{
-                width:200px;
-                
-            }
-        }
         
     </style>
     <script>
@@ -145,15 +71,15 @@
 	
 	<div class="ui inverted icon labeled menu" style="display: block; position: fixed; top: 0; width: 100%; z-index: 100;">
 		
-		<div id="sidebar-left-button" class="massive teal ui labeled icon button left " style="float: left; margin: 3px 3px 3px 0px">
+		<div id="sidebar-left-button" class="teal ui labeled icon button left " style="float: left; margin: 3px 3px 3px 0px">
 			<i class="icon list layout"></i>
 			menu
 		</div>
 		
 		
 		
-		<a class="item" style="float: left; ">
-			<i class="mail icon"></i> About Us
+		<a class=" item" style="float: left; ">
+			<i class=" mail icon"></i> About Us
 		</a>
 	</div>
 	
@@ -173,9 +99,9 @@
 	
 	<div id="menus" class="ui styled left sidebar">
 		<a href="#all">
-			<div id="show-all-posts-button" class="ui toggle button" style="font-size: 1em; width: 240px; margin-left: -5px;">Все записи</div>
+			<div id="show-all-posts-button" class="ui toggle button" style="1em; width: 240px; margin-left: -5px;">Все записи</div>
 		</a>
-		<div class="ui large vertical menu list-publics" style="width: 240px; margin: 20px 5px 0px -5px"></div>
+		<div class="ui vertical menu list-publics" style="width: 240px; margin: 20px 5px 0px -5px"></div>
 	</div>
 
 
@@ -185,7 +111,7 @@
 	<div class="center-column">
 	    <!--<h2>Posts</h2>-->
 
-	    <div id="loader"><i class="huge loading icon"></i></div>
+	    <div id="loader"><i class="loading icon"></i></div>
 
 	    <!--<div class="ui active inline loader" id="loader"></div>-->
 		<!--<button id="search-button" style="display:none;">SEARCH</button>-->
@@ -197,7 +123,7 @@
 	
 	
 	
-	<a id="pagetop" href="#" onclick="scrollToTop(event);" class="ui teal massive icon button"><i class="up arrow icon"></i></a>
+	<a id="pagetop" href="#" onclick="scrollToTop(event);" class="ui teal icon button"><i class="up arrow icon"></i></a>
 	
 	
 	<script>
