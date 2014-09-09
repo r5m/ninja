@@ -144,13 +144,13 @@
     	<a href="#all">New mode with antispam <sup>TM</sup></a>
     	
 	</div>
-	
-	<div id="id" class="massive teal ui labeled icon button">
+
+	<div id="sidebar-left-button" class="massive teal ui labeled icon button right attached" style="position: fixed">
 			<i class="icon list layout"></i>
-			Hide
+			menu
 	</div>
 	
-	<div id="menus" class="ui styled demo sidebar">
+	<div id="menus" class="ui styled left sidebar">
 		<div class="list-group list-publics left-column"></div>
 		
 	</div>
@@ -158,11 +158,11 @@
 
 	
 	<script>
-		var div = document.getElementById("id");
+		var div = document.getElementById("sidebar-left-button");
 		div.onclick = function (e) {
-			if ($('.demo.sidebar').sidebar('is open')) {
-				$('.demo.sidebar').sidebar('hide');
-			} else $('.demo.sidebar').sidebar('show');
+			if ($('.left.sidebar').sidebar('is open')) {
+				$('.left.sidebar').sidebar('hide');
+			} else $('.left.sidebar').sidebar('show');
 			//console.log($('.demo.sidebar').sidebar('is open'));
 		}
 	</script>
@@ -201,7 +201,7 @@
 			document.body.appendChild(script);
 			script.onload = function() {
 				var app = new Application();
-				$('.demo.sidebar').sidebar();
+				$('.left.sidebar').sidebar();
 			};
             
             
