@@ -197,7 +197,7 @@ define([
                 if(isNewPost){    
                     this.postsHash.push(postMd5)
                     var nodeId = data[i].to_id+'_'+data[i].id
-                    var originLink = '<a style="font-size: 0.8em" class="ui large green label" id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'">Посмотреть обявление в ВК</a>';
+                    var originLink = '<a style="font-size: 0.8em" class="ui large black label" id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'">Посмотреть обявление в ВК</a>';
                     var userId = data[i].from_id 
                     var uinfoId = 'ulink-'+Math.random()
                     var date = new Date(data[i].date * 1000)
@@ -209,6 +209,8 @@ define([
                        'class' : 'ui piled feed segment'
                     }, 'posts','last');
                     
+                    domConstruct.create('div', {innerHTML : '<i class="vk icon"></i>', 'class' : 'ui horizontal icon divider'}, 'posts','last');
+                 
                     (function(uid, node){
                         if(uid > 0)
                             self._requestUserByUserId( uid ).then(function(data){
