@@ -106,9 +106,9 @@ define([
                     href: '#wall/'+i,
                     //"data-href": i,
                     id: 'menu-' + i,
-                    'class' :'nav list-group-item '+(this.publics[i].default ? self.selectedCssClass :""),
-                    innerHTML : '<div><div><span>'+this.publics[i].title+'</span>'+
-                        '<span><a onclick="openNewWindow(event)" href="'+link+'">'+i+'</a></span></div></div>'
+                    'class' :'teal item '+(this.publics[i].default ? self.selectedCssClass :""),
+                    innerHTML : '<div style="font-size: 1.4em">'+this.publics[i].title+'</div>'+
+                        '</br><div><a style="font-size: 1em; color: grey;" onclick="openNewWindow(event)" href="'+link+'">vk.com/'+i+'</a></div>'
                 }, nav, 'last')
                 if(this.publics[i].default)
                     this.currentPublic = i
@@ -145,12 +145,16 @@ define([
                // console.log("Hash change", event.params.id);
                 var publicName = event.params.id
                 domStyle.set(dom.byId("loader"), "display", "");
+                document.getElementById("show-all-posts-button").classList.remove("active");
+                document.getElementById("show-all-posts-button").innerHTML='Показать все записи';
                 self.loadPublic(publicName)
             });
             
             router.register("all", function (event) {
    				domStyle.set(dom.byId("loader"), "display", "");
-                self.updateNewModePage( true )
+   				document.getElementById("show-all-posts-button").classList.add("active");
+   				document.getElementById("show-all-posts-button").innerHTML='Показаны все записи';
+   				self.updateNewModePage( true )
             });
             
             router.register("notfound", function (event) {
