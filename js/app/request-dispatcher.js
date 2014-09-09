@@ -118,47 +118,51 @@ define([
                 if(isNewPost){    
                     this.postsHash.push(postMd5)
                     var nodeId = data[i].to_id+'_'+data[i].id
-                    var originLink = '<a id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'">original</a>';
+                    var originLink = '<a style="font-size: 0.8em" class="ui large green label" id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'">Посмотреть обявление в ВК</a>';
                     var userId = data[i].from_id 
                     var uinfoId = 'ulink-'+Math.random()
                     var date = new Date(data[i].date * 1000)
                     var dateString = locale.format(date, {datePattern: 'dd MMM yyyy', timePattern : 'HH:mm:ss'})
                     
                     var li = domConstruct.create('li',{
-                       innerHTML : '<p><span>'+ dateString + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text,
-                       'class' : 'ui piled segment'
+                      // innerHTML : '<p><span>'+ dateString + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text,
+                       innerHTML : '<div class="event" style="width: 100%" ><div class="content" style="text-align: justify"><div class="date">'+ dateString + '</div><div class="summary"><a class="ui teal label" style="font-size: 0.8em"><span id="'+uinfoId+'"></span></a></div><div style="margin-top: 10px; color: grey">' + data[i].text+ '</div></div></div>',
+                       'class' : 'ui piled feed segment'
                     }, 'posts','last');
                     
                     (function(uid, node){
                         if(uid > 0)
                             self._requestUserByUserId( uid ).then(function(data){
-                                var originAuthorLink =  '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].first_name +' '+ data[0].last_name+'</a> :: '
+                                var originAuthorLink =  '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].first_name +' '+ data[0].last_name+'</a>'
                                 domAttr.set(node, 'innerHTML', originAuthorLink)
                             })
                         else
                             self._getGroupInfo( Math.abs(uid) ).then(function(data){
                                 //console.log('WALL: ',data)
-                                var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].name+'</a> :: '
+                                var originAuthorLink = '<a onclick="openNewWindow(event)" id= "'+nodeId+'" href="http://vk.com/id'+uid+'">'+ data[0].name+'</a>'
                                 domAttr.set(node, 'innerHTML', originAuthorLink)
                             })
                     })(userId, uinfoId);
                 
-                    (function(id){
-                        on(dom.byId(id), 'click', function(e){
-                            openNewWindow.call(dom.byId(id), e)
-                        })
-                    })(nodeId)
-                    var div = domConstruct.create('div',{
+                   
+                    
+                    var div = domConstruct.create('div',{'class' : 'extra images'
                     }, li, 'last')
                     if(data[i].attachments)
                         for(var j=0; j<data[i].attachments.length; j++){
                             var a = data[i].attachments[j]
                             if(a.type == "photo")
                             var img = domConstruct.create('img',{
-                                src: a.photo.src,
-                                'class': 'post-photo'
+                                src: a.photo.src
                             },div,'last')
                         }
+                    li.innerHTML=li.innerHTML+'</br>'+originLink;
+                    
+                     (function(id){
+                        on(dom.byId(id), 'click', function(e){
+                            openNewWindow.call(dom.byId(id), e)
+                        })
+                    })(nodeId);   
                 }
                 if(this.currentMode == "New") { 
                     data.splice(0, 1); i-- ;
