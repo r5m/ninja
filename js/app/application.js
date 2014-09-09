@@ -3,7 +3,7 @@ define([
     'app/request-dispatcher'], function(declare, Dispatcher, domGeometry,dom){
 	return declare(null, {
 		constructor: function(){
-			var d = new Dispatcher();
+			window.d = new Dispatcher();
 			
 		}
 	})
