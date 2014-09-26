@@ -10,16 +10,16 @@ define([
         postsPerRequest : 8, //count value for vk requests
         postsToShow     : 5, //how many new posts will be rendered on scroll 
         publics: {
-            'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
-            'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
-            'desk70'        : {title: 'Еще одна группа', has: 0, used: 0},
-            '70baraholka'   : {title: '70baraholka', has: 0, used: 0},
+            //'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
+            //'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
+            //'desk70'        : {title: 'Еще одна группа', has: 0, used: 0},
+            //'70baraholka'   : {title: '70baraholka', has: 0, used: 0},
             'swetselltll'   : {title: 'Томск|Объявления| Авто|Работа|', has: 0, used: 0},
-            'club49470911'  : {title: '417 человек', has: 0, used: 0},
-            'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
-            'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
+            //'club49470911'  : {title: '417 человек', has: 0, used: 0},
+            //'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
+            //'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
         },
-        currentPublic: 'tomsktip',
+        currentPublic: 'swetselltll',
         selectedCssClass: 'active',
         // All posts from all publics
         posts: [],
@@ -99,8 +99,9 @@ define([
             script.get(url, {
                 query: requestParams,
                 jsonp: 'callback'
-            }).then( function(data) { 
-                deferredResult.resolve( dispatcher.call(self, data) )
+            }).then( function(data) {				
+				dispatcher.call(self, data)
+                //deferredResult.resolve( dispatcher.call(self, data) )
             })
             
             return deferredResult
@@ -113,6 +114,7 @@ define([
             var url = 'http://api.vk.com/method/groups.getById';
             var dispatcher = this.vkTestRequestDispatcher;
             this._getData(url, requestParams, dispatcher).then(function(data){
+                console.log('!!!', data)
                 deferredResult.resolve(data)
             });
             return deferredResult
@@ -152,6 +154,7 @@ define([
                     self.getGroupInfo(i).then( function(groupInfo){
                         if(!groupInfo.error){
 							var grPostGetter = self.getWallPosts( groupInfo[0].gid )
+							window.XXX = grPostGetter
 							grPostGetter.then(function(posts){
 								for(var j = 1; j<posts.length; j++){
 									posts[j].GROUP_NAME = i
@@ -188,6 +191,7 @@ define([
                     var deferredWall = new Deferred();
                     (function(def, i){
                         self.getGroupInfo(i).then( function(groupInfo){
+							console.log(groupInfo)
                             if(!groupInfo.error){
 								self.currentOffset = self.publics[i].used
 								var grPostGetter = self.getWallPosts( groupInfo[0].gid )
@@ -229,6 +233,7 @@ define([
             var url = '//api.vk.com/method/wall.get';
             var dispatcher = this.vkTestRequestDispatcher;
             this._getData(url, requestParams, dispatcher).then(function(data){
+                console.log('!!!!!!!!!!!!!!!!')
                 deferredResult.resolve(data);
             });
             return deferredResult;
