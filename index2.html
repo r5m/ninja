@@ -4,23 +4,25 @@
 	<meta charset="utf-8" />
 	<meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="width = device-width, initial-scale = 1, user-scalable = no" name="viewport">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-  
+    <link href="css/semantic.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/colorbox.css">
+        
 	<title>R5M sale</title>
 	<style>
         #posts {
-           
+           margin-right: 5%;
+           margin-left: 5%;
+           list-style-type: none;
         }
-        #posts li{
-            
-        }
-        img.post-photo{
-           
-        }
+       
+        #loader {
+			margin-left: 30px;				
+		}		
+        
         body{
-          
-            
+          background-image: url("css/images/bedge-Grunge.png");            
         }
+        
         
         header{
             width:100%;
@@ -34,85 +36,14 @@
 			cursor: pointer
 		}
 		
-        .left-column{
-           float: left;
-           width: 200px;
-        }
         .center-column{
-            margin-left:200px;
-        }
-        
-        nav {
-            
-        }
-        nav ul{
-          
-            
-        }
-        nav ul li{
-           
-        }
-        nav ul li > div{
-          
-        }
-        nav ul li > div > div{
-          
-        }
-        
-        nav ul li.selected > div > div{
-           
-        }
-        
-        nav ul li > div > div > span{
-          
-        }
-        
-        nav ul li a{
-           
+           margin-top: 70px;
         }
         
         a#pagetop{
-            position: fixed; bottom:0; right:0;
-            background: yellow;
+            position: fixed; bottom:10px; right:10px;
         }
         
-        @media screen and (max-width: 640px) {
-            .left-column {
-                float: none;
-                width: 100%;
-            }
-            
-            .center-column{
-               margin-left:0;
-            }
-            
-            nav ul{
-                width: 100%;
-            }
-            
-            nav ul li > div > div{
-                width:100%;
-                
-            }
-        }
-        
-        @media screen and (min-width: 641px) {
-            .left-column {
-                float: left;
-                width: 200px;
-            }
-            .center-column{
-               margin-left:200px;
-            }
-            
-            nav ul{
-                width: 200px;
-            }
-            nav ul li > div > div{
-                width:200px;
-                
-            }
-        }
         
     </style>
     <script>
@@ -130,25 +61,81 @@
         }
     </script>
 </head>
-<body id="body">
+<body id="body" style="margin: 0px 0px 0px 0px;">
+	
+	<div class="ui inverted icon labeled menu" style="display: block; position: fixed; top: 0; width: 100%; height: 48px; z-index: 100;">
+		
+		<div id="sidebar-left-button" class="teal ui labeled icon button left " style="float: left; margin: 3px 3px 3px 0px">
+			<i class="icon list layout"></i>
+			menu
+		</div>
+		
+		
+		
+		<a href="http://vk.com/r5m.sale" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
+			<i class=" mail icon"></i> About Us
+		</a>
+	</div>
+	
+	<!--
 	<div class="page-header">
 		<h1>Все объявления Томска <small>и даже больше...</small></h1>
 		<button id="menu-hider">Menu</button>
     	<a href="#all">New mode with antispam <sup>TM</sup></a>
-	</div>
+    	
+	</div>-->
 	
-	<div class="list-group list-publics left-column"></div>
+ <!--
+	<div id="sidebar-left-button" class="massive teal ui labeled icon button right attached" style="position: fixed">
+			<i class="icon list layout"></i>
+			menu
+	</div>-->
+	
+	<div id="menus" class="ui styled left sidebar" style="padding-left: 16px;">
+		<a href="#all">
+			<div id="show-all-posts-button" class="ui toggle button" style="width: 240px;">Все записи</div>
+		</a>
+		<div class="ui vertical menu list-publics" style="width: 240px;"></div>
+	</div>
+
+
+	
 	
 
 	<div class="center-column">
 	    <!--<h2>Posts</h2>-->
-	    <ul id="posts"></ul>
+
+	    <div id="loader"><i class="loading icon huge"></i></div>
+
+	    <!--<div class="ui active inline loader" id="loader"></div>-->
+		<!--<button id="search-button" style="display:none;">SEARCH</button>-->
+
+	    
+		<ul id="posts"></ul>
 	</div>
 	
-	<a id="pagetop" href="#" onclick="scrollToTop(event);">наверх</a>
+	
+	
+	
+	<a id="pagetop" href="#" onclick="scrollToTop(event);" class="ui teal icon button"><i class="up arrow icon"></i></a>
+	
+	
+	<script>
+		var div = document.getElementById("sidebar-left-button");
+		div.onclick = function (e) {
+			if ($('.left.sidebar').sidebar('is open')) {
+				$('.left.sidebar').sidebar('hide');
+			} else $('.left.sidebar').sidebar('show');
+			//console.log($('.demo.sidebar').sidebar('is open'));
+		}
+	</script>
+	
+
+	
 	<script src="js/app/config/dojo-conf.js"></script> 
 	<script src="js/dojo/dojo.js"></script>
 	<script src="js/app/md5.js"></script>
+	<!--<script src="js/jQuery/jquery-2.1.1.min.js"></script>-->
 	<script>
 	    
             openNewWindow = function(e){
@@ -162,11 +149,30 @@
                 window.open(e.currentTarget.href, "_blank")
             }
 	
-	    require(['dojo/request/script', 'app', 'dojo/domReady!'], function(script, Application){
+	    require(['dojo/request/script', 'jquery', 'app', 'dojo/domReady!'], function(script, jQuery, Application){
+            window.jQuery = jQuery
             
-            var app = new Application();
+            var script = document.createElement('script');
+			script.src   = "js/semantic.js";
+			document.body.appendChild(script);
+			script.onload = function() {
+				var app = new Application();
+				$('.left.sidebar').sidebar();
+			};
+            
+            
+            script = document.createElement('script');
+			script.src   = "js/colorbox.js";
+			document.body.appendChild(script);
+			script.onload = function() {
+				jQuery('a.gallery').colorbox();
+			};
+            
+			
             
         })
     </script>
+    <!--<script src="js/semantic.js"></script>-->
+	
 </body>
 </html>
