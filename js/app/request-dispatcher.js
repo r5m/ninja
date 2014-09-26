@@ -442,8 +442,8 @@ define([
             //console.log(defArray)
             var deferredResult = new DeferredList(defArray)
             deferredResult.then(function(){
-                self.posts.sort(function(a, b){
-                    return a.date < b.date
+                self.posts = self.posts.sort(function(a, b){
+                    return a.date > b.date ? -1 : 1
                 })
                 self.isWaitingForData = false
                 result.resolve ('ok');
