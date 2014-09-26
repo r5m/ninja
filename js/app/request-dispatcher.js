@@ -13,14 +13,30 @@ define([
         // has - how many posts were loaded
         // used - how many of them
         publics: {
-           // 'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
-            'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
-            'desk70'        : {title: 'Еще одна группа', has: 0, used: 0},
-            '70baraholka'   : {title: '70baraholka', has: 0, used: 0},
+        /*   // 'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
+          --  'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
+         --   'desk70'        : {title: 'Еще одна группа', has: 0, used: 0},
+           -- '70baraholka'   : {title: '70baraholka', has: 0, used: 0},
             'swetselltll'   : {title: 'Томск|Объявления| Авто|Работа|', has: 0, used: 0},
-            'club49470911'  : {title: '417 человек', has: 0, used: 0},
+          --  'club49470911'  : {title: '417 человек', has: 0, used: 0},
            // 'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
-            'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
+          --  'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
+        */
+			'sellithere'    : {title: 'Барахолка Электроники и Мебели', default: true, has: 0, used: 0},
+			'club49470911'  : {title: 'Бесплатные объявления Томск Куплю-Продам', has: 0, used: 0},
+			'club37509800'  : {title: 'Обменяю, продам, подарю [ Томск ]', has: 0, used: 0},
+			'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
+            'desk70'        : {title: 'Доска объявлений в Томске!', has: 0, used: 0},
+			'swetselltll'   : {title: 'Томск | Объявления | Авто | Работа|', has: 0, used: 0},
+         	'tomdex'		: {title: 'Томдекс | Томская барахолка (доска объявлений)', has: 0, used: 0},
+            '70baraholka'   : {title: 'Доска объявлений, Барахолка | Томск', has: 0, used: 0},
+			'tomsk0'  		: {title: 'Доска объявлений томск', has: 0, used: 0},
+			'tomsk_board'	: {title: 'Томская доска объявлений', has: 0, used: 0},
+			'tomsk_obyavleniya'	: {title: 'Томск объявления | Работа', has: 0, used: 0},
+			'baraholkavtomske'	: {title: 'Барахолка в Томске', has: 0, used: 0},
+			'tomdesk'		: {title: 'Tomdesk.ru', has: 0, used: 0},
+			'obyavlenie_tomsk'	: {title: 'Доска объявлений в Томске | Барахолка', has: 0, used: 0}
+            
         },
         currentPublic: 'swetselltll',
         selectedCssClass: 'active',
