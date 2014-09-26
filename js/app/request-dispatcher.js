@@ -22,7 +22,7 @@ define([
            // 'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
           --  'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
         */
-			/*'sellithere'    : {title: 'Барахолка Электроники и Мебели', default: true, has: 0, used: 0},
+			'sellithere'    : {title: 'Барахолка Электроники и Мебели', default: true, has: 0, used: 0},
 			'club49470911'  : {title: 'Бесплатные объявления Томск Куплю-Продам', has: 0, used: 0},
 			'club37509800'  : {title: 'Обменяю, продам, подарю [ Томск ]', has: 0, used: 0},
 			'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
@@ -34,7 +34,7 @@ define([
 			'tomsk_board'	: {title: 'Томская доска объявлений', has: 0, used: 0},
 			'tomsk_obyavleniya'	: {title: 'Томск объявления | Работа', has: 0, used: 0},
 			'baraholkavtomske'	: {title: 'Барахолка в Томске', has: 0, used: 0},
-			'tomdesk'		: {title: 'Tomdesk.ru', has: 0, used: 0},*/
+			'tomdesk'		: {title: 'Tomdesk.ru', has: 0, used: 0},
 			'obyavlenie_tomsk'	: {title: 'Доска объявлений в Томске | Барахолка', has: 0, used: 0}
             
         },
