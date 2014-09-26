@@ -22,7 +22,7 @@ define([
            // 'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
           --  'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
         */
-			'sellithere'    : {title: 'Барахолка Электроники и Мебели', default: true, has: 0, used: 0},
+			/*'sellithere'    : {title: 'Барахолка Электроники и Мебели', default: true, has: 0, used: 0},
 			'club49470911'  : {title: 'Бесплатные объявления Томск Куплю-Продам', has: 0, used: 0},
 			'club37509800'  : {title: 'Обменяю, продам, подарю [ Томск ]', has: 0, used: 0},
 			'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
@@ -34,7 +34,7 @@ define([
 			'tomsk_board'	: {title: 'Томская доска объявлений', has: 0, used: 0},
 			'tomsk_obyavleniya'	: {title: 'Томск объявления | Работа', has: 0, used: 0},
 			'baraholkavtomske'	: {title: 'Барахолка в Томске', has: 0, used: 0},
-			'tomdesk'		: {title: 'Tomdesk.ru', has: 0, used: 0},
+			'tomdesk'		: {title: 'Tomdesk.ru', has: 0, used: 0},*/
 			'obyavlenie_tomsk'	: {title: 'Доска объявлений в Томске | Барахолка', has: 0, used: 0}
             
         },
@@ -197,7 +197,7 @@ define([
             var self = this
             domStyle.set('loader','display','none')
             console.log('SHOWPOSTS', data)
-            for(var i = 1, k=0; ( k < ( ( this.currentMode == 'New' ) ? this.postsToShow : data.length ) ) && ( i < data.length ); i++, k++){
+            for(var i = this.currentMode == 'New' ? 0 : 1, k=0; ( k < ( ( this.currentMode == 'New' ) ? this.postsToShow : data.length ) ) && ( i < data.length ); i++, k++){
                 var thePost = data[i], isNewPost = true 
                 if(this.filterSpam){
                     var postMd5 = md5(thePost.text)
