@@ -404,7 +404,6 @@ define([
             this.currentMode = 'Wall'
             
             
-            //this.testTopicsRequest()           
             this._getGroupInfo(group).then( function(groupInfo){
                 if(!groupInfo.error) {
 					self.isWaitingForData = true;            
@@ -459,8 +458,8 @@ define([
             //console.log(defArray)
             var deferredResult = new DeferredList(defArray)
             deferredResult.then(function(){
-                self.posts.sort(function(a, b){
-                    return a.date < b.date
+                self.posts = self.posts.sort(function(a, b){
+                    return a.date > b.date ? -1 : 1
                 })
                 self.isWaitingForData = false
                 result.resolve ('ok');
