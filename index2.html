@@ -73,7 +73,7 @@
 		
 		
 		
-		<a href="http://vk.com/r5m.sale" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
+		<a id="about-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
 			<i class=" mail icon"></i> О R5M-sale
 		</a>
 	</div>
@@ -116,6 +116,19 @@
 	</div>
 	
 	
+	<div class="ui page dimmer">
+		<div class="content">
+			<div class="center">Сейчас тут появится описание нашей великой миссии и дополнительные штуки )</div>
+		</div>
+	</div>
+	<script>
+		var div = document.getElementById("about-button");
+		div.onclick = function (e) {
+			$('.ui.dimmer').dimmer('show');
+			
+			//console.log($('.demo.sidebar').sidebar('is open'));
+		}
+	</script>
 	
 	
 	<a id="pagetop" href="#" onclick="scrollToTop(event);" class="ui teal icon button"><i class="up arrow icon"></i></a>
@@ -124,6 +137,7 @@
 	<script>
 		var div = document.getElementById("sidebar-left-button");
 		div.onclick = function (e) {
+			//$('.ui.dimmer').dimmer('show');
 			if ($('.left.sidebar').sidebar('is open')) {
 				$('.left.sidebar').sidebar('hide');
 			} else $('.left.sidebar').sidebar('show');
