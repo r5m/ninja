@@ -107,8 +107,8 @@ define([
                     //"data-href": i,
                     id: 'menu-' + i,
                     'class' :'teal item '+(this.publics[i].default ? self.selectedCssClass :""),
-                    innerHTML : '<div style="font-size: 1.4em">'+this.publics[i].title+'</div>'+
-                        '</br><div><a style="font-size: 1em; color: grey;" onclick="openNewWindow(event)" href="'+link+'">vk.com/'+i+'</a></div>'
+                    innerHTML : '<div>'+this.publics[i].title+'</div>'+
+                        '</br><div><a color: grey;" onclick="openNewWindow(event)" href="'+link+'">vk.com/'+i+'</a></div>'
                 }, nav, 'last')
                 if(this.publics[i].default)
                     this.currentPublic = i
@@ -201,7 +201,7 @@ define([
                 if(isNewPost){    
                     this.postsHash.push(postMd5)
                     var nodeId = data[i].to_id+'_'+data[i].id
-                    var originLink = '<a style="font-size: 0.8em" class="ui large black label" id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'">Посмотреть обявление в ВК</a>';
+                    var originLink = '<a class="ui large black label" id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'">Посмотреть обявление в ВК</a>';
                     var userId = data[i].from_id 
                     var uinfoId = 'ulink-'+Math.random()
                     var date = new Date(data[i].date * 1000)
@@ -209,7 +209,7 @@ define([
                     
                     var li = domConstruct.create('li',{
                       // innerHTML : '<p><span>'+ dateString + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text,
-                       innerHTML : '<div class="event" style="width: 100%" ><div class="content" style="text-align: justify"><div class="date">'+ dateString + '</div><div class="summary"><a class="ui teal label" style="font-size: 0.8em"><span id="'+uinfoId+'"></span></a></div><div style="margin-top: 10px; color: grey">' + data[i].text+ '</div></div></div>',
+                       innerHTML : '<div class="event" style="width: 100%" ><div class="content" style="text-align: justify"><div class="date">'+ dateString + '</div><div class="summary"><a class="ui teal label" ><span id="'+uinfoId+'"></span></a></div><div style="margin-top: 10px; color: grey">' + data[i].text+ '</div></div></div>',
                        'class' : 'ui piled feed segment'
                     }, 'posts','last');
                     
