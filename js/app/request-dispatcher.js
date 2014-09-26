@@ -122,9 +122,10 @@ define([
                     href: '#wall/'+i,
                     //"data-href": i,
                     id: 'menu-' + i,
-                    'class' :'teal item '+(this.publics[i].default ? self.selectedCssClass :""),
-                    innerHTML : '<div>'+this.publics[i].title+'</div>'+
-                        '</br><div><a color: grey;" onclick="openNewWindow(event)" href="'+link+'">vk.com/'+i+'</a></div>'
+                    'class' :'ui red item '+(this.publics[i].default ? self.selectedCssClass :""),
+                    innerHTML : this.publics[i].title//'<div>'+this.publics[i].title+'</div>'+
+                        //'</br><div><a color: grey;" onclick="openNewWindow(event)" href="'+link+'">vk.com/'+i+'</a></div>'
+                        //'</br><div><a color: grey;" onclick="openNewWindow(event)" href="'+link+'">vk.com/'+i+'</a></div>'
                 }, nav, 'last')
                 if(this.publics[i].default)
                     this.currentPublic = i
@@ -162,14 +163,14 @@ define([
                 var publicName = event.params.id
                 domStyle.set(dom.byId("loader"), "display", "");
                 document.getElementById("show-all-posts-button").classList.remove("active");
-                document.getElementById("show-all-posts-button").innerHTML='Показать все записи';
+                document.getElementById("show-all-posts-button").innerHTML='Все объявления';
                 self.loadPublic(publicName)
             });
             
             router.register("all", function (event) {
    				domStyle.set(dom.byId("loader"), "display", "");
    				document.getElementById("show-all-posts-button").classList.add("active");
-   				document.getElementById("show-all-posts-button").innerHTML='Показаны все записи';
+   				document.getElementById("show-all-posts-button").innerHTML='Все объявления';
    				self.updateNewModePage( true )
             });
             
@@ -217,7 +218,8 @@ define([
                 if(isNewPost){    
                     this.postsHash.push(postMd5)
                     var nodeId = data[i].to_id+'_'+data[i].id
-                    var originLink = '<a style="font-size: 0.6rem;" class="black ui labeled icon button left " id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'"><i class="vk icon"></i>Посмотреть объявление</a>';
+                    var originLink = '<a style="font-size: 0.6rem;" class="black ui labeled icon button left " id= "'+nodeId+'" href="http://vk.com/'+
+						data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'"><i class="vk icon"></i>Посмотреть объявление</a>';
                     var userId = data[i].from_id 
                     var uinfoId = 'ulink-'+Math.random()
                     var date = new Date(data[i].date * 1000)
