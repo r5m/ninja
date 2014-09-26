@@ -40,7 +40,7 @@ define([
         },
         currentPublic: 'swetselltll',
         selectedCssClass: 'active',
-        filterSpam: true,
+        filterSpam: false,
         
         // All posts from all publics
         posts: [],
@@ -74,7 +74,7 @@ define([
 			}
 			
             
-			this.currentOffset += this.postsPerRequest + 1;
+			//this.currentOffset += this.postsPerRequest + 1;
             return this['_getPostsFromWall']( this.currentMode == 'Search' ? this.currentSearchString : '').then( function( posts ){
 				self.logPosts( posts );
 				deferredRes.resolve('ok');
@@ -107,7 +107,7 @@ define([
       
         constructor: function(){
             var self = this
-            
+            window.App = self
             var nav = query('.list-publics')[0]
             
            /* domAttr.set(dom.byId('search-button'),'onclick', function(){
@@ -461,6 +461,7 @@ define([
             var deferredResult = new DeferredList(defArray)
             deferredResult.then(function(){
                 self.posts = self.posts.sort(function(a, b){
+					console.log( a.date > b.date )
                     return a.date > b.date ? -1 : 1
                 })
                 self.isWaitingForData = false
