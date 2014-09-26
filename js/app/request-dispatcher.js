@@ -201,7 +201,7 @@ define([
                 if(isNewPost){    
                     this.postsHash.push(postMd5)
                     var nodeId = data[i].to_id+'_'+data[i].id
-                    var originLink = '<a class="ui large black label" id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'">Посмотреть обявление в ВК</a>';
+                    var originLink = '<a style="font-size: 0.6rem;" class="black ui labeled icon button left " id= "'+nodeId+'" href="http://vk.com/'+data[i].GROUP_NAME+'?w=wall'+data[i].to_id+'_'+data[i].id+'"><i class="vk icon"></i>Посмотреть объявление</a>';
                     var userId = data[i].from_id 
                     var uinfoId = 'ulink-'+Math.random()
                     var date = new Date(data[i].date * 1000)
@@ -209,7 +209,7 @@ define([
                     
                     var li = domConstruct.create('li',{
                       // innerHTML : '<p><span>'+ dateString + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text,
-                       innerHTML : '<div class="event" style="width: 100%" ><div class="content" style="text-align: justify"><div class="date">'+ dateString + '</div><div class="summary"><a class="ui teal label" ><span id="'+uinfoId+'"></span></a></div><div style="margin-top: 10px; color: grey">' + data[i].text+ '</div></div></div>',
+                       innerHTML : '<div class="event" style="width: 100%" ><div class="content" style="text-align: justify"><div class="date">'+ dateString + '</div><div class="summary"><a class="ui teal label" style="width: auto; font-size: 0.7rem;" ><span id="'+uinfoId+'"></span></a></div><div style="margin-top: 10px; color: grey; font-size: 1rem;">' + data[i].text+ '</div></div></div>',
                        'class' : 'ui piled feed segment'
                     }, 'posts','last');
                     
