@@ -42,6 +42,11 @@ define([
         selectedCssClass: 'active',
         filterSpam: false,
         
+        //What to search
+        searchString : 'игра',
+        //To search or not to search, that's the question.
+        isSearchActive: false,
+        
         // All posts from all publics
         posts: [],
         postsHash: [],
@@ -204,8 +209,8 @@ define([
                     for(var z = 0; z< this.postsHash.length; z++){
                     //    console.log(this.postsHash[z], postMd5, this.postsHash[z] == postMd5)
                         if(this.postsHash[z] == postMd5){
-                            isNewPost = false; break
-                        }
+                            isNewPost = false; break;                            
+                        }                        
                     }
                     if(!isNewPost)
                         k--;
@@ -214,6 +219,10 @@ define([
                     
                 if(thePost.GROUP_NAME)
                     self.publics[thePost.GROUP_NAME].used ++
+                
+                if(self.isSearchActive && thePost.text.toLowerCase().indexOf( self.searchString.toLowerCase() ) == -1)
+					isNewPost = false;
+                
                 
                 if(isNewPost){    
                     this.postsHash.push(postMd5)
@@ -461,8 +470,7 @@ define([
             var deferredResult = new DeferredList(defArray)
             deferredResult.then(function(){
                 self.posts = self.posts.sort(function(a, b){
-					console.log( a.date > b.date )
-                    return a.date > b.date ? -1 : 1
+					return a.date > b.date ? -1 : 1
                 })
                 self.isWaitingForData = false
                 result.resolve ('ok');
