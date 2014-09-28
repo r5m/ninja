@@ -11,6 +11,7 @@
 				position: relative;
 				left: 200px;
 				top: 30px;
+				width: 300px;
 			}
 			.ninja {
 				-webkit-opacity: 1;
@@ -36,6 +37,7 @@
 				     -o-transition: all 0.5s ease;
 						transition: all 0.5s ease;
 			}
+			
         </style>
 	<title>R5M sale</title>
 </head>
@@ -50,10 +52,8 @@
 				document.getElementById( 'ninja' ).onmouseover = function( e ){
 					setTimeout( function(){
 						//Place ninja to another letter!
-						while(rand03 == current) {
-							
+						while(rand03 == current) {							
 							rand03 = parseInt (Math.random() * 4 );
-							console.log( rand03, current )
 						}
 						current = rand03;
 						
