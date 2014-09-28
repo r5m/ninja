@@ -40,12 +40,24 @@
 						transition: all 0.5s ease;
 			}
 			
+			p{
+				text-align: center;
+				margin-top : 30px;
+				font-size: 2rem;
+				color: #ccc;
+				font-family: sans-setrif;
+				
+			}
 			.soon{
 				text-align: center;
 				margin-top : 30px;
 				font-size: 2rem;
 				color: #ccc;
-				font-family: sans-serif;
+				font-family: sans-setrif;
+				position: absolute;
+				bottom: 0;
+				left:0;
+				right:0;
 			}
         </style>
 	<title>Sale... like ninja</title>
@@ -76,10 +88,13 @@
 				}
 			</script>
 		</header>-->
+		<p>Скоро</p>
 		<section class="soon">
 			<!--<hr/>-->
-			<p>Скоро...</p>
-			<img src="img/ninja_1.png" style="width: 200px;"/>
+			
+			<footer style="background: black; height: 33px; position: absolute; bottom:0; left:0; right:0; z-index:-1;"></footer>
+			<img src="img/ninja.png" style="width: 300px; z-index: 999;"/>
+			
 		</section>		
 </body>
 </html>
