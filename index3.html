@@ -7,6 +7,11 @@
     <link href="css/semantic.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/colorbox.css">
         <style>
+			header{
+				position: relative;
+				left: 200px;
+				top: 30px;
+			}
 			.ninja {
 				-webkit-opacity: 1;
 				   -moz-opacity: 1;
@@ -35,26 +40,32 @@
 	<title>R5M sale</title>
 </head>
 <body style="background: navy">
-		<img src="logo.png" style="width: 200px; margin-top: 50px;"/>
-		<img class="ninja" id="ninja" src="ninja.png" style="position: absolute; top: 20px;left: 155px; width: 50px;"/>
-		<script>
-			var current = 3; // Where is Ninja ?!
-			var rand03 = current; //Where will he go?!
+		<header>
+			<img src="logo.png" style="width: 200px; margin-top: 50px;"/>
+			<img class="ninja" id="ninja" src="ninja.png" style="position: absolute; top: 12px;left: 148px; width: 50px;"/>
+			<script>
+				var current = 3; // Where is Ninja ?!
+				var rand03 = current; //Where will he go?!
 					
-			document.getElementById( 'ninja' ).onmouseover = function( e ){
-				setTimeout( function(){
-					//Place ninja to another letter!
-					while(rand03 == current) {
+				document.getElementById( 'ninja' ).onmouseover = function( e ){
+					setTimeout( function(){
+						//Place ninja to another letter!
+						while(rand03 == current) {
+							
+							rand03 = parseInt (Math.random() * 4 );
+							console.log( rand03, current )
+						}
+						current = rand03;
 						
-						rand03 = parseInt (Math.random() * 4 );
-						console.log( rand03, current )
-					}
-					current = rand03;
-					
-					var arr = [8, 58, 98, 155];
-					e.target.style.left = arr [rand03] + 'px';
-				}, 500);
-			}
-		</script>
+						// x,y positions for each letter :-)
+						var xPos = [0, 50, 90, 148];
+						var yPos = [15, 13, 12, 12];
+						
+						e.target.style.left = xPos [rand03] + 'px';
+						e.target.style.top = yPos [rand03] + 'px';
+					}, 500);
+				}
+			</script>
+		</header>
 </body>
 </html>
