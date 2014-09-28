@@ -470,8 +470,7 @@ define([
             var deferredResult = new DeferredList(defArray)
             deferredResult.then(function(){
                 self.posts = self.posts.sort(function(a, b){
-					console.log( a.date > b.date )
-                    return a.date > b.date ? -1 : 1
+					return a.date > b.date ? -1 : 1
                 })
                 self.isWaitingForData = false
                 result.resolve ('ok');
