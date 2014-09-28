@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="width = device-width, initial-scale = 1, user-scalable = no" name="viewport">
+    <link href="css/semantic.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/colorbox.css">
+        <style>
+			.ninja {
+				-webkit-opacity: 1;
+				   -moz-opacity: 1;
+				        opacity: 1;
+				-webkit-transition: all 1s ease;
+				   -moz-transition: all 1s ease;
+				    -ms-transition: all 1s ease;
+				     -o-transition: all 1s ease;
+						transition: all 1s ease;
+						
+						 transition-delay: 2s;
+						 cursor: pointer
+			}
+			
+			.ninja:hover {
+				-webkit-opacity: 0;
+				   -moz-opacity: 0;
+				        opacity: 0;
+				-webkit-transition: all 1s ease;
+				   -moz-transition: all 1s ease;
+				    -ms-transition: all 1s ease;
+				     -o-transition: all 1s ease;
+						transition: all 1s ease;
+			}
+        </style>
+	<title>R5M sale</title>
+</head>
+<body style="background: navy">
+		<img src="logo.png" style="width: 200px; margin-top: 50px;"/>
+		<img class="ninja" id="ninja" src="ninja.png" style="position: absolute; top: 20px;left: 155px; width: 50px;"/>
+		<script>
+			document.getElementById( 'ninja' ).onmouseover = function( e ){
+				setTimeout( function(){
+					var rand03 = parseInt (Math.random() * 4 );
+					var arr = [8, 58, 98, 155]
+					e.target.style.left = arr [rand03] + 'px'
+				}, 1000);
+			}
+		</script>
+</body>
+</html>
