@@ -9,6 +9,53 @@
         
 	<title>R5M sale</title>
 	<style>
+		/*
+		* 	HEADER and NINJA logo
+		*/
+		
+		header.ninja-logo{
+			background: #00b5ad; /*TODO: change to right color*/
+			margin: 48px 0 0;			
+			padding: 0 0 30px;
+		}
+        
+        header.ninja-logo > div{
+			width: 200px;
+			margin: 0 auto;
+			position:relative;			
+			
+		}
+		
+		.ninja {
+			-webkit-opacity: 1;
+			   -moz-opacity: 1;
+			        opacity: 1;
+			-webkit-transition: all 1s ease;
+			   -moz-transition: all 1s ease;
+			    -ms-transition: all 1s ease;
+			     -o-transition: all 1s ease;
+					transition: all 1s ease;
+					
+					 transition-delay: 1s;
+					 cursor: pointer
+		}
+			
+		.ninja:hover {
+			-webkit-opacity: 0;
+			   -moz-opacity: 0;
+			        opacity: 0;
+			-webkit-transition: all 0.5s ease;
+			   -moz-transition: all 0.5s ease;
+			    -ms-transition: all 0.5s ease;
+			     -o-transition: all 0.5s ease;
+					transition: all 0.5s ease;
+		}
+			
+		/*
+		*/
+			
+        
+        
         #posts {
            margin-right: 5%;
            margin-left: 5%;
@@ -24,7 +71,7 @@
         }
         
         
-        header{
+        header.top{
             width:100%;
         }
         
@@ -67,7 +114,7 @@
     </script>
 </head>
 <body id="body" style="margin: 0px 0px 0px 0px;">
-	<header>
+	<header class="top">
 		<div class="ui inverted icon labeled menu" style="display: block; position: fixed; top: 0; width: 100%; height: 48px; z-index: 100;">
 			<a id="about-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
 				<i class="info icon"></i> О НАС
@@ -83,21 +130,41 @@
 				<i class="vk icon"></i> Вконтакте
 			</a>
 		</div>
-		
-		<div id="header-logo-container" style="width: 100%; height: 280px; background-color: teal;">
-			<div style="text-align: center; padding-top: 100px; width: auto;">
-				<img src="img/logo.png" style="height: 170px;">
-				<img src="img/ninja.png" style="position: absolute; top: 10px; z-index: 999; height: 100px; left: 50%;">
-			</div>
-		</div>	
-		
-		
-		<div id="sidebar-left-button" class="ui small labeled icon button left " style="float: left; width: 100%; background-color: #F2E108; color: black;">
-			<!--<div id="sidebar-left-button" class="item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">-->
-				<i class="icon list layout"></i>
-				Выбрать объявления
+	</header>
+	<header  class="ninja-logo">
+		<div>
+			<img src="img/logo.png" style="width: 200px; margin-top: 50px;"/>
+			<img class="ninja" id="ninja" src="img/ninja.png" style="position: absolute; top: 12px;left: 148px; width: 50px;"/>
+			<script>
+				var current = 3; // Where is Ninja ?!
+				var rand03 = current; //Where will he go?!
+						
+				document.getElementById( 'ninja' ).onmouseover = function( e ){
+					setTimeout( function(){
+						//Place ninja to another letter!
+						while(rand03 == current) {							
+							rand03 = parseInt (Math.random() * 4 );
+						}
+						current = rand03;
+						
+						// x,y positions for each letter :-)
+						var xPos = [0, 50, 90, 148];
+						var yPos = [15, 13, 12, 12];
+							
+						e.target.style.left = xPos [rand03] + 'px';
+						e.target.style.top = yPos [rand03] + 'px';
+					}, 500);
+				}
+			</script>
 		</div>
 	</header>
+		
+	<div id="sidebar-left-button" class="ui small labeled icon button left " style="float: left; width: 100%; background-color: #F2E108; color: black;">
+		<!--<div id="sidebar-left-button" class="item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">-->
+		<i class="icon list layout"></i>
+		Выбрать объявления
+	</div>
+	
 	<!--
 	<div class="page-header">
 		<h1>Все объявления Томска <small>и даже больше...</small></h1>
