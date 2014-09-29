@@ -116,19 +116,70 @@
 <body id="body" style="margin: 0px 0px 0px 0px;">
 	<header class="top">
 		<div class="ui inverted icon labeled menu" style="display: block; position: fixed; top: 0; width: 100%; height: 48px; z-index: 100;">
+			
+			<!--  Button ABOUT + DIMMER  -->
 			<a id="about-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
 				<i class="info icon"></i> О НАС
 			</a>
+			<div id="about-dimmer" class="ui page dimmer">
+				<div class="content">
+					<div class="center" style="font-size: 1rem;">
+						
+						<p>ABOUT</p>
+						
+					</div>
+				</div>
+			</div>
+			
+			
+			<!--  Button CONTACTS + DIMMER  -->
 			<a id="contacts-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
 				<i class="mail icon"></i> КОНТАКТЫ
 			</a>
+			<div id="contacts-dimmer" class="ui page dimmer">
+				<div class="content">
+					<div class="center" style="font-size: 1rem;">
+						
+						<p>Contacts</p>
+						
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			
+			
+			<!--  Button HowItWorks + DIMMER  -->
 			<a id="how-it-works-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
 				<i class="question icon"></i> КАК ЭТО РАБОТАЕТ?
 			</a>
+			<div id="how-it-works-dimmer" class="ui page dimmer">
+				<div class="content">
+					<div class="center" style="font-size: 1rem;">
+						
+						<p>HowItWorks</p>
+						
+					</div>
+				</div>
+			</div>
 			
-			<a id="how-it-works-button" class=" item" style="float: right; padding: 6px 38px 8px 38px; font-size: 0.8rem;">
+			
+			<!--  Button VK + DIMMER  -->
+			<a id="vk-button" class=" item" style="float: right; padding: 6px 38px 8px 38px; font-size: 0.8rem;">
 				<i class="vk icon"></i> Вконтакте
 			</a>
+			<div id="vk-dimmer" class="ui page dimmer">
+				<div class="content">
+					<div class="center" style="font-size: 1rem;">
+						
+						<p>VK</p>
+						
+					</div>
+				</div>
+			</div>
+			
+			
 		</div>
 	</header>
 	<header  class="ninja-logo">
@@ -202,6 +253,7 @@
 		<ul id="posts"></ul>
 	</div>
 	
+	<!--  Example dimmer
 	
 	<div class="ui page dimmer">
 		<div class="content">
@@ -249,33 +301,27 @@
 				
 				<a class="teal ui labeled icon button"><i class="vk icon"></i>Follow Us</a>
 				<a class="teal ui labeled icon button"><i class="vk icon"></i>Tell about Us</a>
-				<!--
-				<h3></h3>
-				<h3></h3>
-				<h3></h3>
-				<h3></h3>
 				
-				</br>
 				
-				<p>Если вы хотите помочь нам в нашем деле создания единой торговой площадки,</br> то можете уже подать или просмотреть объявления в нашем сообществе и рассказать о нас вашим друзьям</p>
-				</br>
-				
-				<a class="teal ui labeled icon button"><i class="vk icon"></i>Follow Us</a>
-				<a class="teal ui labeled icon button"><i class="vk icon"></i>Tell about Us</a>
-				-->
 				
 			</div>
 		</div>
 	</div>
 	
-	
+	-->
 	
 	<script>
-		var div = document.getElementById("about-button");
-		div.onclick = function (e) {
-			$('.ui.dimmer').dimmer('show');
-			
-			//console.log($('.demo.sidebar').sidebar('is open'));
+		document.getElementById("about-button").onclick = function (e) {
+			$('#about-dimmer').dimmer('show');
+		}
+		document.getElementById("contacts-button").onclick = function (e) {
+			$('#contacts-dimmer').dimmer('show');
+		}
+		document.getElementById("how-it-works-button").onclick = function (e) {
+			$('#how-it-works-dimmer').dimmer('show');
+		}
+		document.getElementById("vk-button").onclick = function (e) {
+			$('#vk-dimmer').dimmer('show');
 		}
 	</script>
 	
