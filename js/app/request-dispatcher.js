@@ -40,8 +40,8 @@ define([
         },
         currentPublic: 'swetselltll',
         selectedCssClass: 'active',
-        filterSpam: false,
-        
+        filterSpam: true,
+   
         //What to search
         searchString : 'игра',
         //To search or not to search, that's the question.
@@ -201,7 +201,7 @@ define([
         logPosts: function(data){
             var self = this
             domStyle.set('loader','display','none')
-            console.log('SHOWPOSTS', data)
+           // console.log('SHOWPOSTS', data)
             for(var i = this.currentMode == 'New' ? 0 : 1, k=0; ( k < ( ( this.currentMode == 'New' ) ? this.postsToShow : data.length ) ) && ( i < data.length ); i++, k++){
                 var thePost = data[i], isNewPost = true 
                 if(this.filterSpam){
@@ -266,10 +266,10 @@ define([
                         
                         for(var j=0; j < data[i].attachments.length; j++){
                             var a = data[i].attachments[j]
-                            console.log(groupId)
+                            //console.log(groupId)
 
                             if(a.type == "photo"){
-								console.log(a.photo)
+							//	console.log(a.photo)
 								var colorboxLink = domConstruct.create('a',{
 									href: a.photo.src_big,
 									rel: groupId,
@@ -511,7 +511,7 @@ define([
                 
                 var flag = bodyRealSizes.h - scrollPosition.y - bodyHeight;
                 if(flag <= 0){
-					console.log(self.isWaitingForData)
+				//	console.log(self.isWaitingForData)
                 
 				    if(!self.isWaitingForData){
                         if(self.currentMode != "New"){
@@ -525,7 +525,7 @@ define([
                                 }
                             )
                         }else{
-                            console.log('NEW MODE!')
+                           // console.log('NEW MODE!')
                             self.isWaitingForData = true;
                             self.updateNewModePage().then(
                                 function(){ 
@@ -536,6 +536,12 @@ define([
                         }
                     }
                 }
+                var menuButton = document.getElementById("sidebar-left-button");//.classList.remove("active");
+                var output = domGeometry.docScroll();
+				if (output.y >= 255) {menuButton.classList.add("fixedbutton")} else {menuButton.classList.remove("fixedbutton");}
+                //console.log(output.y);
+                
+                
             }
             
             window.onscroll =  onScroll            
