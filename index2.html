@@ -395,9 +395,8 @@
 			};
             
 			require(['dojo/dom','dojo/on'], function(dom, on){
-				alert('!')
 				on(dom.byId('close-button'), 'click', function (e) {
-				alert('!!')
+				alert('click')
 				try{
 					require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
 						var dimmer = query('.dimmer.active.visible')[0]
