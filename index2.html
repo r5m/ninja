@@ -10,6 +10,20 @@
         
 	<title>Sale Like... NINJA</title>
 	<style>
+		
+		@media all and (max-width: 480px) {
+		  header .ui.icon.menu > a.item {
+			width: 60px;
+			height: 45px;
+		  }
+		  header .ui.icon.menu > a.item i.icon{
+			line-height: 32px;
+		  }
+		  header .ui.icon.menu > a.item span{
+			display: none;
+		  }
+		}
+		
 		/*
 		* 	HEADER and NINJA logo
 		*/
@@ -126,7 +140,7 @@
 			
 			<!--  Button ABOUT + DIMMER  -->
 			<a id="about-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
-				<i class="info icon"></i> О НАС
+				<i class="info icon"></i> <span>О НАС</span>
 			</a>
 			<div id="about-dimmer" class="ui page dimmer">
 				<div class="content">
@@ -163,7 +177,7 @@
 			
 			<!--  Button CONTACTS + DIMMER  -->
 			<a id="contacts-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
-				<i class="mail icon"></i> КОНТАКТЫ
+				<i class="mail icon"></i> <span>КОНТАКТЫ</span>
 			</a>
 			<div id="contacts-dimmer" class="ui page dimmer">
 				<div class="content">
@@ -181,7 +195,7 @@
 			
 			<!--  Button HowItWorks + DIMMER  -->
 			<a id="how-it-works-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
-				<i class="question icon"></i> КАК ЭТО РАБОТАЕТ?
+				<i class="question icon"></i> <span>КАК ЭТО РАБОТАЕТ?</span>
 			</a>
 			<div id="how-it-works-dimmer" class="ui page dimmer">
 				<div class="content">
@@ -209,8 +223,8 @@
 			
 			
 			<!--  Button VK + DIMMER  -->
-			<a id="vk-button" class=" item" style="float: right; padding: 6px 38px 8px 38px; font-size: 0.8rem;">
-				<i class="vk icon"></i> Вконтакте
+			<a id="vk-button" class=" item" style="float: right; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
+				<i class="vk icon"></i> <span>Вконтакте</span>
 			</a>
 			<div id="vk-dimmer" class="ui page dimmer">
 				<div class="content">
