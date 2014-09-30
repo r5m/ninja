@@ -185,9 +185,9 @@
 				</div>
 			  </div>
 			  <div class="actions">
-				<div id="close-button" class="ui red button">
+				<button id="close-button" class="ui red button">
 				  Cancel
-				</div>
+				</button>
 				<div class="ui blue button">
 				  Okay
 				</div>
@@ -335,36 +335,8 @@
 			$('#about-modal').modal('show');
 			//document.getElementById("about-modal").style.display='block';
 		}
-		document.getElementById("close-button").onclick = function (e) {
-			try{
-				require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
-					var dimmer = query('.dimmer.active.visible')[0]
-					var modal = query('.modal.active.visible')[0]
-						
-					$('#about-modal').modal('hide');
-					$('#about-modal').modal('hide dimmer'); 
-				
-					setTimeout(function(){
-						domClass.remove(dimmer, 'active visible')
-						domClass.remove(modal, 'active visible')
-						alert( dimmer )
-						domClass.add(dimmer, 'hidden')
-						domClass.add(modal, 'hidden')
-					})
-				}, 500)
-			} catch(e){
-				alert("!");
-			}
-		}
-		document.getElementById("contacts-button").onclick = function (e) {
-			$('#contacts-dimmer').dimmer('show');
-		}
-		document.getElementById("how-it-works-button").onclick = function (e) {
-			$('#how-it-works-dimmer').dimmer('show');
-		}
-		document.getElementById("vk-button").onclick = function (e) {
-			$('#vk-dimmer').dimmer('show');
-		}
+		
+		
 		
 	</script>
 	
@@ -422,7 +394,39 @@
 				jQuery('a.gallery').colorbox();
 			};
             
-			
+			require(['dojo/dom','dojo/on'], function(dom, on){
+				alert('!')
+				on(dom.byId('close-button'), 'click', function (e) {
+				alert('!!')
+				try{
+					require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
+						var dimmer = query('.dimmer.active.visible')[0]
+						var modal = query('.modal.active.visible')[0]
+							
+						$('#about-modal').modal('hide');
+						$('#about-modal').modal('hide dimmer'); 
+					
+						setTimeout(function(){
+							domClass.remove(dimmer, 'active visible')
+							domClass.remove(modal, 'active visible')
+							alert( dimmer )
+							domClass.add(dimmer, 'hidden')
+							domClass.add(modal, 'hidden')
+						})
+					}, 500)
+				} catch(e){
+					alert("!");
+				}
+			})})
+			document.getElementById("contacts-button").onclick = function (e) {
+				$('#contacts-dimmer').dimmer('show');
+			}
+			document.getElementById("how-it-works-button").onclick = function (e) {
+				$('#how-it-works-dimmer').dimmer('show');
+			}
+			document.getElementById("vk-button").onclick = function (e) {
+				$('#vk-dimmer').dimmer('show');
+			}
             
         })
     </script>
