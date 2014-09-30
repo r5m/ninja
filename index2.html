@@ -340,9 +340,10 @@
 				$('#about-modal').modal('hide');
 				$('#about-modal').modal('hide dimmer'); 
 				setTimeout(function(){
-						require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
+					require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
 						var dimmer = query('.dimmer.active.visible')[0]
 						var modal = query('.modal.active.visible')[0]
+						alert('dimmer', dimmer)
 						domClass.remove(dimmer, 'active visible')
 						domClass.remove(modal, 'active visible')
 						domClass.add(dimmer, 'hidden')
