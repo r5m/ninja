@@ -406,9 +406,11 @@
 						
 						setTimeout(function(){
 							alert( dimmer.length )
-							domClass.remove(dimmer[0], 'active visible')
-							domClass.remove(modal, 'active visible')
-							domClass.add(dimmer, 'hidden')
+							for(var i=0; i< dimmer.length; i++){
+								domClass.remove(dimmer[i], 'active visible')
+								domClass.add(dimmer[i], 'hidden')
+							}
+							domClass.remove(modal, 'active visible')							
 							domClass.add(modal, 'hidden')
 						}, 500)
 						
