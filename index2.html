@@ -149,7 +149,7 @@
 				</div>
 			  </div>
 			  <div class="actions">
-				<div class="ui button">
+				<div id="close-button" class="ui button">
 				  Cancel
 				</div>
 				<div class="ui button">
@@ -297,6 +297,9 @@
 	<script>
 		document.getElementById("about-button").onclick = function (e) {
 			$('#about-modal').modal('show');
+		}
+		document.getElementById("close-button").onclick = function (e) {
+			$('#about-modal').modal('hide');
 		}
 		document.getElementById("contacts-button").onclick = function (e) {
 			$('#contacts-dimmer').dimmer('show');
