@@ -152,7 +152,7 @@
 				<div id="close-button" class="ui red button">
 				  Cancel
 				</div>
-				<div class="ui black button">
+				<div class="ui blue button">
 				  Okay
 				</div>
 			  </div>
@@ -301,7 +301,8 @@
 		}
 		document.getElementById("close-button").onclick = function (e) {
 			try{
-				$('#about-modal').modal('hide'); 
+				$('#about-modal').modal('hide');
+				$('#about-modal').modal('hide dimmer'); 
 				document.getElementById("about-modal").style.display='none';
 				alert("ok");} catch(e){alert("!");}
 		}
