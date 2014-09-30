@@ -337,15 +337,17 @@
 		}
 		document.getElementById("close-button").onclick = function (e) {
 			try{
-				$('#about-modal').modal('hide');
-				$('#about-modal').modal('hide dimmer'); 
-				setTimeout(function(){
-					require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
-						var dimmer = query('.dimmer.active.visible')[0]
-						var modal = query('.modal.active.visible')[0]
-						alert('dimmer' + dimmer)
+				require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
+					var dimmer = query('.dimmer.active.visible')[0]
+					var modal = query('.modal.active.visible')[0]
+						
+					$('#about-modal').modal('hide');
+					$('#about-modal').modal('hide dimmer'); 
+				
+					setTimeout(function(){
 						domClass.remove(dimmer, 'active visible')
 						domClass.remove(modal, 'active visible')
+						alert( dimmer )
 						domClass.add(dimmer, 'hidden')
 						domClass.add(modal, 'hidden')
 					})
