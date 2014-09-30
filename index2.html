@@ -152,7 +152,7 @@
 				<div id="close-button" class="ui red button">
 				  Cancel
 				</div>
-				<div class="ui red button">
+				<div class="ui button">
 				  Okay
 				</div>
 			  </div>
@@ -298,16 +298,26 @@
 		document.getElementById("about-button").onclick = function (e) {
 			$('#about-modal').modal('show');
 			//document.getElementById("about-modal").style.display='block';
-		
-			document.getElementById("close-button").onclick = function (e) {
-				try{
-					$('#about-modal').modal('hide');
-					$('#about-modal').modal('hide dimmer'); 
-					document.getElementById("about-modal").style.display='none';
-					document.getElementByClassName('ui dimmer page').classList.remove("visible");
-					document.getElementByClassName('ui dimmer page').classList.remove("active");
-					alert("ok");} catch(e){alert("!");}
-			}
+		}
+		/*document.getElementById("close-button").onclick = function (e) {
+			//try{
+				$('#about-modal').modal('hide');
+				$('#about-modal').modal('hide dimmer'); 
+				//document.getElementById("about-modal").style.display='none';
+				//document.getElementByClassName('ui dimmer page').classList.remove("visible");
+				//document.getElementByClassName('ui dimmer page').classList.remove("active");
+				//alert("ok");} catch(e){alert("!");}
+		}
+		*/
+		document.getElementById("close-button").onclick = function (e) {
+			try {
+				require(['dojo/dom-class', 'dojo/query'], function( domClass, query ) {
+					var modalWindow = query ('.ui.dimmer.page') [0]
+					domClass.remove( modalWindow, 'visible active' )
+				});
+			alert("ok");	
+			} catch(e) {alert("!");}
+			
 		}
 		document.getElementById("contacts-button").onclick = function (e) {
 			$('#contacts-dimmer').dimmer('show');
