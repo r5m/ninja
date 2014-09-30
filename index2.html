@@ -401,12 +401,12 @@
 				alert('fallback without semantic. Dimmer first. Simple')
 				try{
 					require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
-						var dimmer = query('.dimmer')[0]
+						var dimmer = query('.dimmer')
 						var modal = query('.modal')[0]
 						
 						setTimeout(function(){
 							alert( dimmer.length )
-							domClass.remove(dimmer, 'active visible')
+							domClass.remove(dimmer[0], 'active visible')
 							domClass.remove(modal, 'active visible')
 							domClass.add(dimmer, 'hidden')
 							domClass.add(modal, 'hidden')
