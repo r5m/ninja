@@ -396,15 +396,13 @@
             
 			require(['dojo/dom','dojo/on'], function(dom, on){
 				on(dom.byId('close-button'), 'click', function (e) {
-				alert('click')
+				alert('fallback before semantic')
 				try{
 					require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
 						var dimmer = query('.dimmer.active.visible')[0]
 						var modal = query('.modal.active.visible')[0]
 							
-						$('#about-modal').modal('hide');
-						$('#about-modal').modal('hide dimmer'); 
-					
+						
 						setTimeout(function(){
 							domClass.remove(dimmer, 'active visible')
 							domClass.remove(modal, 'active visible')
@@ -412,6 +410,10 @@
 							domClass.add(dimmer, 'hidden')
 							domClass.add(modal, 'hidden')
 						}, 500)
+						
+						$('#about-modal').modal('hide');
+						$('#about-modal').modal('hide dimmer'); 
+					
 					})
 				} catch(e){
 					alert("!");
