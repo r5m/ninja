@@ -396,31 +396,31 @@
             
 			require(['dojo/dom','dojo/on'], function(dom, on){
 				on(dom.byId('close-button'), 'click', function (e) {
-					e.stopPropagation();
-					
-				alert('fallback without semantic. Dimmer first. Simple')
-				try{
-					require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
-						var dimmer = query('.dimmer')
-						var modal = query('.modal')[0]
+					e.stopPropagation();					
+					try{
+						require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
+							var dimmer = query('.dimmer')
+							var modal = query('.modal')[0]
+							
+							setTimeout(function(){
+								for(var i=0; i< dimmer.length; i++){
+									domClass.remove(dimmer[i], 'active visible')
+									domClass.add(dimmer[i], 'hidden')
+								}
+								domClass.remove(modal, 'active visible')							
+								domClass.add(modal, 'hidden')
+							}, 500)
+							
+							$('#about-modal').modal('hide');
+							$('#about-modal').modal('hide dimmer'); 
 						
-						setTimeout(function(){
-							for(var i=0; i< dimmer.length; i++){
-								domClass.remove(dimmer[i], 'active visible')
-								domClass.add(dimmer[i], 'hidden')
-							}
-							domClass.remove(modal, 'active visible')							
-							domClass.add(modal, 'hidden')
-						}, 500)
-						
-						$('#about-modal').modal('hide');
-						$('#about-modal').modal('hide dimmer'); 
-					
-					})
-				} catch(e){
-					alert("!");
-				}
-			})})
+						})
+					} catch(e){
+						alert("!");
+					}
+				})
+			})
+			
 			document.getElementById("contacts-button").onclick = function (e) {
 				$('#contacts-dimmer').dimmer('show');
 			}
