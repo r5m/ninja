@@ -396,15 +396,15 @@
             
 			require(['dojo/dom','dojo/on'], function(dom, on){
 				on(dom.byId('close-button'), 'click', function (e) {
-				alert('fallback without semantic. Dimmer first')
+					e.stopEventPropagation();
+					e.
+				alert('fallback without semantic. Dimmer first. Simple')
 				try{
 					require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
-						var dimmer = query('.dimmer.active.visible')[0]
-						var modal = query('.modal.active.visible')[0]
-							
+						var dimmer = query('.dimmer')[0]
+						var modal = query('.modal')[0]
 						
 						setTimeout(function(){
-							
 							alert( dimmer )
 							domClass.remove(dimmer, 'active visible')
 							domClass.remove(modal, 'active visible')
