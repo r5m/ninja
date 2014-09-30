@@ -396,7 +396,7 @@
             
 			require(['dojo/dom','dojo/on'], function(dom, on){
 				on(dom.byId('close-button'), 'click', function (e) {
-				alert('fallback before semantic')
+				alert('fallback without semantic')
 				try{
 					require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
 						var dimmer = query('.dimmer.active.visible')[0]
