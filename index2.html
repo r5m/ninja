@@ -297,10 +297,13 @@
 	<script>
 		document.getElementById("about-button").onclick = function (e) {
 			$('#about-modal').modal('show');
+			//document.getElementById("about-modal").style.display='block';
 		}
 		document.getElementById("close-button").onclick = function (e) {
 			try{
-				$('#about-modal').modal('hide'); alert("ok");} catch(e){alert("!");}
+				$('#about-modal').modal('hide'); 
+				document.getElementById("about-modal").style.display='none';
+				alert("ok");} catch(e){alert("!");}
 		}
 		document.getElementById("contacts-button").onclick = function (e) {
 			$('#contacts-dimmer').dimmer('show');
