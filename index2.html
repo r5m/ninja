@@ -10,26 +10,51 @@
         
 	<title>Sale Like... NINJA</title>
 	<style>
+		body{
+			font-family: sans;
+		}
+		
+		header .ui.icon.menu > a.item {
+			height: 47px;
+			padding: 6px 8px;
+		}
 		
 		@media all and (max-width: 480px) {
-		  header .ui.icon.menu > a.item {
-			width: 60px;
-			height: 45px;
-		  }
-		  header .ui.icon.menu > a.item i.icon{
-			line-height: 32px;
-		  }
-		  header .ui.icon.menu > a.item span{
-			display: none;
-		  }
+			header .ui.icon.menu > a.item {
+				width: 60px;
+				height: 47px;
+			}
+			
+			header .ui.icon.menu > a.item i.icon{
+				line-height: 34px;
+			}
+			
+			header .ui.icon.menu > a.item span{
+				display: none;
+			}
 		}
 		
 		/*
 		* 	HEADER and NINJA logo
 		*/
 		
+		header.top > div#top-menu {
+			display: block; 
+			position: fixed; 
+			top: 0; 
+			width: 100%; 
+			height: 48px; 
+			z-index: 100;
+			
+		}
+		
+		header.top > div#top-menu, 
+		#sidebar-left-button {
+			border-radius: 0;
+		}
+		
 		header.ninja-logo{
-			background: #55aaa5; /*#00b5ad; TODO: change to right color*/
+			background: #55aaa5;
 			margin: 48px 0 0;			
 			padding: 0 0 30px;
 		}
@@ -38,7 +63,6 @@
 			width: 300px;
 			margin: 0 auto;
 			position:relative;			
-			
 		}
 		
 		.ninja {
@@ -92,9 +116,7 @@
         }
         
         
-        header.top{
-            width:100%;
-        }
+        
         
         a{
             color: navy;
@@ -136,11 +158,11 @@
 </head>
 <body id="body" style="margin: 0px 0px 0px 0px;">
 	<header class="top">
-		<div class="ui inverted icon labeled menu" style="display: block; position: fixed; top: 0; width: 100%; height: 48px; z-index: 100;">
+		<div id="top-menu" class="ui inverted icon labeled menu" style="">
 			
 			<!--  Button ABOUT + DIMMER  -->
-			<a id="about-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
-				<i class="info icon"></i> <span>О НАС</span>
+			<a id="about-button" class=" item" style="float: left;  font-size: 0.8rem;">
+				<i class="info icon"></i> <span>О нас</span>
 			</a>
 			<div id="about-dimmer" class="ui page dimmer">
 				<div class="content">
@@ -166,7 +188,7 @@
 				<div id="close-button" class="ui red button">
 				  Cancel
 				</div>
-				<div class="ui button">
+				<div class="ui blue button">
 				  Okay
 				</div>
 			  </div>
@@ -176,8 +198,8 @@
 			
 			
 			<!--  Button CONTACTS + DIMMER  -->
-			<a id="contacts-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
-				<i class="mail icon"></i> <span>КОНТАКТЫ</span>
+			<a id="contacts-button" class=" item" style="float: left;  font-size: 0.8rem;">
+				<i class="mail icon"></i> <span>Контакты</span>
 			</a>
 			<div id="contacts-dimmer" class="ui page dimmer">
 				<div class="content">
@@ -194,8 +216,8 @@
 			
 			
 			<!--  Button HowItWorks + DIMMER  -->
-			<a id="how-it-works-button" class=" item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
-				<i class="question icon"></i> <span>КАК ЭТО РАБОТАЕТ?</span>
+			<a id="how-it-works-button" class=" item" style="float: left;  font-size: 0.8rem;">
+				<i class="question icon"></i> <span>Как это работает?</span>
 			</a>
 			<div id="how-it-works-dimmer" class="ui page dimmer">
 				<div class="content">
@@ -223,7 +245,7 @@
 			
 			
 			<!--  Button VK + DIMMER  -->
-			<a id="vk-button" class=" item" style="float: right; padding: 6px 8px 8px 8px; font-size: 0.8rem;">
+			<a id="vk-button" class=" item" style="float: right; font-size: 0.8rem;">
 				<i class="vk icon"></i> <span>Вконтакте</span>
 			</a>
 			<div id="vk-dimmer" class="ui page dimmer">
@@ -313,25 +335,15 @@
 			$('#about-modal').modal('show');
 			//document.getElementById("about-modal").style.display='block';
 		}
-		/*document.getElementById("close-button").onclick = function (e) {
-			//try{
+		document.getElementById("close-button").onclick = function (e) {
+			try{
 				$('#about-modal').modal('hide');
 				$('#about-modal').modal('hide dimmer'); 
-				//document.getElementById("about-modal").style.display='none';
-				//document.getElementByClassName('ui dimmer page').classList.remove("visible");
-				//document.getElementByClassName('ui dimmer page').classList.remove("active");
-				//alert("ok");} catch(e){alert("!");}
-		}
-		*/
-		document.getElementById("close-button").onclick = function (e) {
-			try {
-				require(['dojo/dom-class', 'dojo/query'], function( domClass, query ) {
-					var modalWindow = query ('.ui.dimmer.page') [0]
-					domClass.remove( modalWindow, 'visible active' )
-				});
-			alert("ok");	
-			} catch(e) {alert("!");}
-			
+				document.getElementById("about-modal").style.display='none';
+				alert("ok");
+			} catch(e){
+				alert("!");
+			}
 		}
 		document.getElementById("contacts-button").onclick = function (e) {
 			$('#contacts-dimmer').dimmer('show');
