@@ -7,6 +7,7 @@
     <link href="css/semantic.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/colorbox.css">
 	<link rel="icon" href="favicon.ico">
+	<link rel="stylesheet" href="js/dijit/themes/claro/claro.css">
         
 	<title>Sale Like... NINJA</title>
 	<style>
@@ -156,7 +157,7 @@
         }
     </script>
 </head>
-<body id="body" style="margin: 0px 0px 0px 0px;">
+<body id="body" class="claro" style="margin: 0px 0px 0px 0px;">
 	<header class="top">
 		<div id="top-menu" class="ui inverted icon labeled menu" style="">
 			
@@ -331,8 +332,10 @@
 	
 	
 	<script>
+		
 		document.getElementById("about-button").onclick = function (e) {
-			$('#about-modal').modal('show');
+			//$('#about-modal').modal('show');
+			myDialog.show();
 			//document.getElementById("about-modal").style.display='block';
 		}
 		document.getElementById("close-button").onclick = function (e) {
@@ -391,7 +394,7 @@
                 window.open(e.currentTarget.href, "_blank")
             }
 	
-	    require(['dojo/request/script', 'jquery', 'app', 'dojo/domReady!'], function(script, jQuery, Application){
+	    require(['dojo/request/script', 'jquery', 'app', 'dijit/Dialog', 'dojo/domReady!'], function(script, jQuery, Application, Dialog){
             window.jQuery = jQuery
             
             var script = document.createElement('script');
@@ -411,6 +414,13 @@
 				jQuery('a.gallery').colorbox();
 			};
             
+			
+			myDialog = new Dialog({
+				title: "About Us",
+				content: "Some Information about us and our fucking organization, bitch!",
+				style: "width: auto"
+			});
+			
 			
             
         })
