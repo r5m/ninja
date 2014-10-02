@@ -77,7 +77,7 @@
 					transition: all 1s ease;
 					
 					 transition-delay: 1s;
-					 cursor: pointer
+					 
 		}
 			
 		.ninja:hover {
@@ -175,7 +175,7 @@
 			<div id="about-modal" class="ui modal">
 			  <i class="close icon"></i>
 			  <div class="header">
-				Header
+				Header #3
 			  </div>
 			  <div class="content">
 				<div class="left">
@@ -186,9 +186,9 @@
 				</div>
 			  </div>
 			  <div class="actions">
-				<div id="close-button" class="ui red button">
+				<button id="close-button" class="ui red button">
 				  Cancel
-				</div>
+				</button>
 				<div class="ui blue button">
 				  Okay
 				</div>
@@ -338,25 +338,8 @@
 			myDialog.show();
 			//document.getElementById("about-modal").style.display='block';
 		}
-		document.getElementById("close-button").onclick = function (e) {
-			try{
-				$('#about-modal').modal('hide');
-				$('#about-modal').modal('hide dimmer'); 
-				document.getElementById("about-modal").style.display='none';
-				alert("ok");
-			} catch(e){
-				alert("!");
-			}
-		}
-		document.getElementById("contacts-button").onclick = function (e) {
-			$('#contacts-dimmer').dimmer('show');
-		}
-		document.getElementById("how-it-works-button").onclick = function (e) {
-			$('#how-it-works-dimmer').dimmer('show');
-		}
-		document.getElementById("vk-button").onclick = function (e) {
-			$('#vk-dimmer').dimmer('show');
-		}
+		
+		
 		
 	</script>
 	
@@ -414,14 +397,51 @@
 				jQuery('a.gallery').colorbox();
 			};
             
+			require(['dojo/dom','dojo/on'], function(dom, on){
+				on(dom.byId('close-button'), 'click', function (e) {
+					e.stopPropagation();					
+					try{
+						require(['dojo/query', 'dojo/dom-class'], function( query, domClass){
+							var dimmer = query('.dimmer')
+							var modal = query('.modal')[0]
+							
+							setTimeout(function(){
+								for(var i=0; i< dimmer.length; i++){
+									domClass.remove(dimmer[i], 'active visible')
+									domClass.add(dimmer[i], 'hidden')
+								}
+								domClass.remove(modal, 'active visible')							
+								domClass.add(modal, 'hidden')
+							}, 500)
+							
+							$('#about-modal').modal('hide');
+							$('#about-modal').modal('hide dimmer'); 
+						
+						})
+					} catch(e){
+						alert("!");
+					}
+				})
+			})
 			
+
 			myDialog = new Dialog({
 				title: "About Us",
 				content: "Some Information about us and our fucking organization, bitch!",
 				style: "width: auto"
 			});
 			
-			
+
+			document.getElementById("contacts-button").onclick = function (e) {
+				$('#contacts-dimmer').dimmer('show');
+			}
+			document.getElementById("how-it-works-button").onclick = function (e) {
+				$('#how-it-works-dimmer').dimmer('show');
+			}
+			document.getElementById("vk-button").onclick = function (e) {
+				$('#vk-dimmer').dimmer('show');
+			}
+
             
         })
     </script>
