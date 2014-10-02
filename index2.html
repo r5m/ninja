@@ -97,10 +97,23 @@
         #sidebar-left-button.fixedbutton {
 			position: fixed;
 			top: 45px;
-			z-index: 100;	
+			z-index: 100;
+			left: 0;
+			right: 0;	
 			
 		}
       
+		.dojoCustomModal > div.dijitDialogTitleBar {
+			background: #333;
+			color: #FFFFFF;
+			border: none;
+		}
+		
+		.dojoCustomModal > div.dijitDialogTitleBar > span{
+			color: #FFFFFF;
+		
+		}
+		
 		
         #posts {
            margin-right: 5%;
@@ -165,35 +178,7 @@
 			<a id="about-button" class=" item" style="float: left;  font-size: 0.8rem;">
 				<i class="info icon"></i> <span>О нас</span>
 			</a>
-			<div id="about-dimmer" class="ui page dimmer">
-				<div class="content">
-					<div class="center" style="font-size: 1rem;">
-							<p>About</p>
-					</div>
-				</div>
-			</div>
-			<div id="about-modal" class="ui modal">
-			  <i class="close icon"></i>
-			  <div class="header">
-				Header #3
-			  </div>
-			  <div class="content">
-				<div class="left">
-				  Some content to the left, usually an image or icon
-				</div>
-				<div class="right">
-				  Some content to the right
-				</div>
-			  </div>
-			  <div class="actions">
-				<button id="close-button" class="ui red button">
-				  Cancel
-				</button>
-				<div class="ui blue button">
-				  Okay
-				</div>
-			  </div>
-			</div>
+			
 			
 			
 			
@@ -331,18 +316,6 @@
 	</div>
 	
 	
-	<script>
-		
-		document.getElementById("about-button").onclick = function (e) {
-			//$('#about-modal').modal('show');
-			myDialog.show();
-			//document.getElementById("about-modal").style.display='block';
-		}
-		
-		
-		
-	</script>
-	
 	
 	<a id="pagetop" href="#" onclick="scrollToTop(event);" class="ui teal icon button"><i class="up arrow icon"></i></a>
 	
@@ -396,7 +369,7 @@
 			script.onload = function() {
 				jQuery('a.gallery').colorbox();
 			};
-            
+            /*
 			require(['dojo/dom','dojo/on'], function(dom, on){
 				on(dom.byId('close-button'), 'click', function (e) {
 					e.stopPropagation();					
@@ -423,24 +396,54 @@
 					}
 				})
 			})
-			
+			*/
 
 
-			myDialog = new Dialog({
-				title: "About Us",
+			aboutDialog = new Dialog({
+				title: "О нас",
 				content: "Some Information about us and our fucking organization, bitch!",
-				style: "margin: auto"
+				style: "margin: auto",
+				class: "dojoCustomModal"
 			});
 			
+			contactsDialog = new Dialog({
+				title: "Контакты",
+				content: "Some Information about contacts",
+				style: "margin: auto",
+				class: "dojoCustomModal"
+			});
+			
+			howItWorksDialog = new Dialog({
+				title: "Как это работает",
+				content: "Прям по волшебству работает",
+				style: "margin: auto",
+				class: "dojoCustomModal"
+			});
+			
+			vkHrefsDialog = new Dialog({
+				title: "Мы в VK",
+				content: "А вот тут кнопочки",
+				style: "margin: auto",
+				class: "dojoCustomModal"
+			});
+		
+			document.getElementById("about-button").onclick = function (e) {
+				//$('#about-modal').modal('show');
+				aboutDialog.show();
+				//document.getElementById("about-modal").style.display='block';
+			}
 
 			document.getElementById("contacts-button").onclick = function (e) {
-				$('#contacts-dimmer').dimmer('show');
+				contactsDialog.show();
+				//$('#contacts-dimmer').dimmer('show');
 			}
 			document.getElementById("how-it-works-button").onclick = function (e) {
-				$('#how-it-works-dimmer').dimmer('show');
+				howItWorksDialog.show();
+				//$('#how-it-works-dimmer').dimmer('show');
 			}
 			document.getElementById("vk-button").onclick = function (e) {
-				$('#vk-dimmer').dimmer('show');
+				vkHrefsDialog.show();
+				//$('#vk-dimmer').dimmer('show');
 			}
 
             
