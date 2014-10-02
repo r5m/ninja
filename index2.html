@@ -8,165 +8,41 @@
 	<link rel="stylesheet" href="css/colorbox.css">
 	<link rel="icon" href="favicon.ico">
 	<link rel="stylesheet" href="js/dijit/themes/claro/claro.css">
+	<!-- customDojo - our Dojo restyling CSS-->
+	<link href="css/customDojo.css" rel="stylesheet">
+	<!-- custom - our common CSS file for index2.html-->
+	<link href="css/custom.css" rel="stylesheet">
         
 	<title>Sale Like... NINJA</title>
-	<style>
-		body{
-			font-family: sans;
-		}
-		
-		header .ui.icon.menu > a.item {
-			height: 47px;
-			padding: 6px 8px;
-		}
-		
-		@media all and (max-width: 480px) {
-			header .ui.icon.menu > a.item {
-				width: 60px;
-				height: 47px;
-			}
-			
-			header .ui.icon.menu > a.item i.icon{
-				line-height: 34px;
-			}
-			
-			header .ui.icon.menu > a.item span{
-				display: none;
-			}
-		}
-		
-		/*
-		* 	HEADER and NINJA logo
-		*/
-		
-		header.top > div#top-menu {
-			display: block; 
-			position: fixed; 
-			top: 0; 
-			height: 48px; 
-			z-index: 100;
-			left: 0;
-			right: 0;
-		}
-		
-		header.top > div#top-menu, 
-		#sidebar-left-button {
-			border-radius: 0;
-		}
-		
-		header.ninja-logo{
-			background: #55aaa5;
-			margin: 48px 0 0;			
-			padding: 0 0 30px;
-		}
-        
-        header.ninja-logo > div{
-			width: 300px;
-			margin: 0 auto;
-			position:relative;			
-		}
-		
-		.ninja {
-			-webkit-opacity: 1;
-			   -moz-opacity: 1;
-			        opacity: 1;
-			-webkit-transition: all 1s ease;
-			   -moz-transition: all 1s ease;
-			    -ms-transition: all 1s ease;
-			     -o-transition: all 1s ease;
-					transition: all 1s ease;
-					
-					 transition-delay: 1s;
-					 
-		}
-			
-		.ninja:hover {
-			-webkit-opacity: 0;
-			   -moz-opacity: 0;
-			        opacity: 0;
-			-webkit-transition: all 0.5s ease;
-			   -moz-transition: all 0.5s ease;
-			    -ms-transition: all 0.5s ease;
-			     -o-transition: all 0.5s ease;
-					transition: all 0.5s ease;
-		}
-			
-		/*
-		*/
-			
-        #sidebar-left-button.fixedbutton {
-			position: fixed;
-			top: 45px;
-			z-index: 100;
-			left: 0;
-			right: 0;	
-			
-		}
-      
-		.dojoCustomModal > div.dijitDialogTitleBar {
-			background: #333;
-			color: #FFFFFF;
-			border: none;
-		}
-		
-		.dojoCustomModal > div.dijitDialogTitleBar > span{
-			color: #FFFFFF;
-		
-		}
-		
-		.dijitDialog {
-			border-style: none !important;
-			
-		}
-		
-		
-		body > div.dijitDialogUnderlayWrapper {
-			background-color: #000 !important;
-			opacity: 0.8;
-			
-		}
-		
-		
-        #posts {
-           margin-right: 5%;
-           margin-left: 5%;
-           list-style-type: none;
-        }
-       
-        #loader {
-			margin-left: 30px;				
-		}		
-        
-        body{
-          background-image: url("css/images/bedge-Grunge.png");            
-        }
-        
-        
-        
-        
-        a{
-            color: navy;
-        }
+	
+			<!-- Yandex.Metrika counter -->
+			<script type="text/javascript">
+			(function (d, w, c) {
+				(w[c] = w[c] || []).push(function() {
+					try {
+						w.yaCounter26443275 = new Ya.Metrika({id:26443275,
+								clickmap:true,
+								trackLinks:true,
+								accurateTrackBounce:true});
+					} catch(e) { }
+				});
 
-        a.nav{
-			cursor: pointer
-		}
-		.white-head {
-				color: #0099CC;
-				font-weight: bold;
+				var n = d.getElementsByTagName("script")[0],
+					s = d.createElement("script"),
+					f = function () { n.parentNode.insertBefore(s, n); };
+				s.type = "text/javascript";
+				s.async = true;
+				s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+				if (w.opera == "[object Opera]") {
+					d.addEventListener("DOMContentLoaded", f, false);
+				} else { f(); }
+			})(document, window, "yandex_metrika_callbacks");
+			</script>
+			<noscript><div><img src="//mc.yandex.ru/watch/26443275" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+			<!-- /Yandex.Metrika counter -->
 			
 			
-		}	
-        .center-column{
-           padding-top: 50px;
-        }
-        
-        a#pagetop{
-            position: fixed; bottom:10px; right:10px;
-        }
-        
-        
-    </style>
     <script>
         function scrollToTop(e){
             if (e.preventDefault) {  // если метод существует
@@ -191,55 +67,16 @@
 				<i class="info icon"></i> <span>О нас</span>
 			</a>
 			
-			
-			
-			
-			
 			<!--  Button CONTACTS + DIMMER  -->
 			<a id="contacts-button" class=" item" style="float: left;  font-size: 0.8rem;">
 				<i class="mail icon"></i> <span>Контакты</span>
 			</a>
-			<div id="contacts-dimmer" class="ui page dimmer">
-				<div class="content">
-					<div class="center" style="font-size: 1rem;">
-						
-						<p>Contacts</p>
-						
-					</div>
-				</div>
-			</div>
-			
-			
-			
 			
 			
 			<!--  Button HowItWorks + DIMMER  -->
 			<a id="how-it-works-button" class=" item" style="float: left;  font-size: 0.8rem;">
 				<i class="question icon"></i> <span>Как это работает?</span>
 			</a>
-			<div id="how-it-works-dimmer" class="ui page dimmer">
-				<div class="content">
-					<div class="center" style="font-size: 1rem;">
-						<p>Мы собрали для Вас самые популярные на наш взгляд сообщества с объявлениями города Томска </br>и представили в виде общей ленты объявлений.</p>
-					
-						<p>Наша цель не столько в агрегации существующих сообществ, кои появляются ежедневно, </br> сколько в предоставлении Вам единой торговой площадки города Томска в сети VK</p>
-						<p>Мы не просто отображаем объявления всех представленных сообществ в хронологическом порядке, </br> а проводим их фильтрацию, исключая из общей ленты все повторы существующего объявления, </br> поэтому, если в сообществе было объявление, то его повторные показы исключаются.</p>
-						<p style="font-size: 0.8rem;">Мы называем эту особенность "Антиспам"</p>
-					
-						
-						<p>Мы предлагаем Вам: 
-							<ul>
-								<li>Отсутствие засоряющих ленту дублирующих объявлений</li>
-								<li>Вместо продавцов интернет-магазинов публикуются объявления обычных пользователей и их товара</li>
-								<li>Сообщество модерируется и не пускается на самотек, поэтому мы гарантируем вас качественные объявления</li>
-								<li>Мы не раскручиваем сообщество путем набивания подписчиков. Участники сообщества - ваши потенциальные клиенты, а не случайные люди из интернета</li>
-								<li>Публикации от лица группы. Это означает что ваше объявление увидит больше людей, даже если участников сообщество много меньше чем в других сообществах</li>
-							</ul>
-						</p>
-						
-					</div>
-				</div>
-			</div>
 			
 			
 			<!--  Button VK + DIMMER  -->
@@ -410,14 +247,28 @@
 			})
 			*/
 
-
+			var aboutContent = [' О НАС НАПИСАНО ВМЕСТО ЭТОГО ПРЕДЛОЖЕНИЯ, А ЗАТЕМ УЖЕ..',
+						'<p>Мы предлагаем Вам:', 
+							'<ul>',
+								'<li>Отсутствие засоряющих ленту дублирующих объявлений</li>',
+								'<li>Вместо продавцов интернет-магазинов публикуются объявления обычных пользователей и их товара</li>',
+								'<li>Сообщество модерируется и не пускается на самотек, поэтому мы гарантируем вас качественные объявления</li>',
+								'<li>Мы не раскручиваем сообщество путем набивания подписчиков. Участники сообщества - ваши потенциальные клиенты, а не случайные люди из интернета</li>',
+								'<li>Публикации от лица группы. Это означает что ваше объявление увидит больше людей, даже если участников сообщество много меньше чем в других сообществах</li>',
+							'</ul>',
+						'</p>',
+			];
 			aboutDialog = new Dialog({
 				title: "О нас",
-				content: "Some Information about us and our fucking organization, bitch!",
+				content: aboutContent.join(''),
 				style: "margin: auto",
 				class: "dojoCustomModal"
 			});
 			
+			
+			
+			
+			var contactsContent = [''];
 			contactsDialog = new Dialog({
 				title: "Контакты",
 				content: "Some Information about contacts",
@@ -425,16 +276,32 @@
 				class: "dojoCustomModal"
 			});
 			
+			
+			
+			var howItWorksContent = ['<p>Мы собрали для Вас самые популярные на наш взгляд сообщества с объявлениями города Томска </br>и представили в виде общей ленты объявлений.</p>',
+						'<p>Наша цель не столько в агрегации существующих сообществ, кои появляются ежедневно, </br> сколько в предоставлении Вам единой торговой площадки города Томска в сети VK</p>',
+						'<p>Мы не просто отображаем объявления всех представленных сообществ в хронологическом порядке, </br> а проводим их фильтрацию, исключая из общей ленты все повторы существующего объявления, </br> поэтому, если в сообществе было объявление, то его повторные показы исключаются.</p>',
+						'<p class="smallText">Мы называем эту особенность "Антиспам"</p>',
+			
+			];
 			howItWorksDialog = new Dialog({
 				title: "Как это работает",
-				content: "Прям по волшебству работает",
+				content: howItWorksContent.join(''),
 				style: "margin: auto",
 				class: "dojoCustomModal"
 			});
 			
+			
+			
+			var vkHrefsContent = [
+				'<p>Если Вы хотите помочь нам в нашем деле создания единой торговой площадки города Томска в сети VK,</br> то можете уже подать или просмотреть объявления в нашем сообществе и рассказать о нас Вашим друзьям</p>',
+				'</br>',
+				'<a href="http://vk.com/salelike.ninja" target="_blank" class="teal ui labeled icon button"><i class="vk icon"></i>Мы в Вконтакте</a>',
+				'<a href="http://vkontakte.ru/share.php?url=http://salelike.ninja" target="_blank" class="teal ui labeled icon button"><i class="vk icon"></i>Tell about Us</a>',
+			];
 			vkHrefsDialog = new Dialog({
 				title: "Мы в VK",
-				content: "А вот тут кнопочки",
+				content: vkHrefsContent.join(''),
 				style: "margin: auto",
 				class: "dojoCustomModal"
 			});

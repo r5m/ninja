@@ -1,0 +1,35 @@
+
+/* Блок, посвященный кастомизации модального окна Dojo  
+ * и его составляющих (заголовка, тела и т.п.) */
+ 
+.dijitDialog {
+	border-style: none !important;
+	
+}
+
+.dojoCustomModal > div.dijitDialogTitleBar {
+			background: #333;
+			color: #FFFFFF;
+			border: none;
+}
+
+.dojoCustomModal > div.dijitDialogPaneContent > p {
+			color: #333;
+}
+
+.dojoCustomModal > div.dijitDialogTitleBar > span{
+	color: #FFFFFF;
+
+}
+
+.dijitDialogCloseIcon {
+	
+}
+
+/* Кастомизация фона модального окна */
+
+body > div.dijitDialogUnderlayWrapper {
+	background-color: #000 !important;
+	opacity: 0.8;
+	
+}

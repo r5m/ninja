@@ -1,0 +1,136 @@
+body{
+	font-family: sans;
+}
+
+header .ui.icon.menu > a.item {
+	height: 47px;
+	padding: 6px 8px;
+}
+
+@media all and (max-width: 480px) {
+	header .ui.icon.menu > a.item {
+		width: 60px;
+		height: 47px;
+	}
+	
+	header .ui.icon.menu > a.item i.icon{
+		line-height: 34px;
+	}
+	
+	header .ui.icon.menu > a.item span{
+		display: none;
+	}
+}
+
+/*
+* 	HEADER and NINJA logo
+*/
+
+header.top > div#top-menu {
+	display: block; 
+	position: fixed; 
+	top: 0; 
+	height: 48px; 
+	z-index: 100;
+	left: 0;
+	right: 0;
+}
+
+header.top > div#top-menu, 
+#sidebar-left-button {
+	border-radius: 0;
+}
+
+header.ninja-logo{
+	background: #55aaa5;
+	margin: 48px 0 0;			
+	padding: 0 0 30px;
+}
+
+header.ninja-logo > div{
+	width: 300px;
+	margin: 0 auto;
+	position:relative;			
+}
+
+.ninja {
+	-webkit-opacity: 1;
+	   -moz-opacity: 1;
+			opacity: 1;
+	-webkit-transition: all 1s ease;
+	   -moz-transition: all 1s ease;
+		-ms-transition: all 1s ease;
+		 -o-transition: all 1s ease;
+			transition: all 1s ease;
+			
+			 transition-delay: 1s;
+			 
+}
+	
+.ninja:hover {
+	-webkit-opacity: 0;
+	   -moz-opacity: 0;
+			opacity: 0;
+	-webkit-transition: all 0.5s ease;
+	   -moz-transition: all 0.5s ease;
+		-ms-transition: all 0.5s ease;
+		 -o-transition: all 0.5s ease;
+			transition: all 0.5s ease;
+}
+	
+/*
+*/
+	
+#sidebar-left-button.fixedbutton {
+	position: fixed;
+	top: 45px;
+	z-index: 100;
+	left: 0;
+	right: 0;	
+	
+}
+
+
+
+
+#posts {
+   margin-right: 5%;
+   margin-left: 5%;
+   list-style-type: none;
+}
+
+#loader {
+	margin-left: 30px;				
+}		
+
+body{
+  background-image: url("images/bedge-Grunge.png");            
+}
+
+
+
+
+a{
+	color: navy;
+}
+
+a.nav{
+	cursor: pointer
+}
+.white-head {
+		color: #0099CC;
+		font-weight: bold;
+	
+	
+}	
+.center-column{
+   padding-top: 50px;
+}
+
+a#pagetop{
+	position: fixed; bottom:10px; right:10px;
+}
+
+.smallText {
+	font-size: 0.8rem;
+}
