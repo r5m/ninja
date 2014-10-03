@@ -187,6 +187,27 @@ define([
             if(!hash()) router.go('all')
             
             window.r = router
+            
+            /* antispam mode turn on/off */
+            if (self.filterSpam == false) {
+				document.getElementById("antispam-icon").classList.remove("unhide");
+				document.getElementById("antispam-icon").classList.add("hide");
+			}
+            document.getElementById("refresh-button").onclick = function (e) {
+				if (self.filterSpam == true) {
+					self.filterSpam = false;
+					document.getElementById("antispam-icon").classList.remove("unhide");
+					document.getElementById("antispam-icon").classList.add("hide")
+				} 
+				else {
+					self.filterSpam = true;
+					document.getElementById("antispam-icon").classList.remove("hide");
+					document.getElementById("antispam-icon").classList.add("unhide");
+				}
+				console.log(self.filterSpam);
+			}
+            /* END antispam mode turn on/off */
+            
         },
         
         
