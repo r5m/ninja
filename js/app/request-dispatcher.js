@@ -258,7 +258,8 @@ define([
                     var li = domConstruct.create('li',{
                       // innerHTML : '<p><span>'+ dateString + ' :: </span><span id="'+uinfoId+'">'+''+'</span>'+originLink+'</p>' + data[i].text,
                        innerHTML : '<div class="event" style="width: 100%" ><div class="content" style="text-align: justify"><div class="date">'+ dateString + '</div><div class="summary"><a class="ui teal label" style="width: auto; font-size: 0.7rem;" ><span id="'+uinfoId+'"></span></a></div><div style="margin-top: 10px; color: grey; font-size: 1rem;">' + data[i].text+ '</div></div></div>',
-                       'class' : 'ui feed segment'
+                       //'class' : 'ui pilled feed segment'
+                       'class' : 'single-ad'
                     }, 'posts','last');
                     
                     domConstruct.create('div', {innerHTML : '<i class="vk icon"></i>', 'class' : 'ui horizontal icon divider'}, 'posts','last');

@@ -92,11 +92,26 @@ header.ninja-logo > div{
 
 
 
-
+/*
 #posts {
    margin-right: 5%;
    margin-left: 5%;
    list-style-type: none;
+}
+*/
+
+#posts {
+    margin: 0;
+    padding: 0;
+}
+
+#posts .single-ad .date{
+    float: right;
+    
+}
+#posts .single-ad{
+    padding: 0 1rem;
+    
 }
 
 #loader {
