@@ -13,16 +13,7 @@ define([
         // has - how many posts were loaded
         // used - how many of them
         publics: {
-        /*   // 'tomsktip'      : {title: 'Томск: Бесплатные объявления', has: 0, used: 0},
-          --  'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
-         --   'desk70'        : {title: 'Еще одна группа', has: 0, used: 0},
-           -- '70baraholka'   : {title: '70baraholka', has: 0, used: 0},
-            'swetselltll'   : {title: 'Томск|Объявления| Авто|Работа|', has: 0, used: 0},
-          --  'club49470911'  : {title: '417 человек', has: 0, used: 0},
-           // 'tomsk_photodoska': {title: 'ФОтодоСкА', has: 0, used: 0},
-          --  'sellithere'    : {title: 'Супер Барахолка', default: true, has: 0, used: 0}
-        */
-			'sellithere'    : {title: 'Барахолка Электроники и Мебели', default: true, has: 0, used: 0},
+        	'sellithere'    : {title: 'Барахолка Электроники и Мебели', default: true, has: 0, used: 0},
 			'club49470911'  : {title: 'Бесплатные объявления Томск Куплю-Продам', has: 0, used: 0},
 			'club37509800'  : {title: 'Обменяю, продам, подарю [ Томск ]', has: 0, used: 0},
 			'posmotri.tomsk': {title: 'Фотодоска Томска', has: 0, used: 0},
@@ -40,7 +31,8 @@ define([
         },
         currentPublic: 'swetselltll',
         selectedCssClass: 'active',
-        filterSpam: true,
+        filterSpam: (!!localStorage && localStorage.getItem('filterSpam')) ? 
+            localStorage.getItem('filterSpam') == 1 : true,
    
         //What to search
         searchString : 'игра',
@@ -189,10 +181,12 @@ define([
             window.r = router
             
             /* antispam mode turn on/off */
-            if (self.filterSpam == false) {
+            console.log(self.filterSpam)
+            if (!self.filterSpam) {
 				document.getElementById("antispam-icon").classList.remove("unhide");
 				document.getElementById("antispam-icon").classList.add("hide");
 			}
+           
             document.getElementById("refresh-button").onclick = function (e) {
 				if (self.filterSpam == true) {
 					self.filterSpam = false;
@@ -205,6 +199,9 @@ define([
 					document.getElementById("antispam-icon").classList.add("unhide");
 				}
 				console.log(self.filterSpam);
+				localStorage.setItem('filterSpam', self.filterSpam ? 1 : 0);
+				location.reload();
+                
 			}
             /* END antispam mode turn on/off */
             
