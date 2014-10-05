@@ -23,7 +23,7 @@ header .ui.icon.menu > a.item {
 }
 
 /*
-* 	HEADER and NINJA logo
+* 	HEADER and NINJA logo 
 */
 
 header.top > div#top-menu {
@@ -104,7 +104,7 @@ header.ninja-logo > div{
 }		
 
 body{
-  background-image: url("images/bedge-Grunge.png");            
+  background: #f5f9fc;            
 }
 
 
