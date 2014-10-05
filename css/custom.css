@@ -57,7 +57,7 @@ header.ninja-logo > div{
 	-webkit-opacity: 1;
 	   -moz-opacity: 1;
 			opacity: 1;
-	-webkit-transition: all 1s ease;
+	-webkit-transition: all 1s ese;
 	   -moz-transition: all 1s ease;
 		-ms-transition: all 1s ease;
 		 -o-transition: all 1s ease;
@@ -86,8 +86,7 @@ header.ninja-logo > div{
 	top: 45px;
 	z-index: 100;
 	left: 0;
-	right: 0;	
-	
+	right: 0;
 }
 
 
@@ -110,9 +109,10 @@ header.ninja-logo > div{
     
 }
 #posts .single-li{
-    padding: 0 1rem;
-    
+    padding: 1rem 2.5rem;
 }
+
+
 
 #loader {
 	margin-left: 30px;				
@@ -139,7 +139,7 @@ a.nav{
 	
 }	
 .center-column{
-   padding-top: 50px;
+   padding-top: 25px;
 }
 
 a#pagetop{
@@ -150,8 +150,42 @@ a#pagetop{
 	font-size: 0.8rem;
 }
 
-.antispam.active {
 
+.search-segment .ui.icon.input>.icon {
+    padding-top: 0.62em;
+    border-radius: 0;
 }
 
+.search-segment .ui.input{
+    display: block;
+}
+.search-segment .ui.input input{
+    padding: 0.5em;
+    border-radius: 0;
+    width: 100%;
+}
+
+/*i.inverted.icon.search-clearer{
+    color: red;
+}*/
+.search-sumbitter-before{
+    background-image: -webkit-linear-gradient(rgba(0,0,0,.03) 0,rgba(0,0,0,.1) 50%,rgba(0,0,0,.03) 100%);
+    background-image: -moz-linear-gradient(rgba(0,0,0,.03) 0,rgba(0,0,0,.1) 50%,rgba(0,0,0,.03) 100%);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,.03)),color-stop(50%,rgba(0,0,0,.1)),to(rgba(0,0,0,.03)));
+    background-image: linear-gradient(rgba(0,0,0,.03) 0,rgba(0,0,0,.1) 50%,rgba(0,0,0,.03) 100%);
+    
+    position: absolute;
+    content: '';
+    top: 0;
+    width: 1px;
+    height: 100%;
+}
+
+
+
+.ui.horizontal.divider:after, .ui.horizontal.divider:before {
+    border-top-color: rgba(249, 227, 92, 0.1);
+    border-bottom-color: rgba(249, 227, 92, 0.8);
+    
+}
 

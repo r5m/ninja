@@ -127,14 +127,27 @@
 	
 	
 		
-	<div id="sidebar-left-button" class="ui small labeled icon button left " style="float: left; width: 100%; background-color: #f9e35c; color: black;">
+	<div id="sidebar-left-button" class="ui small labeled icon button " style="width: 100%; background-color: #f9e35c; color: black;">
 		<!--<div id="sidebar-left-button" class="item" style="float: left; padding: 6px 8px 8px 8px; font-size: 0.8rem;">-->
 		<i class="icon list layout"></i>
 		Выбрать объявления
 	</div>
-	<div class="search">
-	    <input type="search" id="search"/>
-	</div>
+	
+	<div class="search-segment">
+	    <form id="searchForm">
+            <div class="ui icon input">
+                <input id="search-text-field" type="text" placeholder="Я хочу найти...">
+                <i class="inverted remove icon search-clearer"></i>
+                <i class="inverted search icon search-submitter" style="position:absolute; top:0; right:2.6em; border-right: "></i>
+                <span style="right: 5.2em;" class="search-sumbitter-before"></span>
+                <span style="right: 2.6em;" class="search-sumbitter-before"></span>
+    
+    
+            </div>
+        </form>
+    </div>
+	
+
 
 	
 	<div id="menus" class="ui styled left sidebar" style="padding-left: 16px;">
@@ -324,6 +337,11 @@
 			
             
         })
+        
+        var search = function( text ){
+            console.log( text )
+        
+        }
     </script>
     <!--<script src="js/semantic.js"></script>-->
 	

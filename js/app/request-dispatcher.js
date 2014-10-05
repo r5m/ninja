@@ -132,19 +132,46 @@ define([
             
             var navLinks = query('a.nav');
             
-            var searchLinks = query('.search');
-            for(var i = 0; i<searchLinks.length; i++){
-                var link = searchLinks[i];
+            var searchLinks = query('.search-submitter');
+            var searchClearers = query('.search-clearer');
+            
+            document.getElementById('searchForm').onsubmit = function(){
+                self.searchString = document.getElementById('search-text-field').value;
+                self.isSearchActive = true;
+                self.updateNewModePage( true );
+                return false;
+            }
+            
+            for(i = 0; i < searchClearers.length; i++){
+                link = searchClearers[i];
                 (function(a){
                     on(a, 'click', function(e){
-                        self._clear()
                         if (e.preventDefault) {  // если метод существует
                             e.preventDefault();
                         } else { // вариант IE<9:
                             e.returnValue = false;
                         }
-                       // console.log(domAttr.get(a,'data-href'))
-                        self.testSearchRequest(domAttr.get(a,'data-href'))
+                       
+                        document.getElementById('search-text-field').value = ''
+                        self.isSearchActive = false;
+                        self.updateNewModePage( true );
+                    })  
+                })(link)
+            }
+            
+            for(var i = 0; i<searchLinks.length; i++){
+                link = searchLinks[i];
+                (function(a){
+                    on(a, 'click', function(e){
+                        if (e.preventDefault) {  // если метод существует
+                            e.preventDefault();
+                        } else { // вариант IE<9:
+                            e.returnValue = false;
+                        }
+                       
+                        self.searchString = document.getElementById('search-text-field').value;
+                        self.isSearchActive = true;
+                        self.updateNewModePage( true );
                     })  
                 })(link)
             }
@@ -161,6 +188,7 @@ define([
                 domStyle.set(dom.byId("loader"), "display", "");
                 document.getElementById("show-all-posts-button").classList.remove("active");
                 document.getElementById("show-all-posts-button").innerHTML='Все объявления';
+                self.isSearchActive = false;
                 self.loadPublic(publicName)
             });
             
@@ -168,6 +196,7 @@ define([
    				domStyle.set(dom.byId("loader"), "display", "");
    				document.getElementById("show-all-posts-button").classList.add("active");
    				document.getElementById("show-all-posts-button").innerHTML='Все объявления';
+   				self.isSearchActive = false;
    				self.updateNewModePage( true )
             });
             
