@@ -39,6 +39,10 @@ header.top > div#top-menu {
 header.top > div#top-menu, 
 #sidebar-left-button {
 	border-radius: 0;
+	-webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    
 }
 
 header.ninja-logo{
@@ -88,11 +92,6 @@ header.ninja-logo > div{
 	left: 0;
 	right: 0;
 	
-	
-	-webkit-box-shadow: none;
-    -moz-box-shadow: none;
-	box-shadow: none;
-    
 }
 
 
