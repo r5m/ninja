@@ -87,6 +87,12 @@ header.ninja-logo > div{
 	z-index: 100;
 	left: 0;
 	right: 0;
+	
+	
+	-webkit-box-shadow: none;
+    -moz-box-shadow: none;
+	box-shadow: none;
+    
 }
 
 
