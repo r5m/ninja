@@ -68,9 +68,9 @@
 			</a>
 			
 			<!--  Button CONTACTS + DIMMER  -->
-			<a id="contacts-button" class=" item" style="float: left;  font-size: 0.8rem;">
+			<!-- <a id="contacts-button" class=" item" style="float: left;  font-size: 0.8rem;">
 				<i class="mail icon"></i> <span>Контакты</span>
-			</a>
+			</a> -->
 			
 			
 			<!--  Button HowItWorks + DIMMER  -->
@@ -81,7 +81,7 @@
 			
 			<!--  Button VK + DIMMER  -->
 			<a id="vk-button" class=" item" style="float: right; font-size: 0.8rem;">
-				<i class="vk icon"></i> <span>Вконтакте</span>
+				<i class="mail icon"></i> <span>Контакты</span>
 			</a>
 			
 			<a id="refresh-button" class="item" style="float: left; font-size: 0.8rem;">
@@ -256,16 +256,18 @@
 			})
 			*/
 
-			var aboutContent = [' О НАС НАПИСАНО ВМЕСТО ЭТОГО ПРЕДЛОЖЕНИЯ, А ЗАТЕМ УЖЕ..',
-						'<p>Мы предлагаем Вам:', 
+			var aboutContent = ['<p>Мы - группа энтузиастов, которые хотят привести в порядок рекламную деятельость города Томска в сети VK</p>',
+						'<p>Наверняка, многие из вас знакомы с теми группами, которые представлены в нашем списке, и понимают насколько сложно найти в них действительно "качественные" объявления, поскольку все что мы видим в каждой группе - это предложения различных магазинов и продавцов.</p>',
+						'<p>В отличиии от представленных в меню сообществ, мы предлагаем Вам:', 
 							'<ul>',
-								'<li>Отсутствие засоряющих ленту дублирующих объявлений</li>',
-								'<li>Вместо продавцов интернет-магазинов публикуются объявления обычных пользователей и их товара</li>',
-								'<li>Сообщество модерируется и не пускается на самотек, поэтому мы гарантируем вас качественные объявления</li>',
-								'<li>Мы не раскручиваем сообщество путем набивания подписчиков. Участники сообщества - ваши потенциальные клиенты, а не случайные люди из интернета</li>',
-								'<li>Публикации от лица группы. Это означает что ваше объявление увидит больше людей, даже если участников сообщество много меньше чем в других сообществах</li>',
+								'<li><b>Отсутствие</b> засоряющих ленту <b>дублирующих объявлений</b></li>',
+								'<li>Вместо продавцов интернет-магазинов публикуются <b>объявления обычных пользователей</b> и их товара</li>',
+								'<li><b>Сообщество модерируется</b> и не пускается на самотек, поэтому мы гарантируем вас качественные объявления</li>',
+								'<li>Мы не раскручиваем сообщество путем набивания подписчиков. <b>Участники сообщества - ваши потенциальные клиенты</b>, а не случайные люди из интернета</li>',
+								'<li><b>Публикации от имени группы.</b> Это означает что ваше объявление увидит больше людей, даже если участников сообщество много меньше чем в других сообществах</li>',
 							'</ul>',
 						'</p>',
+						'<div id="about-content-close-button" class="ui teal button"><i class="reply mail icon"></i>Назад</div>',
 			];
 			aboutDialog = new Dialog({
 				title: "О нас",
@@ -276,7 +278,7 @@
 			
 			
 			
-			
+			/*
 			var contactsContent = [''];
 			contactsDialog = new Dialog({
 				title: "Контакты",
@@ -284,14 +286,16 @@
 				style: "margin: auto",
 				class: "dojoCustomModal"
 			});
+			*/
 			
 			
-			
-			var howItWorksContent = ['<p>Мы собрали для Вас самые популярные на наш взгляд сообщества с объявлениями города Томска </br>и представили в виде общей ленты объявлений.</p>',
-						'<p>Наша цель не столько в агрегации существующих сообществ, кои появляются ежедневно, </br> сколько в предоставлении Вам единой торговой площадки города Томска в сети VK</p>',
-						'<p>Мы не просто отображаем объявления всех представленных сообществ в хронологическом порядке, </br> а проводим их фильтрацию, исключая из общей ленты все повторы существующего объявления, </br> поэтому, если в сообществе было объявление, то его повторные показы исключаются.</p>',
-						'<p class="smallText">Мы называем эту особенность "Антиспам"</p>',
-			
+			var howItWorksContent = ['<p>Мы собрали для Вас самые популярные на наш взгляд сообщества с объявлениями города Томска и представили в виде общей ленты объявлений.</p>',
+						'<p>Наша цель не столько в агрегации существующих сообществ, кои появляются ежедневно, сколько в предоставлении Вам единой торговой площадки города Томска в сети VK, узнать о которой Вы можете на вкладке "Контакты"</p>',
+						'<p>Мы не просто отображаем объявления всех представленных сообществ в хронологическом порядке, но ещё и проводим их фильтрацию, исключая из общей ленты все повторы существующего объявления, поэтому, если в сообществе было объявление, то его повторные показы исключаются.</p>',
+						'<p class="smallText">Мы называем эту особенность "Antispam EYE"</p>',
+						'<p class="smallText">Активированный "Antispam EYE" подразумевает фильтрацию дублируемых объявлений, в то время как отключение данной особенности приводит к показу абсолютно всех объявлений в хронологическом порядке</p>',
+						'<div id="howitworks-content-close-button" class="ui teal button"><i class="reply mail icon"></i>Назад</div>',
+						
 			];
 			howItWorksDialog = new Dialog({
 				title: "Как это работает",
@@ -303,10 +307,15 @@
 			
 			
 			var vkHrefsContent = [
-				'<p>Если Вы хотите помочь нам в нашем деле создания единой торговой площадки города Томска в сети VK,</br> то можете уже подать или просмотреть объявления в нашем сообществе и рассказать о нас Вашим друзьям</p>',
+				'<p>Мы предлагаем Вам уникальное сообщество в сети VK, где Вы уже сейчас можете посмотреть или подать объявление о продаже Вашего товара.</p>',
+				'<p>Если Вы хотите помочь нам в нашем деле создания единой торговой площадки города Томска в сети VK, то вступайте в наше сообщество, рассказывайте о нас Вашим друзьям и начинайте продавать Ваш товар прямо сейчас!</p>',
 				'</br>',
-				'<a href="http://vk.com/salelike.ninja" target="_blank" class="teal ui labeled icon button"><i class="vk icon"></i>Мы в Вконтакте</a>',
-				'<a href="http://vkontakte.ru/share.php?url=http://salelike.ninja" target="_blank" class="teal ui labeled icon button"><i class="vk icon"></i>Tell about Us</a>',
+				'<div class="vk-hrefs-container">',
+				'<a href="http://vk.com/salelike.ninja" target="_blank" class="purple ui labeled icon button"><i class="vk icon"></i>Мы в Вконтакте</a>',
+				'</br></br><a href="http://vkontakte.ru/share.php?url=http://salelike.ninja" target="_blank" class="purple ui labeled icon button"><i class="vk icon"></i>Рассказать друзьям</a>',
+				'</div>',
+				'</br></br>',
+				'<div id="vk-content-close-button" class="ui teal button"><i class="reply mail icon"></i>Назад</div>',						
 			];
 			vkHrefsDialog = new Dialog({
 				title: "Мы в VK",
@@ -318,15 +327,30 @@
 			document.getElementById("about-button").onclick = function (e) {
 				//$('#about-modal').modal('show');
 				aboutDialog.show();
+				aboutDialog.resize();
+				//document.getElementById("about-modal").style.display='block';
+			}
+			document.getElementById("about-content-close-button").onclick = function (e) {
+				//$('#about-modal').modal('show');
+				aboutDialog.hide();
+				//document.getElementById("about-modal").style.display='block';
+			}
+			document.getElementById("howitworks-content-close-button").onclick = function (e) {
+				//$('#about-modal').modal('show');
+				howItWorksDialog.hide();
+				//document.getElementById("about-modal").style.display='block';
+			}
+			document.getElementById("vk-content-close-button").onclick = function (e) {
+				//$('#about-modal').modal('show');
+				vkHrefsDialog.hide();
 				//document.getElementById("about-modal").style.display='block';
 			}
 
-			document.getElementById("contacts-button").onclick = function (e) {
-				contactsDialog.show();
-				//$('#contacts-dimmer').dimmer('show');
-			}
+			
 			document.getElementById("how-it-works-button").onclick = function (e) {
 				howItWorksDialog.show();
+				howItWorksDialog.resize();
+				//console.log(howItWorksDialog);
 				//$('#how-it-works-dimmer').dimmer('show');
 			}
 			
